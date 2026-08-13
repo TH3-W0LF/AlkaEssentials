@@ -4,6 +4,7 @@ import com.alkacode.alkaessentials.afk.AfkManager;
 import com.alkacode.alkaessentials.afk.AfkZoneManager;
 import com.alkacode.alkaessentials.command.AfkCommands;
 import com.alkacode.alkaessentials.command.AfkZoneCommands;
+import com.alkacode.alkaessentials.command.AlkaEssentialsCommand;
 import com.alkacode.alkaessentials.command.BackCommand;
 import com.alkacode.alkaessentials.command.ChatCommands;
 import com.alkacode.alkaessentials.command.HomeCommands;
@@ -189,6 +190,7 @@ public final class AlkaEssentials extends AlkaPlugin {
         }
 
         // ----- comandos -----
+        register(new AlkaEssentialsCommand(this, scoreboardManager), "alkaessentials", "alka", "alkae");
         register(new SpawnCommands(this, locations, teleports), "spawn", "setspawn", "delspawn");
         register(new WarpCommands(this, locations, teleports), "warp", "setwarp", "delwarp");
         register(new HomeCommands(this, homes, homeLimit, teleports), "home", "sethome", "delhome", "homes");

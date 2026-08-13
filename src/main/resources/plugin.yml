@@ -5,9 +5,13 @@ api-version: '1.21.8'
 author: MestreDEV
 description: Utilitarios da network - movimentacao/teleporte, QoL, morte, staff, ambiente e chat. Sem logica de jogo propria, usa a infra do AlkaCore.
 depend: [AlkaCore]
-softdepend: [LuckPerms, PlaceholderAPI, DecentHolograms]
+softdepend: [LuckPerms, PlaceholderAPI, DecentHolograms, TAB, nChat]
 
 commands:
+  alkaessentials:
+    description: Comando principal do AlkaEssentials.
+    aliases: [alka, alkae]
+    usage: /<command> [reload|help]
   spawn:
     description: Teleporta para o spawn.
     usage: /<command>
@@ -369,4 +373,7 @@ permissions:
     default: op
   alkassentials.worldrules:
     description: Usa /worldrules.
+    default: op
+  alkassentials.admin.reload:
+    description: Recarrega as configs do AlkaEssentials.
     default: op

@@ -205,6 +205,18 @@ discord-msg: "<gold>Nosso Discord: <aqua>discord.alka.com"
 site-msg: "<gold>Nosso site: <aqua>www.alka.com"
 loja-msg: "<gold>Nossa loja: <aqua>store.alka.com"
 regras-msg: "<gold>Regras do servidor disponiveis em breve."
+
+# -------------------- Comando base --------------------
+alka-reloaded: "<green>AlkaEssentials recarregado."
+alka-help:
+  - "<gold><bold>AlkaEssentials <gray>v{version}"
+  - ""
+  - "<gray>/alkaessentials reload <dark_gray>- recarrega todas as configs"
+  - "<gray>/scoreboard <dark_gray>- scoreboard / tablist"
+  - "<gray>/worldrules <dark_gray>- regras por mundo"
+  - "<gray>/afkzone <dark_gray>- zonas AFK"
+  - "<gray>/staff <jogador> <dark_gray>- painel de staff"
+  - "<gray>/punish <jogador> <dark_gray>- menu de punicao"
 afkzone-help:
   - "<gold>/afkzone <aqua>varinha <gray>- selecionar cantos"
   - "<gold>/afkzone criar <nome> <gray>- criar a zona com a selecao"
