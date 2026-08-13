@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.alkacode"
-version = "1.2.1"
+version = "1.2.6"
 
 java {
     toolchain {
@@ -36,6 +36,8 @@ dependencies {
     compileOnly(files("libs/TAB.jar"))
     // API do PlaceholderAPI - para registrar %alkaessentials_nick% e integrar com nChat/TAB.
     compileOnly(files("libs/PlaceholderAPI.jar"))
+    // API do ProtocolLib - vanish profundo (ocultar no TAB + baú silencioso).
+    compileOnly(files("libs/ProtocolLib.jar"))
 }
 
 tasks.withType<JavaCompile> {

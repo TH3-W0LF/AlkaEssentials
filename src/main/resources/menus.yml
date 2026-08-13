@@ -6,12 +6,12 @@
 
 # ------------------------- GUI de Warps -------------------------
 warps:
-  title: "<gold>Warps"
+  title: "<gradient:#FFD700:#FF8C00>Warps"
   glass:
     material: GRAY_STAINED_GLASS_PANE
     name: " "
   empty:
-    material: BARRIER
+    material: RED_STAINED_GLASS_PANE
     name: "<red>Nenhum warp disponivel"
     lore:
       - "<gray>Cadastre warps com /setwarp"
@@ -23,12 +23,12 @@ warps:
 
 # ------------------------- GUI de Homes -------------------------
 homes:
-  title: "<gold>Suas Homes"
+  title: "<gradient:#FFD700:#FF8C00>Suas Homes"
   glass:
     material: GRAY_STAINED_GLASS_PANE
     name: " "
   empty:
-    material: BARRIER
+    material: RED_STAINED_GLASS_PANE
     name: "<red>Voce nao tem homes"
     lore:
       - "<gray>Defina uma com /sethome"
@@ -41,15 +41,22 @@ homes:
 
 # ------------------------- GUI de Staff -------------------------
 staff:
-  title: "<gold>Staff - {player}"
+  title: "<gradient:#FFD700:#FF8C00>Staff - {player}"
   glass:
     material: GRAY_STAINED_GLASS_PANE
     name: " "
 
+# ------------------------- GUI de Punição -------------------------
+punish:
+  title: "<gradient:#FFD700:#FF8C00>Punir {player}"
+  back:
+    material: ARROW
+    name: "<gray>Voltar"
+
 # ------------------------- GUI de Regras do Mundo -------------------------
 worldrules:
-  select-title: "<gold>Regras do Mundo"
-  toggle-title: "<gold>Regras - {world}"
+  select-title: "<gradient:#FFD700:#FF8C00>Regras do Mundo"
+  toggle-title: "<gradient:#FFD700:#FF8C00>Regras - {world}"
   glass:
     material: GRAY_STAINED_GLASS_PANE
     name: " "

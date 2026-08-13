@@ -1,6 +1,7 @@
 package com.alkacode.alkaessentials.command;
 
 import com.alkacode.alkaessentials.gui.StaffGui;
+import com.alkacode.alkaessentials.hook.VanishHandler;
 import com.alkacode.alkaessentials.manager.MaintenanceManager;
 import com.alkacode.alkaessentials.manager.ModerationManager;
 import com.alkacode.alkaessentials.manager.PunishmentManager;
@@ -20,13 +21,16 @@ public final class ModerationCommands extends BaseCommand {
     private final ModerationManager moderation;
     private final MaintenanceManager maintenance;
     private final PunishmentManager punishments;
+    private final VanishHandler vanishHandler;
 
     public ModerationCommands(JavaPlugin plugin, ModerationManager moderation,
-                              MaintenanceManager maintenance, PunishmentManager punishments) {
+                              MaintenanceManager maintenance, PunishmentManager punishments,
+                              VanishHandler vanishHandler) {
         super(plugin);
         this.moderation = moderation;
         this.maintenance = maintenance;
         this.punishments = punishments;
+        this.vanishHandler = vanishHandler;
     }
 
     @Override
@@ -48,6 +52,13 @@ public final class ModerationCommands extends BaseCommand {
     private boolean vanish(Player player) {
         if (!requirePerm(player, "alkassentials.staff.vanish")) return true;
         boolean on = moderation.toggleVanished(player.getUniqueId());
+        if (vanishHandler != null) {
+            if (on) {
+                vanishHandler.apply(player);
+            } else {
+                vanishHandler.clear(player);
+            }
+        }
         for (Player online : Bukkit.getOnlinePlayers()) {
             if (online.equals(player)) continue;
             if (on) {

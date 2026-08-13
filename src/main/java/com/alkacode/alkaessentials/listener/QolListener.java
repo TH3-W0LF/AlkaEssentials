@@ -115,10 +115,20 @@ public final class QolListener implements Listener {
         if (isExcluded(result.getType())) {
             return;
         }
-        String forge = plugin.getConfig().getString("qol.anvil.forge-lore", "<gray>Forjado por <white>{player}")
-                .replace("{player}", player.getName());
+        String forgeRaw = plugin.getConfig().getString("qol.anvil.forge-lore",
+                "<gray>Forjado por <white>{player}");
+        String forge = forgeRaw.replace("{player}", player.getName());
+        String keyword = net.kyori.adventure.text.minimessage.MiniMessage.miniMessage()
+                .stripTags(forgeRaw.replace("{player}", "")).trim();
+        if (keyword.isEmpty()) {
+            keyword = "Forjado por";
+        }
+        final String match = keyword;
         ItemMeta meta = result.getItemMeta();
         List<Component> lore = meta.lore() != null ? new ArrayList<>(meta.lore()) : new ArrayList<>();
+        // remove linhas "Forjado por" antigas para nao duplicar ao usar a bigorna de novo
+        lore.removeIf(line -> net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText()
+                .serialize(line).contains(match));
         lore.add(ChatUtil.parse(forge));
         meta.lore(lore);
         result.setItemMeta(meta);

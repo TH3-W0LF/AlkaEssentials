@@ -1,5 +1,6 @@
 package com.alkacode.alkaessentials.gui;
 
+import com.alkacode.alkaessentials.config.MenuConfig;
 import com.alkacode.alkaessentials.config.ReasonsConfig;
 import com.alkacode.alkaessentials.manager.PunishmentManager;
 import com.alkacode.alkaessentials.model.Punishment;
@@ -31,7 +32,8 @@ public final class PunishGui extends BaseGui {
     private String selectedDuration;
 
     public PunishGui(JavaPlugin plugin, Player staff, Player target, PunishmentManager punishments) {
-        super(plugin, staff, "<gold>Punir " + target.getName(), 3, "alkaessentials_punish");
+        super(plugin, staff, MenuConfig.getInstance().title("punish", Map.of("player", target.getName())),
+                3, "alkaessentials_punish");
         this.target = target;
         this.punishments = punishments;
     }
@@ -67,7 +69,7 @@ public final class PunishGui extends BaseGui {
 
     private void renderReasons() {
         List<String> reasons = ReasonsConfig.getInstance().getReasons(selectedType);
-        setItem(0, new ItemBuilder(Material.ARROW).name("<gray>Voltar").build(), event -> {
+        setItem(0, MenuConfig.getInstance().item("punish.back", null), event -> {
             step = Step.TYPE;
             refresh();
         });
@@ -85,7 +87,7 @@ public final class PunishGui extends BaseGui {
     }
 
     private void renderDurations() {
-        setItem(0, new ItemBuilder(Material.ARROW).name("<gray>Voltar").build(), event -> {
+        setItem(0, MenuConfig.getInstance().item("punish.back", null), event -> {
             step = Step.REASON;
             refresh();
         });

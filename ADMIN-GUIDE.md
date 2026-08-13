@@ -113,8 +113,11 @@ Tudo em `plugins/AlkaEssentials/`:
 | `alkassentials.punish` | Todos os comandos de punição |
 | `alkassentials.maintenance(.bypass)` | Manutenção |
 | `alkassentials.worldrules` | GUI de regras do mundo |
+| `alkassentials.admin.*` | gamemode, fix, speed, day/night/sun/rain, top, jump |
+| `alkassentials.qol.condense/smelt/skull` | Utilitários de inventário |
+| `alkassentials.showitem.*` | `/showitem`, `/showslot`, `/showinv`, `/showender` |
 | `alkassentials.chat.nick` / `.color` | `/nick` e `/color`/`/namecolor`/`/gradient` |
-| `alkassentials.chat.realname` / `.ignore` / `.clearchat` / `.broadcast` | Comandos de chat |
+| `alkassentials.chat.realname` / `.ignore` / `.clearchat` / `.broadcast` / `.mutechat` | Comandos de chat |
 | `alkassentials.scoreboard.toggle` / `.reload` | Scoreboard |
 
 ---

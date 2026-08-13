@@ -4,12 +4,14 @@ import com.alkacode.alkaessentials.afk.AfkManager;
 import com.alkacode.alkaessentials.afk.AfkZoneManager;
 import com.alkacode.alkaessentials.command.AfkCommands;
 import com.alkacode.alkaessentials.command.AfkZoneCommands;
+import com.alkacode.alkaessentials.command.AdminCommands;
 import com.alkacode.alkaessentials.command.AlkaEssentialsCommand;
 import com.alkacode.alkaessentials.command.BackCommand;
 import com.alkacode.alkaessentials.command.ChatCommands;
 import com.alkacode.alkaessentials.command.HomeCommands;
 import com.alkacode.alkaessentials.command.InvRestoreCommand;
 import com.alkacode.alkaessentials.command.ModerationCommands;
+import com.alkacode.alkaessentials.command.MuteChatCommand;
 import com.alkacode.alkaessentials.command.PunishCommands;
 import com.alkacode.alkaessentials.command.QolCommands;
 import com.alkacode.alkaessentials.command.RideCommand;
@@ -18,6 +20,7 @@ import com.alkacode.alkaessentials.command.ScoreCommand;
 import com.alkacode.alkaessentials.command.SitCommand;
 import com.alkacode.alkaessentials.command.SpawnCommands;
 import com.alkacode.alkaessentials.command.StaffCommands;
+import com.alkacode.alkaessentials.command.ShowItemCommand;
 import com.alkacode.alkaessentials.command.TpaCommands;
 import com.alkacode.alkaessentials.command.WarpCommands;
 import com.alkacode.alkaessentials.command.WorldRulesCommand;
@@ -37,9 +40,12 @@ import com.alkacode.alkaessentials.listener.ElevatorListener;
 import com.alkacode.alkaessentials.listener.EnvironmentListener;
 import com.alkacode.alkaessentials.listener.EventTriggerListener;
 import com.alkacode.alkaessentials.listener.ItemProtectionListener;
+import com.alkacode.alkaessentials.listener.JoinQuitListener;
 import com.alkacode.alkaessentials.listener.ModerationListener;
+import com.alkacode.alkaessentials.listener.MuteChatListener;
 import com.alkacode.alkaessentials.listener.PunishmentListener;
 import com.alkacode.alkaessentials.listener.QolListener;
+import com.alkacode.alkaessentials.listener.SignColorListener;
 import com.alkacode.alkaessentials.listener.SignEditorListener;
 import com.alkacode.alkaessentials.listener.SlotListener;
 import com.alkacode.alkaessentials.listener.TeleportListener;
@@ -154,10 +160,16 @@ public final class AlkaEssentials extends AlkaPlugin {
         ModerationManager moderation = new ModerationManager();
         MaintenanceManager maintenance = new MaintenanceManager(this);
         TempCommandManager tempCommands = new TempCommandManager(this, moderation);
+        // vanish profundo (TAB + baú silencioso) - so com ProtocolLib presente
+        com.alkacode.alkaessentials.hook.VanishHandler vanishHandler = null;
+        if (getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
+            vanishHandler = new com.alkacode.alkaessentials.hook.VanishHandler(this, moderation, nicks);
+            getServer().getPluginManager().registerEvents(vanishHandler, this);
+        }
         getServer().getPluginManager().registerEvents(
                 new PunishmentListener(this, punishments), this);
         getServer().getPluginManager().registerEvents(
-                new ModerationListener(this, moderation, maintenance), this);
+                new ModerationListener(this, moderation, maintenance, vanishHandler), this);
         // expira punicoes temporarias a cada minuto
         getServer().getScheduler().runTaskTimer(this, punishments::expireAll, 1200L, 1200L);
 
@@ -169,6 +181,8 @@ public final class AlkaEssentials extends AlkaPlugin {
         getServer().getPluginManager().registerEvents(new EventTriggerListener(this), this);
         getServer().getPluginManager().registerEvents(new SignEditorListener(this), this);
         getServer().getPluginManager().registerEvents(new CommandSignListener(this), this);
+        getServer().getPluginManager().registerEvents(new SignColorListener(), this);
+        getServer().getPluginManager().registerEvents(new JoinQuitListener(), this);
         // regras do mundo configuráveis por mundo via GUI
         WorldRulesManager worldRules = new WorldRulesManager(this);
         getServer().getPluginManager().registerEvents(new WorldRulesListener(this, worldRules), this);
@@ -199,7 +213,6 @@ public final class AlkaEssentials extends AlkaPlugin {
         register(new BackCommand(this, back, teleports), "back");
         register(new AfkCommands(this, afkManager), "afk");
         register(new AfkZoneCommands(this, afkZoneManager), "afkzone");
-        register(new QolCommands(this, nightVision), "craft", "wb", "lixo", "trash", "nv", "luz", "ping");
         register(new SitCommand(this, seats), "sit");
         register(new RideCommand(this), "ride");
         register(new InvRestoreCommand(this, invRestore), "invrestore");
@@ -208,12 +221,21 @@ public final class AlkaEssentials extends AlkaPlugin {
                 "warn", "kick", "ban", "tempban", "mute", "tempmute", "unban", "unmute", "punishinfo", "punish");
         register(new StaffCommands(this, moderation, tempCommands),
                 "clear", "heal", "feed", "fly", "god", "freeze", "invsee", "ptime", "pweather");
-        register(new ModerationCommands(this, moderation, maintenance, punishments),
+        register(new ModerationCommands(this, moderation, maintenance, punishments, vanishHandler),
                 "vanish", "socialspy", "commandspy", "maintenance", "staff");
         register(new ChatCommands(this, nicks, ignores, tabHook),
                 "nick", "color", "namecolor", "gradient", "realname", "whois",
                 "ignore", "clearchat", "broadcast", "discord", "site", "loja", "regras");
         register(new WorldRulesCommand(this, worldRules), "worldrules");
+        register(new AdminCommands(this),
+                "gamemode", "gmc", "gms", "gma", "gmsp", "fix", "fixall", "speed",
+                "day", "night", "sun", "rain", "top", "jump");
+        register(new ShowItemCommand(this), "showitem", "showslot", "showinv", "showender");
+        register(new QolCommands(this, nightVision),
+                "craft", "wb", "lixo", "trash", "nv", "luz", "ping", "condense", "smelt", "skull");
+        MuteChatCommand muteChat = new MuteChatCommand(this);
+        register(muteChat, "mutechat");
+        getServer().getPluginManager().registerEvents(new MuteChatListener(muteChat), this);
 
         getLogger().info("AlkaEssentials habilitado (" + locations.getWarps().size() + " warp(s), spawn "
                 + (locations.hasSpawn() ? "definido" : "nao definido")

@@ -38,7 +38,7 @@ public final class NameColorGui extends BaseGui {
 
     public NameColorGui(JavaPlugin plugin, Player player, NickManager nicks,
                         com.alkacode.alkaessentials.hook.TabHook tabHook) {
-        super(plugin, player, "<gold>Cor do Nick", 5, "alkaessentials_namecolor");
+        super(plugin, player, "<gradient:#FFD700:#FF8C00>Cor do Nick", 5, "alkaessentials_namecolor");
         this.nicks = nicks;
         this.tabHook = tabHook;
     }

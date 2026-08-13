@@ -46,6 +46,8 @@ public final class StaffCommands extends BaseCommand {
         Player target = targetOrSelf(sender, args, "alkassentials.staff.clear");
         if (target == null) return true;
         target.getInventory().clear();
+        target.getInventory().setArmorContents(null);
+        target.getInventory().setItemInOffHand(null);
         ChatUtil.sendKey(sender, "clear-inv", Map.of("player", target.getName()));
         return true;
     }
@@ -59,6 +61,9 @@ public final class StaffCommands extends BaseCommand {
             max = attr.getValue();
         }
         target.setHealth(max);
+        target.setFoodLevel(20);
+        target.setSaturation(20f);
+        target.getActivePotionEffects().forEach(e -> target.removePotionEffect(e.getType()));
         ChatUtil.sendKey(sender, "heal-done", Map.of("player", target.getName()));
         return true;
     }

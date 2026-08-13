@@ -225,6 +225,104 @@ commands:
     permission: alkassentials.worldrules
     aliases: [wr]
     usage: /<command> [mundo]
+  gamemode:
+    description: Altera o modo de jogo.
+    aliases: [gm]
+    permission: alkassentials.admin.gamemode
+    usage: /<command> <modo> [jogador]
+  gmc:
+    description: Modo criativo.
+    aliases: [gmcreative]
+    permission: alkassentials.admin.gamemode
+    usage: /<command> [jogador]
+  gms:
+    description: Modo sobrevivencia.
+    aliases: [gmsurvival]
+    permission: alkassentials.admin.gamemode
+    usage: /<command> [jogador]
+  gma:
+    description: Modo aventura.
+    aliases: [gmadventure]
+    permission: alkassentials.admin.gamemode
+    usage: /<command> [jogador]
+  gmsp:
+    description: Modo espectador.
+    aliases: [gmspectator]
+    permission: alkassentials.admin.gamemode
+    usage: /<command> [jogador]
+  fix:
+    description: Repara o item na mao.
+    permission: alkassentials.admin.fix
+    usage: /<command>
+  fixall:
+    description: Repara todo o inventario.
+    permission: alkassentials.admin.fix.all
+    usage: /<command>
+  speed:
+    description: Altera a velocidade.
+    permission: alkassentials.admin.speed
+    usage: /<command> <fly|walk> <0-10> [jogador]
+  day:
+    description: Define dia no mundo.
+    permission: alkassentials.admin.day
+    usage: /<command> [mundo]
+  night:
+    description: Define noite no mundo.
+    permission: alkassentials.admin.night
+    usage: /<command> [mundo]
+  sun:
+    description: Clima limpo no mundo.
+    permission: alkassentials.admin.sun
+    usage: /<command> [mundo]
+  rain:
+    description: Chuva no mundo.
+    permission: alkassentials.admin.rain
+    usage: /<command> [mundo]
+  top:
+    description: Teleporta para o topo.
+    permission: alkassentials.admin.top
+    usage: /<command>
+  jump:
+    description: Teleporta para onde olha.
+    permission: alkassentials.admin.jump
+    usage: /<command>
+  condense:
+    description: Compacta minerios no inventario.
+    permission: alkassentials.qol.condense
+    usage: /<command>
+  smelt:
+    description: Funde itens no inventario.
+    permission: alkassentials.qol.smelt
+    usage: /<command>
+  skull:
+    description: Dropa a cabeca de um jogador.
+    permission: alkassentials.qol.skull
+    usage: /<command> <jogador>
+  mutechat:
+    description: Muta/desmuta o chat global.
+    aliases: [mc]
+    permission: alkassentials.chat.mutechat
+    usage: /<command>
+  showitem:
+    description: Mostra o item na mao no chat (hover).
+    aliases: [si, show]
+    permission: alkassentials.showitem.item
+    usage: /<command> [jogador]
+  showslot:
+    description: Mostra o item de um slot.
+    aliases: [ss]
+    permission: alkassentials.showitem.slot
+    usage: /<command> <slot> [jogador]
+  showinv:
+    description: Mostra o inventario no chat.
+    aliases: [sinv, showinventory]
+    permission: alkassentials.showitem.inv
+    usage: /<command> [jogador]
+  showender:
+    description: Mostra o enderchest no chat.
+    aliases: [showenderchest]
+    permission: alkassentials.showitem.ender
+    usage: /<command> [jogador]
 
 permissions:
   alkassentials.admin.setspawn:
@@ -376,4 +474,64 @@ permissions:
     default: op
   alkassentials.admin.reload:
     description: Recarrega as configs do AlkaEssentials.
+    default: op
+  alkassentials.admin.gamemode:
+    description: Usa comandos de gamemode.
+    default: op
+  alkassentials.admin.fix:
+    description: Usa /fix.
+    default: op
+  alkassentials.admin.fix.all:
+    description: Usa /fixall.
+    default: op
+  alkassentials.admin.speed:
+    description: Usa /speed.
+    default: op
+  alkassentials.admin.day:
+    description: Usa /day.
+    default: op
+  alkassentials.admin.night:
+    description: Usa /night.
+    default: op
+  alkassentials.admin.sun:
+    description: Usa /sun.
+    default: op
+  alkassentials.admin.rain:
+    description: Usa /rain.
+    default: op
+  alkassentials.admin.top:
+    description: Usa /top.
+    default: op
+  alkassentials.admin.jump:
+    description: Usa /jump.
+    default: op
+  alkassentials.qol.condense:
+    description: Usa /condense.
+    default: true
+  alkassentials.qol.smelt:
+    description: Usa /smelt.
+    default: true
+  alkassentials.qol.skull:
+    description: Usa /skull.
+    default: op
+  alkassentials.chat.mutechat:
+    description: Usa /mutechat.
+    default: op
+  alkassentials.chat.mutechat.bypass:
+    description: Ignora o mutechat.
+    default: op
+  alkassentials.signs.colors:
+    description: Usa cores nas placas.
+    default: op
+  alkassentials.showitem.item:
+    description: Usa /showitem.
+    default: true
+  alkassentials.showitem.slot:
+    description: Usa /showslot.
+    default: true
+  alkassentials.showitem.inv:
+    description: Usa /showinv.
+    default: op
+  alkassentials.showitem.ender:
+    description: Usa /showender.
     default: op

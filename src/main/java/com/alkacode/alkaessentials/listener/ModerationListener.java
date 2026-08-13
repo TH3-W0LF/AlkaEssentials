@@ -31,11 +31,14 @@ public final class ModerationListener implements Listener {
     private final JavaPlugin plugin;
     private final ModerationManager moderation;
     private final MaintenanceManager maintenance;
+    private final com.alkacode.alkaessentials.hook.VanishHandler vanishHandler;
 
-    public ModerationListener(JavaPlugin plugin, ModerationManager moderation, MaintenanceManager maintenance) {
+    public ModerationListener(JavaPlugin plugin, ModerationManager moderation, MaintenanceManager maintenance,
+                              com.alkacode.alkaessentials.hook.VanishHandler vanishHandler) {
         this.plugin = plugin;
         this.moderation = moderation;
         this.maintenance = maintenance;
+        this.vanishHandler = vanishHandler;
     }
 
     // ---------- freeze ----------
