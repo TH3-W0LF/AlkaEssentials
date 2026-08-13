@@ -1,0 +1,25 @@
+# ============================================================
+# AlkaEssentials - events.yml
+# Executa comandos automaticamente em gatilhos do jogador.
+# {player} e substituido pelo nick de quem disparou o evento.
+# ============================================================
+
+# Ao entrar no servidor.
+on-join:
+  - ""
+
+# No primeiro login de sempre.
+on-first-join:
+  - "give {player} apple 5"
+
+# Ao sair do servidor.
+on-quit:
+  - ""
+
+# Ao morrer.
+on-death:
+  - ""
+
+# Ao renascer.
+on-respawn:
+  - ""

@@ -1,0 +1,119 @@
+# ============================================================
+# AlkaEssentials - menus.yml
+# Titulos, nomes e lores das GUIs, editaveis sem recompilar.
+# Placeholders entre {} sao trocados na hora. MiniMessage.
+# ============================================================
+
+# ------------------------- GUI de Warps -------------------------
+warps:
+  title: "<gold>Warps"
+  glass:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+  empty:
+    material: BARRIER
+    name: "<red>Nenhum warp disponivel"
+    lore:
+      - "<gray>Cadastre warps com /setwarp"
+  warp:
+    material: ENDER_PEARL
+    name: "<gold>{warp}"
+    lore:
+      - "<gray>Clique para teleportar"
+
+# ------------------------- GUI de Homes -------------------------
+homes:
+  title: "<gold>Suas Homes"
+  glass:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+  empty:
+    material: BARRIER
+    name: "<red>Voce nao tem homes"
+    lore:
+      - "<gray>Defina uma com /sethome"
+  home:
+    material: SPRUCE_DOOR
+    name: "<gold>{home}"
+    lore:
+      - "<gray>Clique para teleportar"
+      - "<gray>Shift + clique para apagar"
+
+# ------------------------- GUI de Staff -------------------------
+staff:
+  title: "<gold>Staff - {player}"
+  glass:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+
+# ------------------------- GUI de Regras do Mundo -------------------------
+worldrules:
+  select-title: "<gold>Regras do Mundo"
+  toggle-title: "<gold>Regras - {world}"
+  glass:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+  back:
+    material: ARROW
+    name: "<gray>Voltar"
+  reset:
+    material: BARRIER
+    name: "<red>Restaurar padrao"
+  on-lore:
+    - "<green>Ativo"
+    - "<gray>Clique para desligar"
+  off-lore:
+    - "<red>Inativo"
+    - "<gray>Clique para ligar"
+  rules:
+    mobs:
+      name: "<gold>Mobs"
+      icon: ZOMBIE_HEAD
+    animals:
+      name: "<yellow>Animais"
+      icon: COW_SPAWN_EGG
+    zombie-villagers:
+      name: "<green>Zumbi-Vilager"
+      icon: ZOMBIE_VILLAGER_SPAWN_EGG
+    villagers:
+      name: "<aqua>Vilagers"
+      icon: VILLAGER_SPAWN_EGG
+    structures:
+      name: "<dark_aqua>Estruturas"
+      icon: IRON_GOLEM_SPAWN_EGG
+    rain:
+      name: "<aqua>Chuva"
+      icon: WATER_BUCKET
+    gravity:
+      name: "<yellow>Gravidade"
+      icon: SAND
+    fire:
+      name: "<gold>Fogo"
+      icon: FLINT_AND_STEEL
+    leaves:
+      name: "<green>Folhas"
+      icon: OAK_LEAVES
+    hunger:
+      name: "<red>Fome"
+      icon: COOKED_BEEF
+    creeper:
+      name: "<green>Creeper"
+      icon: CREEPER_HEAD
+    tnt:
+      name: "<dark_red>TNT"
+      icon: TNT
+    mob-grief:
+      name: "<dark_aqua>Mob-Grief"
+      icon: CRACKED_STONE_BRICKS
+  time:
+    material: CLOCK
+    normal:
+      name: "<green>Tempo: Normal"
+    day:
+      name: "<yellow>Tempo: Sempre Dia"
+    night:
+      name: "<dark_blue>Tempo: Sempre Noite"
+    stop:
+      name: "<red>Tempo: Parado"
+    lore:
+      - "<gray>Clique para alternar"

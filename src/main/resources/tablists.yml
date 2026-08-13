@@ -1,0 +1,33 @@
+# ============================================================
+# AlkaScore - tablists.yml
+# Header/footer do TAB por mundo/permissao. MiniMessage.
+# Placeholders: %alka_*% (rede) e %<qualquer>% (PAPI se instalado).
+# ============================================================
+
+# Tablist padrao do servidor.
+default:
+  worlds: []
+  permission: ""
+  header:
+    - ""
+    - "<gold><bold>ALKA NETWORK"
+    - ""
+    - "<gray>Online: <green>%alka_online% <dark_gray>| <gray>Ping: <green>%alka_ping%ms"
+    - ""
+  footer:
+    - ""
+    - "<gray>Loja: <aqua>store.alka.com <dark_gray>| <gray>Discord: <aqua>discord.alka.com"
+    - ""
+
+# Exemplo de tablist por mundo.
+# plotme:
+#   worlds: [ "plotme", "Plots" ]
+#   permission: ""
+#   header:
+#     - ""
+#     - "<green><bold>TERRENOS"
+#     - ""
+#   footer:
+#     - ""
+#     - "<gray>Use /plot auto para começar"
+#     - ""

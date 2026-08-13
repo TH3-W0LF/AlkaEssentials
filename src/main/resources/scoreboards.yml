@@ -1,0 +1,95 @@
+# ============================================================
+# AlkaScore - scoreboards.yml
+# Scoreboards por mundo/regiao/permissao com titulo e linhas animadas.
+# Toda string usa MiniMessage (gradient, rainbow, scroll, etc).
+# Placeholders:
+#   %alka_*%  => placeholders proprios da rede (sem PAPI)
+#   %<qualquer>% => PlaceholderAPI (se instalado)
+# ============================================================
+
+# Scoreboard padrao do servidor.
+default:
+  priority: 0
+  # Mundos onde esta scoreboard vale (vazio = todos).
+  worlds: []
+  # Regioes (nomes) onde vale (vazio = qualquer).
+  regions: []
+  # Permissao necessaria (vazio = todos).
+  permission: ""
+  title:
+    frames:
+      - "<rainbow:16><bold>ALKA NETWORK</bold></rainbow>"
+    interval: 0.15
+  lines:
+    - frames: [ "" ]
+      interval: 0.0
+      condition: ""
+    - frames: [ "<gray>Bem-vindo, <white>{player}" ]
+      interval: 0.0
+      condition: ""
+    - frames: [ "" ]
+      interval: 0.0
+      condition: ""
+    - frames: [ "<gray>Online: <green>%alka_online%<gray>/<green>%alka_max_online%" ]
+      interval: 0.0
+      condition: ""
+    - frames: [ "<gray>Seu ping: <green>%alka_ping%ms" ]
+      interval: 0.0
+      condition: ""
+    - frames: [ "<gray>AFK: <green>%alka_afk%" ]
+      interval: 0.0
+      condition: ""
+    - frames: [ "" ]
+      interval: 0.0
+      condition: ""
+    - frames:
+        - "<gold>» <white>Alka Network"
+        - "<scroll:left><gold>» <white>discord.alka.com"
+      interval: 0.4
+      condition: ""
+
+# Painel especial: mostrado automaticamente enquanto o jogador esta AFK.
+afk:
+  priority: 10
+  worlds: []
+  regions: []
+  permission: ""
+  title:
+    frames: [ "<rainbow:8><bold>VOCE ESTA AFK</bold></rainbow>" ]
+    interval: 0.15
+  lines:
+    - frames: [ "" ]
+      interval: 0.0
+      condition: ""
+    - frames: [ "<gray>Total online: <green>%alka_online%" ]
+      interval: 0.0
+      condition: ""
+    - frames: [ "<gray>Tempo no servidor: <green>%alka_uptime%" ]
+      interval: 0.0
+      condition: ""
+    - frames: [ "" ]
+      interval: 0.0
+      condition: ""
+    - frames: [ "<red>Mova-se para sair do AFK" ]
+      interval: 0.0
+      condition: ""
+
+# Exemplo de scoreboard por mundo.
+# plotme:
+#   priority: 1
+#   worlds: [ "plotme", "Plots" ]
+#   regions: []
+#   permission: ""
+#   title:
+#     frames: [ "<green><bold>TERRENOS" ]
+#     interval: 0.0
+#   lines:
+#     - frames: [ "" ]
+#       interval: 0.0
+#       condition: ""
+#     - frames: [ "<gray>Adquira um terreno:" ]
+#       interval: 0.0
+#       condition: ""
+#     - frames: [ "<green>/plot auto" ]
+#       interval: 0.0
+#       condition: ""

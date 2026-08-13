@@ -1,0 +1,304 @@
+# ============================================================
+# AlkaEssentials - config.yml
+# Toda string de exibicao usa MiniMessage (regra R3 do studio).
+# ============================================================
+
+debug: false
+
+# ------------------------- Spawn -------------------------
+spawn:
+  # Teleporta para o spawn no primeiro login.
+  teleport-on-first-join: true
+  # Teleporta para o spawn ao reviver (false = nao).
+  teleport-on-respawn: false
+  # Teleporta para o spawn ao cair no void (Y < -64).
+  teleport-on-void: true
+  void-threshold: -64
+
+# ------------------------- Warps -------------------------
+warps:
+  # Permissao base de acesso a warps (ex: alkassentials.warp.<nome>).
+  # Deixe vazio para warps publicos por padrao.
+  permission-prefix: "alkassentials.warp"
+
+# ------------------------- Homes -------------------------
+homes:
+  # Limite padrao de homes quando o LuckPerms nao esta presente.
+  default-limit: 3
+  # Limite base de homes (soma com o que vier de perm alkassentials.homes.<n>).
+  base-limit: 0
+  # Precedencia: a maior dentre (base + node homes.<n>) e usada. Ex: node
+  # alkassentials.homes.5 da 5 homes; base 2 + node homes.3 da 5 tambem.
+  # Mundos onde NAO e permitido setar home (nomes do mundo).
+  blocked-worlds: []
+  # Home com nome vazio = "home" padrao. Nome reservado.
+  default-name: "home"
+
+# ------------------------- TPA -------------------------
+tpa:
+  # Tempo de vida de um pedido de teleporte em segundos.
+  request-timeout: 60
+  # Permissao pra continuar recebendo pedidos com /tptoggle desligado.
+  toggle-bypass: "alkassentials.tpa.togglebypass"
+
+# ------------------------- RTP -------------------------
+rtp:
+  # Mundo em que o /rtp roda. Vazio = mundo do jogador.
+  world: ""
+  # Raio maximo a partir do centro (0,0) do mundo.
+  radius: 3000
+  # Tentativas de achar um local seguro por chamada antes de desistir.
+  attempts: 10
+
+# ---------------------- Teleporte geral ----------------------
+teleport:
+  # Cooldowns em segundos (0 = sem cooldown).
+  cooldowns:
+    spawn: 3
+    warp: 3
+    home: 3
+    tpa: 5
+    rtp: 30
+    back: 0
+  # Warmups em segundos (0 = teleporte instantaneo). Cancela ao andar/levar dano.
+  warmups:
+    spawn: 0
+    warp: 3
+    home: 0
+    tpa: 0
+    rtp: 5
+    back: 0
+  # Se o jogador levar dano, cancela o warmup em andamento.
+  cancel-warmup-on-damage: true
+  # Se o jogador andar, cancela o warmup em andamento.
+  cancel-warmup-on-move: true
+
+# ---------------------- Elevadores ----------------------
+elevators:
+  enabled: true
+  # Blocos que funcionam como elevador. Pular = sobe, agachar = desce.
+  blocks:
+    - IRON_BLOCK
+    - REDSTONE_BLOCK
+    - QUARTZ_BLOCK
+  # Altura maxima de teleporte entre andares.
+  max-distance: 32
+  # Tambem ativa via placa (terceira linha com "elevador"/"elevator").
+  enable-signs: true
+
+# ------------------------- AFK -------------------------
+afk:
+  # /afk manual e auto-afk. Tempo de inatividade em segundos pra marcar AFK
+  # automaticamente (0 = desliga o auto-afk).
+  auto-timeout: 180
+  # Mostra a tag [AFK] no TAB do jogador (playerListName).
+  tab-tag: true
+  tab-tag-format: "<gold>[AFK]<reset> "
+
+# ----------------------- Zona AFK -----------------------
+afk-zone:
+  # Quantas contas por IP podem ganhar recompensa ao mesmo tempo na mesma zona
+  # (-1 = sem limite).
+  zone-per-ip-limit: -1
+  # Permissao pra ignorar o limite de IP.
+  bypass-ip-limit-permission: "alkassentials.afkzone.bypass.iplimit"
+  # Direcao da bossbar de progresso (0 = diminui, 1 = aumenta).
+  bossbar-direction: 0
+
+# -------------------- Qualidade de Vida (QoL) --------------------
+qol:
+  night-vision:
+    # Duracao do efeito de visao noturna renovado periodicamente (segundos).
+    duration-seconds: 300
+    # Amplifier do efeito (0 = normal).
+    amplifier: 0
+    # Intervalo de renovacao do efeito (segundos). Deve ser < duration.
+    renew-task-seconds: 60
+  soup:
+    enabled: true
+    # Coracoes curados por sopa (1 sopa = 2 hit points; 7 = 3.5 coracoes).
+    heal-amount: 7
+    # Mundos onde a sopa cura (vazio = todos).
+    worlds: []
+  anvil:
+    # Bigorna infinita: nao desgasta nem quebra com o uso.
+    infinite: true
+    # Adiciona a lore "Forjado por [Jogador]" em itens usados na bigorna.
+    add-forge-lore: true
+    forge-lore: "<gray>Forjado por <white>{player}"
+    # Materiais que NAO recebem a lore de forjado (ex: livros encantados).
+    excluded-materials: []
+  ender-pearl:
+    enabled: true
+    # Cooldown em segundos ao arremessar uma perola do fim.
+    cooldown-seconds: 16
+
+# -------------------- Morte e Inventario --------------------
+deathchest:
+  enabled: true
+  # Tempo de vida do tumulo em segundos (depois disso, os itens sao perdidos).
+  lifetime-seconds: 600
+  # Mundos onde o tumulo e gerado (vazio = todos).
+  worlds: []
+
+death-message:
+  # Mensagem de morte customizada (false = usa a padrao do servidor).
+  enabled: true
+
+invrestore:
+  # Salva um snapshot do inventario a cada morte pro /invrestore.
+  enabled: true
+
+# -------------------- Scoreboard (AlkaScore) --------------------
+scoreboard:
+  # Intervalo de re-envio da scoreboard (segundos). 0 desativa.
+  resend-seconds: 2
+  # Mundos onde a scoreboard fica desligada.
+  blocked-worlds: []
+  # Formato do nome do jogador no TAB. {player} e o nome; aceita MiniMessage e placeholders.
+  player-name:
+    enabled: true
+    format: "<gray>{player}"
+
+# -------------------- Punições (Modulo Admin) --------------------
+punish:
+  # Nome do servidor registrado na punicao.
+  server: "Global"
+  # Nome exibido quando o autor e o console.
+  console-name: "Servidor"
+  # Valores padrao quando motivo/prova nao forem informados.
+  no-reason: "Nenhum motivo"
+  no-proof: "Nenhuma"
+  # Comandos bloqueados enquanto o jogador estiver silenciado (chat privado).
+  block-commands: [ "/g", "/l", "/r", "/tell", "/msg", "/w" ]
+  # Permite punir a si mesmo.
+  self-punish: false
+  # Anuncia punicoes no chat.
+  broadcasts: true
+  # Permissao para receber anuncios de punicao (vazio = todos).
+  broadcast-permission: ""
+
+# Punição automatica por excesso de avisos (premium - progressive punishments).
+warn:
+  # Maximo de avisos ativos antes de aplicar a punicao automatica (0 desativa).
+  max-warns: 3
+  # Tipo da punicao automatica (BAN, TEMPBAN, MUTE, TEMPMUTE).
+  auto-type: "MUTE"
+  # Duracao da punicao automatica (vazio = permanente).
+  auto-duration: "5h"
+  # Motivo registrado na punicao automatica.
+  auto-reason: "Excedeu o limite de avisos"
+
+# -------------------- Moderacao / Staff --------------------
+moderation:
+  # Bloqueia comandos de jogadores congelados.
+  freeze-block-commands: true
+  # Vanish esconde do mundo e do chat (a tablist pode exigir packet - ver futuramente).
+  vanish-hide-chat: true
+
+# -------------------- Manutencao --------------------
+maintenance:
+  enabled: false
+  reason: ""
+  # Permissao de bypass.
+  bypass-permission: "alkassentials.maintenance.bypass"
+
+# -------------------- Ambiente / Protecao / Eventos --------------------
+world:
+  # Bloqueia a chuva no servidor inteiro.
+  block-rain: false
+  # Bloqueia a propagacao de fogo.
+  block-fire-spread: true
+  # Bloqueia o decaimento de folhas.
+  block-leaf-decay: false
+  # Bloqueia a queda de blocos com gravidade (areia, cascalho, bigorna).
+  block-gravity-fall: false
+
+items:
+  # Materiais que nao podem ser colocados/usados.
+  blocked-place:
+    - TNT
+    - PISTON
+    - STICKY_PISTON
+    - BEDROCK
+    - BUNDLE
+  # Materiais cujo craft e bloqueado.
+  blocked-craft:
+    - TNT
+    - PISTON
+    - STICKY_PISTON
+
+command-security:
+  enabled: true
+  bypass-permission: "alkassentials.commands.block.bypass"
+  # Comandos de infraestrutura bloqueados (prefixo do comando, sem slash).
+  blocked:
+    - "pl"
+    - "plugins"
+    - "ver"
+    - "version"
+    - "about"
+    - "?"
+
+slots:
+  enabled: true
+  # Limite maximo de jogadores (0 = usa o limite do servidor).
+  max-players: 0
+  # Slots reservados para VIP (sempre liberados se houver vaga no max-players).
+  reserved-slots: 5
+  vip-permission: "alkassentials.slots.vip"
+
+signs:
+  # Editor rapido de placas: staff segura shift e clica direito para editar.
+  editor-enabled: true
+  editor-permission: "alkassentials.signs.edit"
+  command-signs:
+    enabled: true
+    # Primeira linha da placa para virar placa de comando. O resto da primeira
+    # linha apos o prefixo e executado como comando (ex: "[cmd] give {player} apple 1").
+    prefix: "[cmd]"
+    permission: "alkassentials.signs.command"
+
+# -------------------- Chat e Social --------------------
+chat:
+  # Formato da mensagem de chat (MiniMessage). {nick}, {player}, {message}.
+  format: "<gray>{nick}<dark_gray>: <white>{message}"
+  # Formato do /broadcast.
+  broadcast-format: "<red>[AVISO] <white>{message}"
+  # Filtro anti-swear/ad.
+  filter:
+    enabled: true
+    # Regex de textos bloqueados (ex: palavroes, IPs).
+    blocked-patterns:
+      - "(\\d{1,3}\\.){3}\\d{1,3}"
+    # Bloqueia links.
+    block-links: true
+    link-pattern: "(https?://|www\\.)\\S+"
+  # Auto-broadcast em loop.
+  autobroadcast:
+    enabled: true
+    interval-seconds: 120
+    messages:
+      - "<gold>Compre na nossa loja: /loja"
+      - "<green>Entre no nosso discord: /discord"
+      - "<aqua>Leia as regras: /regras"
+  # Nick de exibicao.
+  nick:
+    enabled: true
+    permission: "alkassentials.chat.nick"
+    max-length: 16
+    # Permite tags MiniMessage (gradient, rainbow, bold, etc.) no nick.
+    allow-colors: true
+    blocked-nicks:
+      - "admin"
+      - "moderador"
+      - "staff"
+  # Colore apenas o proprio nick (nao troca o texto). So muda a cor do nick atual.
+  color:
+    enabled: true
+    permission: "alkassentials.chat.color"
+  # Mencoes com @.
+  mention:
+    enabled: true
+    sound: "BLOCK_NOTE_BLOCK_PLING"
+    highlight: "<gold><bold>"

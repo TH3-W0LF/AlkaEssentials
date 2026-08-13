@@ -1,0 +1,237 @@
+# ============================================================
+# AlkaEssentials - messages.yml
+# Todas as mensagens de chat, editaveis sem recompilar (MiniMessage).
+# {prefix} = prefixo do plugin; placeholders entre {} sao trocados na hora.
+# ============================================================
+
+prefix: "<dark_gray>[<gold>AlkaEssentials<dark_gray>] "
+
+# --------------------------- Erros ---------------------------
+no-permission: "<red>Voce nao tem permissao para isso."
+player-only: "<red>Este comando so pode ser usado por jogadores."
+invalid-player: "<red>Jogador nao encontrado: {player}"
+invalid-number: "<red>Numero invalido: {number}"
+no-spawn-set: "<red>O spawn do servidor ainda nao foi definido."
+no-warp: "<red>Esse warp nao existe: {warp}"
+no-home: "<red>Voce nao tem uma home chamada {home}."
+no-homes: "<gray>Voce ainda nao tem nenhuma home."
+warp-not-found: "<red>O warp {warp} nao existe."
+home-not-found: "<red>A home {home} nao existe."
+cooldown: "<red>Aguarde {time} para usar isso novamente."
+
+# --------------------------- Spawn ---------------------------
+spawn-set: "<green>Spawn definido na sua posicao."
+spawn-del: "<green>Spawn removido."
+spawn-teleported: "<green>Teleportado para o spawn."
+first-join: "<green>Bem-vindo, {player}! Voce foi levado ao spawn."
+
+# --------------------------- Warps ---------------------------
+warp-set: "<green>Warp <gold>{warp} <green>criado."
+warp-del: "<green>Warp <gold>{warp} <green>removido."
+warp-teleported: "<green>Teleportado para o warp <gold>{warp}<green>."
+warp-no-access: "<red>Voce nao tem acesso ao warp {warp}."
+warp-exists: "<red>O warp {warp} ja existe."
+warp-invalid-name: "<red>Nome de warp invalido (sem espacos)."
+
+# --------------------------- Homes ---------------------------
+home-set: "<green>Home <gold>{home} <green>definida na sua posicao."
+home-del: "<green>Home <gold>{home} <green>removida."
+home-teleported: "<green>Teleportado para a home <gold>{home}<green>."
+home-limit: "<red>Voce atingiu o limite de homes ({limit})."
+home-exists: "<red>Voce ja tem uma home chamada {home}."
+home-invalid-name: "<red>Nome de home invalido (sem espacos)."
+home-blocked-world: "<red>Nao e permitido definir homes neste mundo."
+home-gui-title: "<gold>Suas Homes"
+home-list-item-name: "<gold>{home}"
+home-list-item-lore:
+  - "<gray>Clique para teleportar"
+  - "<gray>Shift + clique para apagar"
+
+# --------------------------- TPA ---------------------------
+tpa-sent: "<green>Pedido de teleporte enviado para <gold>{player}<green>."
+tpa-received: "<gold>{player} <green>quer se teleportar ate voce. Use <gold>/tpaccept <green>ou <gold>/tpdeny<green>."
+tpahere-sent: "<green>Voce pediu para <gold>{player} <green>se teleportar ate voce."
+tpahere-received: "<gold>{player} <green>quer que voce se teleporte ate ele. Use <gold>/tpaccept <green>ou <gold>/tpdeny<green>."
+tpa-accepted: "<green>Pedido de teleporte aceito."
+tpa-denied: "<gray>Pedido de teleporte negado."
+tpa-none: "<gray>Voce nao tem pedidos de teleporte pendentes."
+tpa-expired: "<red>O pedido de teleporte de {player} expirou."
+tpa-toggle-on: "<green>Voce agora recebe pedidos de teleporte."
+tpa-toggle-off: "<red>Voce agora bloqueia pedidos de teleporte."
+tpa-toggle-blocked: "<red>Este jogador esta com os pedidos de teleporte bloqueados."
+
+# --------------------------- RTP ---------------------------
+rtp-teleported: "<green>Teleportado para um ponto aleatorio."
+rtp-failed: "<red>Nao foi possivel encontrar um local seguro. Tente novamente."
+rtp-wrong-world: "<red>RTP nao esta disponivel neste mundo."
+
+# --------------------------- Back ---------------------------
+back-none: "<gray>Voce nao tem um local para voltar."
+back-teleported: "<green>Retornado ao ultimo local."
+
+# --------------------------- Elevadores ---------------------------
+elevator-up: "<green>Subindo..."
+elevator-down: "<green>Descendo..."
+elevator-not-found: "<gray>Nao ha andar neste elevador."
+
+# --------------------------- Warmup ---------------------------
+warmup-start: "<gold>Teleportando em {time} segundo(s)... nao se mova."
+warmup-cancelled: "<red>Teleporte cancelado."
+
+# --------------------------- AFK ---------------------------
+afk-enabled: "<gray>Voce agora esta marcado como AFK."
+afk-disabled: "<gray>Voce nao esta mais marcado como AFK."
+
+# --------------------------- Zona AFK ---------------------------
+afkzone-not-found: "<red>Zona nao encontrada: {zone}"
+afkzone-created: "<green>Zona AFK <gold>{zone} <green>criada. Edite o arquivo em zones/{zone}.yml para configurar recompensas."
+afkzone-deleted: "<green>Zona AFK <gold>{zone} <green>removida."
+afkzone-redefined: "<green>Regiao da zona <gold>{zone} <green>atualizada com a sua selecao."
+afkzone-reloaded: "<green>Zonas AFK recarregadas ({count})."
+afkzone-wand-given: "<green>Varinha de zona AFK entregue. Clique em dois blocos para selecionar os cantos."
+afkzone-no-selection: "<red>Selecione os dois cantos com a varinha antes de criar a zona."
+afkzone-invalid-name: "<red>Nome de zona invalido (sem espacos)."
+afkzone-pos1: "<green>Posicao 1 da selecao definida em ({x}, {y}, {z})."
+afkzone-pos2: "<green>Posicao 2 da selecao definida em ({x}, {y}, {z})."
+afkzone-ip-limit: "<red>O limite de contas por IP nesta zona foi atingido."
+afkzone-teleported: "<green>Teleportado para a zona <gold>{zone}<green>."
+
+# --------------------------- QoL ---------------------------
+qol-craft: "<green>Mesa de trabalho aberta."
+qol-craft-title: "<green>Crafting"
+qol-trash-open: "<green>Lixeira aberta. Os itens serao apagados ao fechar."
+qol-trash-title: "<red>Lixeira"
+qol-nv-on: "<green>Visao noturna ativada."
+qol-nv-off: "<red>Visao noturna desativada."
+qol-ping: "<green>Seu ping: <gold>{ping}<green>ms."
+qol-ping-other: "<green>Ping de <gold>{player}<green>: <gold>{ping}<green>ms."
+qol-sit-on: "<green>Voce se sentou."
+qol-sit-off: "<green>Voce se levantou."
+qol-sit-blocked: "<red>Nao e possivel sentar aqui."
+qol-ride-none: "<red>Nenhuma entidade encontrada para montar."
+qol-ride: "<green>Montado em <gold>{entity}<green>."
+qol-anvil-lore: "<gray>Forjado por <white>{player}"
+qol-pearl-cooldown: "<red>Aguarde {time} para usar a perola do fim."
+
+# -------------------- Morte e Inventario --------------------
+death-message: "<red>{player} <gray>morreu."
+death-message-killer: "<red>{player} <gray>foi morto por <red>{killer}<gray>."
+death-chest-title: "<gold>Tumulo de {player}"
+death-chest-time-left: "<gray>Expira em {time}"
+death-chest-expired: "<gray>O tumulo de {player} expirou e os itens foram perdidos."
+invrestore-none: "<red>Nenhum inventario salvo para {player}."
+invrestore-success: "<green>Inventario de {player} restaurado."
+invrestore-offline: "<red>{player} esta offline. Nao e possivel restaurar agora."
+
+# -------------------- Scoreboard --------------------
+scoreboard-on: "<green>Scoreboard ativada."
+scoreboard-off: "<red>Scoreboard desativada."
+scoreboard-reloaded: "<green>Scoreboards recarregadas ({count} scoreboard(s), {tabs} tablist(s))."
+
+# -------------------- Punições (Modulo Admin) --------------------
+punish-self: "<red>Voce nao pode punir a si mesmo."
+punish-not-found: "<red>Jogador nao encontrado: {player}"
+punish-invalid-duration: "<red>Duracao invalida: {duration}"
+punish-applied: "<green>Punicao aplicada em <gold>{player}<green>."
+punish-broadcast: "<red>[{type}] <gold>{player} <gray>foi {action} por <gold>{issuer} <gray>({reason})"
+punish-kick-reason: "<red>Voce foi expulso do servidor. Motivo: <white>{reason}"
+punish-ban-kick: "<red>Voce foi banido. Motivo: <white>{reason}{newline}<gray>Expira: <white>{time}"
+punish-mute-notify: "<red>Voce esta silenciado. Motivo: <white>{reason}{newline}<gray>Expira: <white>{time}"
+punish-muted-chat: "<red>Voce esta silenciado e nao pode falar."
+punish-unban: "<green>Jogador <gold>{player} <green>desbanido."
+punish-unmute: "<green>Jogador <gold>{player} <green>desmutado."
+punish-no-active: "<gray>Nenhuma punicao ativa para <gold>{player}<gray>."
+punish-info-header: "<gold>Punicoes de {player}:"
+punish-info-line: "<gray>#{id} <red>[{type}] <gray>{reason} <dark_gray>- {issuer}"
+
+# -------------------- Moderacao / Staff --------------------
+freeze-on: "<gold>{player} <red>congelado."
+freeze-off: "<gold>{player} <aqua>descongelado."
+freeze-you: "<red>Voce foi congelado pela staff. Nao se mova."
+clear-inv: "<green>Inventario de <gold>{player} <green>limpo."
+heal-done: "<green>{player} <green>curado."
+feed-done: "<green>{player} <green>alimentado."
+fly-on: "<green>Voo ativado para <gold>{player}<green>."
+fly-off: "<red>Voo desativado para <gold>{player}<red>."
+fly-temp: "<green>Voo ativado para <gold>{player} <green>por <gold>{time}<green>."
+god-on: "<green>Modo god ativado para <gold>{player}<green>."
+god-off: "<red>Modo god desativado para <gold>{player}<red>."
+god-temp: "<green>Modo god ativado para <gold>{player} <green>por <gold>{time}<green>."
+invsee-open: "<green>Abrindo o inventario de <gold>{player}<green>."
+vanish-on: "<green>Voce esta invisivel (vanish)."
+vanish-off: "<red>Voce saiu do vanish."
+socialspy-on: "<green>SocialSpy ativado."
+socialspy-off: "<red>SocialSpy desativado."
+commandspy-on: "<green>CommandSpy ativado."
+commandspy-off: "<red>CommandSpy desativado."
+spy-log: "<dark_gray>[<red>{type}<dark_gray>] <gold>{player}<dark_gray>: <white>{message}"
+maintenance-on: "<red>Modo manutencao ATIVADO."
+maintenance-off: "<green>Modo manutencao desativado."
+maintenance-kick: "<red>O servidor esta em manutencao.{newline}<white>{reason}"
+maintenance-motd: "<red><bold>MANUTENCAO</bold></red>{newline}<gray>{reason}"
+ptime-set: "<green>Tempo definido para <gold>{time} <green>no mundo de <gold>{player}<green>."
+pweather-set: "<green>Clima definido para <gold>{weather} <green>para <gold>{player}<green>."
+staff-gui-title: "<gold>Staff - {player}"
+staff-action-cleared: "<green>Inventario de {player} limpo."
+staff-action-frozen: "<gold>{player} congelado."
+staff-action-ping: "<gold>Ping de {player}: <white>{ping}ms"
+
+# -------------------- Ambiente / Protecao --------------------
+blocked-command: "<red>Este comando e bloqueado no servidor."
+blocked-item: "<red>Este item e proibido neste servidor."
+blocked-craft: "<red>Este craft e proibido neste servidor."
+slots-full: "<red>O servidor esta cheio. Tente novamente em breve."
+slots-vip: "<red>O servidor esta cheio. Slots reservados para VIP."
+sign-edit-open: "<green>Editando a placa..."
+signs-no-permission: "<red>Sem permissao para isto."
+
+# -------------------- Chat e Social --------------------
+chat-filtered: "<red>Sua mensagem foi bloqueada pelo filtro."
+chat-cleared: "<green>Chat limpo."
+nick-set: "<green>Seu nick agora e <gold>{nick}<green>."
+nick-cleared: "<green>Seu nick foi removido."
+nick-blocked: "<red>Este nick nao e permitido."
+nick-invalid: "<red>Nick invalido (maximo {max} caracteres)."
+nick-disabled: "<red>O /nick esta desativado neste servidor."
+color-not-your-nick: "<red>Esse nao e o seu nick. Digite o seu proprio nick para colorir."
+color-disabled: "<red>O /color esta desativado neste servidor."
+namecolor-applied: "<green>Cor aplicada ao seu nick."
+gradient-applied: "<green>Gradiente aplicado ao seu nick."
+realname-result: "<gold>{nick} <gray>e <gold>{player}<gray>."
+realname-none: "<gray>Nenhum jogador com esse nick."
+ignore-on: "<green>Voce agora ignora <gold>{player}<green>."
+ignore-off: "<green>Voce deixou de ignorar <gold>{player}<green>."
+discord-msg: "<gold>Nosso Discord: <aqua>discord.alka.com"
+site-msg: "<gold>Nosso site: <aqua>www.alka.com"
+loja-msg: "<gold>Nossa loja: <aqua>store.alka.com"
+regras-msg: "<gold>Regras do servidor disponiveis em breve."
+afkzone-help:
+  - "<gold>/afkzone <aqua>varinha <gray>- selecionar cantos"
+  - "<gold>/afkzone criar <nome> <gray>- criar a zona com a selecao"
+  - "<gold>/afkzone redefinir <nome> <gray>- atualizar a regiao"
+  - "<gold>/afkzone deletar <nome> <gray>- remover a zona"
+  - "<gold>/afkzone tp <nome> <gray>- teleportar ate a zona"
+  - "<gold>/afkzone reload <gray>- recarregar zones/"
+afkzone-wand:
+  # Item da varinha de selecao (mesmo padrao da source original: machado de ouro).
+  material: GOLDEN_AXE
+  name: "<gold>Varinha de Zona AFK"
+  lore:
+    - "<gray>Clique direito: canto 1"
+    - "<gray>Clique esquerdo: canto 2"
+
+# Modelo usado ao criar uma nova zona AFK (zones/<nome>.yml) - tudo editavel.
+zone-defaults:
+  messages:
+    entered: "<yellow>Voce entrou na zona AFK <gold>%zone%<yellow>! Recompensa em <gold>%time%<yellow>."
+    left: "<yellow>Voce saiu da zona AFK. Ficou <gold>%time%<yellow>."
+    reward:
+      - "<yellow>Voce recebeu:"
+  in-zone:
+    title: "<gold>AFK"
+    subtitle: "<yellow>Proxima recompensa em: <gold>%time%"
+    actionbar: ""
+    bossbar:
+      name: "<gold>AFK | <yellow>Proxima recompensa em: <gold>%time%"
+      color: RED
+      style: NOTCHED_20

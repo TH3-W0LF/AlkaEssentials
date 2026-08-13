@@ -1,0 +1,372 @@
+name: AlkaEssentials
+version: '${version}'
+main: com.alkacode.alkaessentials.AlkaEssentials
+api-version: '1.21.8'
+author: MestreDEV
+description: Utilitarios da network - movimentacao/teleporte, QoL, morte, staff, ambiente e chat. Sem logica de jogo propria, usa a infra do AlkaCore.
+depend: [AlkaCore]
+softdepend: [LuckPerms, PlaceholderAPI, DecentHolograms]
+
+commands:
+  spawn:
+    description: Teleporta para o spawn.
+    usage: /<command>
+  setspawn:
+    description: Define o spawn na sua posicao atual.
+    permission: alkassentials.admin.setspawn
+    usage: /<command>
+  delspawn:
+    description: Remove o spawn do servidor.
+    permission: alkassentials.admin.delspawn
+    usage: /<command>
+  warp:
+    description: Teleporta para um warp (abre o menu se sem argumento).
+    usage: /<command> [nome]
+  setwarp:
+    description: Cria um warp na sua posicao atual.
+    permission: alkassentials.admin.setwarp
+    usage: /<command> <nome> [permissao]
+  delwarp:
+    description: Remove um warp.
+    permission: alkassentials.admin.delwarp
+    usage: /<command> <nome>
+  home:
+    description: Teleporta para uma home.
+    usage: /<command> [nome]
+  sethome:
+    description: Define uma home na sua posicao atual.
+    usage: /<command> [nome]
+  delhome:
+    description: Remove uma home.
+    usage: /<command> <nome>
+  homes:
+    description: Abre o menu de gerenciamento das suas homes.
+    usage: /<command>
+  tpa:
+    description: Envia um pedido de teleporte para um jogador.
+    usage: /<command> <jogador>
+  tpahere:
+    description: Pede para um jogador se teleportar ate voce.
+    usage: /<command> <jogador>
+  tpaccept:
+    description: Aceita um pedido de teleporte pendente.
+    usage: /<command> [jogador]
+  tpdeny:
+    description: Recusa um pedido de teleporte pendente.
+    usage: /<command> [jogador]
+  tptoggle:
+    description: Liga/desliga o recebimento de pedidos de teleporte.
+    usage: /<command>
+  rtp:
+    description: Teleporta para um ponto aleatorio seguro.
+    usage: /<command>
+  back:
+    description: Retorna ao ultimo local salvo.
+    usage: /<command>
+  afk:
+    description: Alterna o modo AFK manual.
+    aliases: [away]
+    usage: /<command>
+  afkzone:
+    description: Gerencia as zonas AFK da rede.
+    aliases: [azone, afkz]
+    usage: /<command> <criar|deletar|redefinir|varinha|tp|reload> [nome]
+  craft:
+    description: Abre uma mesa de trabalho portatil.
+    aliases: [wb, workbench]
+    usage: /<command>
+  lixo:
+    description: Abre uma lixeira portatil (itens apagados ao fechar).
+    aliases: [trash, dispose]
+    usage: /<command>
+  nv:
+    description: Alterna a visao noturna permanente.
+    aliases: [luz, nightvision]
+    usage: /<command>
+  ping:
+    description: Mostra o ping (latencia) seu ou de outro jogador.
+    usage: /<command> [jogador]
+  sit:
+    description: Senta-se no chao ou em blocos.
+    usage: /<command>
+  ride:
+    description: Monta na entidade que esta olhando.
+    usage: /<command>
+  invrestore:
+    description: Restaura o ultimo inventario salvo de um jogador (snapshot da morte).
+    permission: alkassentials.admin.invrestore
+    usage: /<command> <jogador>
+  scoreboard:
+    description: Liga/desliga a sua scoreboard ou recarrega as configs (admin).
+    aliases: [score]
+    usage: /<command> [toggle|reload]
+  warn:
+    description: Aplica um aviso a um jogador.
+    usage: /<command> <jogador> <motivo>
+  kick:
+    description: Expulsa um jogador.
+    usage: /<command> <jogador> <motivo>
+  ban:
+    description: Bane um jogador permanentemente.
+    usage: /<command> <jogador> <motivo>
+  tempban:
+    description: Bane temporariamente.
+    usage: /<command> <jogador> <tempo> <motivo>
+  mute:
+    description: Silencia permanentemente.
+    usage: /<command> <jogador> <motivo>
+  tempmute:
+    description: Silencia temporariamente.
+    usage: /<command> <jogador> <tempo> <motivo>
+  unban:
+    description: Desbane um jogador.
+    usage: /<command> <jogador>
+  unmute:
+    description: Dessilencia um jogador.
+    usage: /<command> <jogador>
+  punishinfo:
+    description: Mostra as punicoes de um jogador.
+    usage: /<command> <jogador>
+  punish:
+    description: Abre o menu de punicao para um jogador (premium).
+    usage: /<command> <jogador>
+  clear:
+    description: Limpa o inventario de um jogador.
+    usage: /<command> [jogador]
+  heal:
+    description: Cura um jogador.
+    usage: /<command> [jogador]
+  feed:
+    description: Alimenta um jogador.
+    usage: /<command> [jogador]
+  fly:
+    description: Ativa o voo (com duracao opcional).
+    usage: /<command> [jogador] [tempo]
+  god:
+    description: Ativa o modo god (com duracao opcional).
+    usage: /<command> [jogador] [tempo]
+  freeze:
+    description: Congela/descongela um jogador.
+    usage: /<command> [jogador]
+  invsee:
+    description: Abre o inventario de um jogador.
+    usage: /<command> [jogador]
+  ptime:
+    description: Define o tempo local de um jogador.
+    usage: /<command> [jogador] <day|night|reset>
+  pweather:
+    description: Define o clima local de um jogador.
+    usage: /<command> [jogador] <sun|rain|reset>
+  vanish:
+    description: Entra/sai do vanish.
+    usage: /<command>
+  socialspy:
+    description: Espiona mensagens privadas.
+    usage: /<command>
+  commandspy:
+    description: Espiona comandos.
+    usage: /<command>
+  maintenance:
+    description: Liga/desliga o modo manutencao.
+    usage: /<command> [on|off] [motivo]
+  staff:
+    description: Abre o painel de gerenciamento de um jogador.
+    usage: /<command> <jogador>
+  nick:
+    description: Altera seu nome de exibicao.
+    usage: /<command> [remove] [nome]
+  color:
+    description: Colore apenas o seu proprio nick.
+    usage: /<command> <nickColorido>
+  namecolor:
+    description: Abre o menu de cor e estilo do nick.
+    usage: /<command>
+  gradient:
+    description: Aplica um gradiente ao seu nick.
+    usage: /<command> <cor1> [cor2]
+  whois:
+    description: Descobre o nome real de um jogador com nick.
+    aliases: [realname]
+    usage: /<command> <nick>
+  realname:
+    description: Descobre o nome real de um jogador com nick.
+    permission: alkassentials.chat.realname
+    usage: /<command> <nick>
+  ignore:
+    description: Bloqueia mensagens e TPAs de um jogador.
+    usage: /<command> <jogador>
+  clearchat:
+    description: Limpa o chat.
+    permission: alkassentials.chat.clearchat
+    usage: /<command>
+  broadcast:
+    description: Envia um aviso global.
+    permission: alkassentials.chat.broadcast
+    aliases: [bc]
+    usage: /<command> <mensagem>
+  discord:
+    description: Mostra o discord do servidor.
+    usage: /<command>
+  site:
+    description: Mostra o site do servidor.
+    usage: /<command>
+  loja:
+    description: Mostra a loja do servidor.
+    usage: /<command>
+  regras:
+    description: Mostra as regras do servidor.
+    usage: /<command>
+  worldrules:
+    description: Abre o menu de regras por mundo.
+    permission: alkassentials.worldrules
+    aliases: [wr]
+    usage: /<command> [mundo]
+
+permissions:
+  alkassentials.admin.setspawn:
+    description: Define o spawn.
+    default: op
+  alkassentials.admin.delspawn:
+    description: Remove o spawn.
+    default: op
+  alkassentials.admin.setwarp:
+    description: Cria warps.
+    default: op
+  alkassentials.admin.delwarp:
+    description: Remove warps.
+    default: op
+  alkassentials.teleport.bypass:
+    description: Ignora cooldowns e warmups de teleporte.
+    default: op
+  alkassentials.teleport.cooldown.bypass:
+    description: Ignora apenas cooldowns de teleporte.
+    default: op
+  alkassentials.teleport.warmup.bypass:
+    description: Ignora apenas warmups de teleporte.
+    default: op
+  alkassentials.afk.auto:
+    description: Usa o auto-afk (se nao tiver, precisa marcar manualmente).
+    default: true
+  alkassentials.afkzone.admin:
+    description: Gerencia as zonas AFK (criar, deletar, redefinir, varinha).
+    default: op
+  alkassentials.afkzone.tp:
+    description: Teleporta para uma zona AFK.
+    default: op
+  alkassentials.afkzone.bypass.iplimit:
+    description: Ignora o limite de contas por IP em zonas AFK.
+    default: op
+  alkassentials.qol.craft:
+    description: Usa /craft e /wb.
+    default: true
+  alkassentials.qol.trash:
+    description: Usa /lixo e /trash.
+    default: true
+  alkassentials.qol.nv:
+    description: Usa /nv e /luz.
+    default: true
+  alkassentials.qol.ping:
+    description: Usa /ping.
+    default: true
+  alkassentials.qol.sit:
+    description: Usa /sit.
+    default: true
+  alkassentials.qol.ride:
+    description: Usa /ride.
+    default: true
+  alkassentials.qol.ride.others:
+    description: Permite montar em outros jogadores.
+    default: op
+  alkassentials.admin.invrestore:
+    description: Restaura o inventario salvo de um jogador.
+    default: op
+  alkassentials.scoreboard.toggle:
+    description: Liga/desliga a propria scoreboard.
+    default: true
+  alkassentials.scoreboard.reload:
+    description: Recarrega as configs de scoreboard.
+    default: op
+  alkassentials.punish:
+    description: Usa todos os comandos de punicao.
+    default: op
+  alkassentials.maintenance:
+    description: Liga/desliga a manutencao.
+    default: op
+  alkassentials.maintenance.bypass:
+    description: Ignora a manutencao.
+    default: op
+  alkassentials.staff:
+    description: Acesso base aos comandos de staff.
+    default: op
+  alkassentials.staff.menu:
+    description: Usa o /staff.
+    default: op
+  alkassentials.staff.clear:
+    description: Usa /clear.
+    default: op
+  alkassentials.staff.heal:
+    description: Usa /heal.
+    default: op
+  alkassentials.staff.feed:
+    description: Usa /feed.
+    default: op
+  alkassentials.staff.fly:
+    description: Usa /fly.
+    default: op
+  alkassentials.staff.god:
+    description: Usa /god.
+    default: op
+  alkassentials.staff.freeze:
+    description: Usa /freeze.
+    default: op
+  alkassentials.staff.invsee:
+    description: Usa /invsee.
+    default: op
+  alkassentials.staff.ptime:
+    description: Usa /ptime.
+    default: op
+  alkassentials.staff.pweather:
+    description: Usa /pweather.
+    default: op
+  alkassentials.staff.vanish:
+    description: Usa /vanish.
+    default: op
+  alkassentials.staff.socialspy:
+    description: Usa /socialspy.
+    default: op
+  alkassentials.staff.commandspy:
+    description: Usa /commandspy.
+    default: op
+  alkassentials.signs.edit:
+    description: Edita placas com shift + clique direito.
+    default: op
+  alkassentials.signs.command:
+    description: Cria placas de comando.
+    default: op
+  alkassentials.commands.block.bypass:
+    description: Ignora o bloqueio de comandos de infra.
+    default: op
+  alkassentials.slots.vip:
+    description: Usa slots reservados.
+    default: op
+  alkassentials.chat.nick:
+    description: Usa /nick.
+    default: true
+  alkassentials.chat.color:
+    description: Usa /color.
+    default: true
+  alkassentials.chat.realname:
+    description: Usa /realname.
+    default: op
+  alkassentials.chat.ignore:
+    description: Usa /ignore.
+    default: true
+  alkassentials.chat.clearchat:
+    description: Usa /clearchat.
+    default: op
+  alkassentials.chat.broadcast:
+    description: Usa /broadcast.
+    default: op
+  alkassentials.worldrules:
+    description: Usa /worldrules.
+    default: op
