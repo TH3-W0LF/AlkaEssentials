@@ -8,12 +8,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
- * Snapshot de inventario pro /invrestore, no banco do AlkaCore (decisao do projeto:
- * punicoes e InvRestore sao dado transacional, vao em SQL). Guarda so o ultimo
- * snapshot por jogador (PRIMARY KEY uuid, upsert a cada morte).
+ * Historico de snapshots de inventario pro /invrestore, no banco do AlkaCore (decisao
+ * do projeto: punicoes e InvRestore sao dado transacional, vao em SQL). Guarda VARIOS
+ * snapshots por jogador (nao so o ultimo) - id auto-incrementado, mais recente por
+ * snapshot_time. O chamador (InvRestoreManager) e responsavel por podar snapshots
+ * antigos alem do limite configurado.
  */
 public final class InvSnapshotRepository extends AbstractRepository {
 
@@ -28,8 +32,11 @@ public final class InvSnapshotRepository extends AbstractRepository {
     }
 
     private void createTable() {
+        String idColumn = db.isSQLite()
+                ? "id INTEGER PRIMARY KEY AUTOINCREMENT"
+                : "id BIGINT AUTO_INCREMENT PRIMARY KEY";
         String sql = "CREATE TABLE IF NOT EXISTS " + TABLE
-                + " (uuid VARCHAR(36) PRIMARY KEY, snapshot_time BIGINT, data TEXT)";
+                + " (" + idColumn + ", uuid VARCHAR(36), snapshot_time BIGINT, data TEXT)";
         try {
             execute(sql, ps -> {
             });
@@ -38,10 +45,10 @@ public final class InvSnapshotRepository extends AbstractRepository {
         }
     }
 
-    public void saveSnapshot(UUID uuid, String data) {
+    /** Insere um novo snapshot (nunca sobrescreve os anteriores). */
+    public void insertSnapshot(UUID uuid, String data) {
         try {
-            String sql = upsert(TABLE, new String[]{"uuid", "snapshot_time", "data"}, new String[]{"uuid"});
-            execute(sql, ps -> {
+            execute("INSERT INTO " + TABLE + " (uuid, snapshot_time, data) VALUES (?, ?, ?)", ps -> {
                 ps.setString(1, uuid.toString());
                 ps.setLong(2, System.currentTimeMillis());
                 ps.setString(3, data);
@@ -51,19 +58,59 @@ public final class InvSnapshotRepository extends AbstractRepository {
         }
     }
 
-    public String loadSnapshot(UUID uuid) {
+    public record Snapshot(long id, long time, String data) {
+    }
+
+    /** Mais recentes primeiro, ate `limit` snapshots. */
+    public List<Snapshot> loadHistory(UUID uuid, int limit) {
+        List<Snapshot> out = new ArrayList<>();
         try (Connection conn = db.getConnection();
              PreparedStatement ps = conn.prepareStatement(
-                     "SELECT data FROM " + TABLE + " WHERE uuid = ?")) {
+                     "SELECT id, snapshot_time, data FROM " + TABLE
+                             + " WHERE uuid = ? ORDER BY snapshot_time DESC LIMIT ?")) {
             ps.setString(1, uuid.toString());
+            ps.setInt(2, limit);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    out.add(new Snapshot(rs.getLong("id"), rs.getLong("snapshot_time"), rs.getString("data")));
+                }
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().severe("Falha ao carregar historico de " + uuid + ": " + e.getMessage());
+        }
+        return out;
+    }
+
+    /** Snapshot especifico (validado contra o dono, pra um id de outro jogador nunca vazar). */
+    public String loadSnapshotData(UUID uuid, long id) {
+        try (Connection conn = db.getConnection();
+             PreparedStatement ps = conn.prepareStatement(
+                     "SELECT data FROM " + TABLE + " WHERE id = ? AND uuid = ?")) {
+            ps.setLong(1, id);
+            ps.setString(2, uuid.toString());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getString("data");
                 }
             }
         } catch (SQLException e) {
-            plugin.getLogger().severe("Falha ao carregar snapshot de " + uuid + ": " + e.getMessage());
+            plugin.getLogger().severe("Falha ao carregar snapshot " + id + " de " + uuid + ": " + e.getMessage());
         }
         return null;
+    }
+
+    /** Remove os snapshots mais antigos alem de `keep`, mantendo os mais recentes. */
+    public void pruneOld(UUID uuid, int keep) {
+        String sub = "SELECT id FROM " + TABLE + " WHERE uuid = ? ORDER BY snapshot_time DESC LIMIT ?";
+        String sql = "DELETE FROM " + TABLE + " WHERE uuid = ? AND id NOT IN (" + sub + ")";
+        try {
+            execute(sql, ps -> {
+                ps.setString(1, uuid.toString());
+                ps.setString(2, uuid.toString());
+                ps.setInt(3, keep);
+            });
+        } catch (SQLException e) {
+            plugin.getLogger().severe("Falha ao podar historico de " + uuid + ": " + e.getMessage());
+        }
     }
 }

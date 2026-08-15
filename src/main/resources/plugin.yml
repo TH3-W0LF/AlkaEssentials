@@ -5,7 +5,7 @@ api-version: '1.21.8'
 author: MestreDEV
 description: Utilitarios da network - movimentacao/teleporte, QoL, morte, staff, ambiente e chat. Sem logica de jogo propria, usa a infra do AlkaCore.
 depend: [AlkaCore]
-softdepend: [LuckPerms, PlaceholderAPI, DecentHolograms, TAB, nChat]
+softdepend: [LuckPerms, PlaceholderAPI, DecentHolograms, TAB, nChat, AlkaEconomy]
 
 commands:
   alkaessentials:
@@ -34,6 +34,9 @@ commands:
     description: Remove um warp.
     permission: alkassentials.admin.delwarp
     usage: /<command> <nome>
+  pwarps:
+    description: Warps criados pelos proprios jogadores (publico/privado/whitelist, favoritos, avaliacao, preco opcional).
+    usage: /<command> [criar|deletar|tp|favoritar|avaliar|descricao|categoria|visibilidade|preco|whitelist|buscar|meus|favoritos] [args]
   home:
     description: Teleporta para uma home.
     usage: /<command> [nome]
@@ -337,6 +340,12 @@ permissions:
   alkassentials.admin.delwarp:
     description: Remove warps.
     default: op
+  alkaessentials.warps.admin:
+    description: Acesso/edicao/exclusao de qualquer warp de jogador, ignorando dono/visibilidade.
+    default: op
+  alkaessentials.warps.1:
+    description: "Limite de warps de jogador: 1 (padrao, ver player-warps.default-limit no config.yml)."
+    default: true
   alkassentials.teleport.bypass:
     description: Ignora cooldowns e warmups de teleporte.
     default: op

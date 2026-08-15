@@ -5,27 +5,44 @@ import com.alkacode.alkaessentials.util.InventoryCodec;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
- * Snapshot de inventario a cada morte pro /invrestore. Guarda inventario principal
- * (36) + armadura (4) + offhand (1) no banco do AlkaCore, e restaura tudo de volta.
+ * Historico de snapshots de inventario a cada morte pro /invrestore. Guarda inventario
+ * principal (36) + armadura (4) + offhand (1) no banco do AlkaCore. Mantem os N
+ * snapshots mais recentes por jogador (invrestore.history-size no config.yml) - o
+ * admin escolhe QUAL restaurar via GUI (InvRestoreGui), nunca so "o ultimo" cego.
  */
 public final class InvRestoreManager {
 
     private final InvSnapshotRepository repository;
+    private final JavaPlugin plugin;
 
-    public InvRestoreManager(InvSnapshotRepository repository) {
+    public InvRestoreManager(InvSnapshotRepository repository, JavaPlugin plugin) {
         this.repository = repository;
+        this.plugin = plugin;
     }
 
-    /** Salva o inventario atual do jogador (usado na morte). */
+    /** Salva um novo snapshot (usado na morte) - nao apaga os anteriores, so poda o
+     * historico alem do limite configurado. */
     public void save(Player player) {
-        repository.saveSnapshot(player.getUniqueId(), InventoryCodec.encode(capture(player)));
+        repository.insertSnapshot(player.getUniqueId(), InventoryCodec.encode(capture(player)));
+        int keep = Math.max(1, plugin.getConfig().getInt("invrestore.history-size", 5));
+        repository.pruneOld(player.getUniqueId(), keep);
     }
 
-    /** Restaura o ultimo snapshot salvo. Retorna false se nao havia snapshot. */
-    public boolean restore(Player player) {
-        String data = repository.loadSnapshot(player.getUniqueId());
+    /** Historico completo (mais recente primeiro) de um jogador, ate o limite configurado. */
+    public List<InvSnapshotRepository.Snapshot> history(UUID uuid) {
+        int keep = Math.max(1, plugin.getConfig().getInt("invrestore.history-size", 5));
+        return repository.loadHistory(uuid, keep);
+    }
+
+    /** Aplica um snapshot especifico (por id) - true se encontrado e restaurado. */
+    public boolean restore(Player player, long snapshotId) {
+        String data = repository.loadSnapshotData(player.getUniqueId(), snapshotId);
         if (data == null || data.isEmpty()) {
             return false;
         }
@@ -35,6 +52,11 @@ public final class InvRestoreManager {
         }
         apply(player, items);
         return true;
+    }
+
+    /** Decodifica um snapshot em itens, sem aplicar - usado pela GUI de preview. */
+    public ItemStack[] preview(String data) {
+        return InventoryCodec.decode(data);
     }
 
     private ItemStack[] capture(Player player) {

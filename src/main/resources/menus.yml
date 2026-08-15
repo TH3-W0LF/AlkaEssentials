@@ -124,3 +124,90 @@ worldrules:
       name: "<red>Tempo: Parado"
     lore:
       - "<gray>Clique para alternar"
+
+# ------------------------- GUI de InvRestore -------------------------
+invrestore:
+  history-title: "<gradient:#55AAFF:#FFFFFF>Historico - {player}"
+  preview-title: "<gradient:#55AAFF:#FFFFFF>Preview - {player} ({when})"
+  glass:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+  empty:
+    material: RED_STAINED_GLASS_PANE
+    name: "<red>Nenhum snapshot salvo"
+    lore:
+      - "<gray>{player} ainda nao morreu desde que o historico existe"
+  snapshot:
+    material: CLOCK
+    name: "<gold>{when}"
+    lore:
+      - "<gray>Clique para pre-visualizar antes de restaurar"
+  slot-armor:
+    material: LEATHER_CHESTPLATE
+    name: "<yellow>Armadura/Offhand"
+  confirm:
+    material: LIME_DYE
+    name: "<green><bold>Confirmar restauracao"
+    lore:
+      - "<gray>Substitui o inventario ATUAL de {player}"
+      - "<gray>por este snapshot."
+  cancel:
+    material: BARRIER
+    name: "<red>Voltar"
+
+# ------------------------- GUI de warps de jogador (/pwarps) -------------------------
+pwarps:
+  glass:
+    material: BLUE_STAINED_GLASS_PANE
+    name: " "
+  empty:
+    material: RED_STAINED_GLASS_PANE
+    name: "<red>Nenhum warp encontrado"
+  warp-icon:
+    name: "<gold>{warp} <gray>({owner})"
+    lore:
+      - "<gray>Categoria: <white>{category}"
+      - "<gray>Nota: <gold>{stars} <gray>({votes} avaliacoes)"
+      - "<gray>Preco: <white>{price}"
+      - " "
+      - "<gray>Clique para ver detalhes"
+  favorite-marker:
+    material: NETHER_STAR
+    name: "<yellow>★ Favorito"
+  prev-page:
+    material: ARROW
+    name: "<yellow>Pagina anterior"
+  next-page:
+    material: ARROW
+    name: "<yellow>Proxima pagina"
+  back:
+    material: BARRIER
+    name: "<red>Voltar"
+  tab-browse:
+    material: COMPASS
+    name: "<white>Navegar"
+  tab-mine:
+    material: CHEST
+    name: "<white>Meus Warps"
+  tab-favorites:
+    material: NETHER_STAR
+    name: "<white>Favoritos"
+  delete:
+    material: TNT
+    name: "<red><bold>Apagar warp"
+    lore:
+      - "<gray>Clique para apagar permanentemente"
+  detail:
+    teleport:
+      material: ENDER_PEARL
+      name: "<green><bold>Teleportar"
+      lore:
+        - "<gray>Preco: <white>{price}"
+    favorite:
+      material: NETHER_STAR
+      name: "<yellow>Favoritar/Desfavoritar"
+    star:
+      material: YELLOW_DYE
+      name: "<gold>{n} estrela(s)"
+      lore:
+        - "<gray>Clique para avaliar"

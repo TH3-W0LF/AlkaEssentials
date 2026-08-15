@@ -4,7 +4,6 @@ import com.alkacode.alkaessentials.config.MessagesConfig;
 import com.alkacode.alkaessentials.util.ChatUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -137,19 +136,17 @@ public final class ShowItemCommand extends BaseCommand {
                 .append(MiniMessage.miniMessage().deserialize(after));
     }
 
-    /** Componente do item: nome + hover (tooltip com nome/lore) + clique copia. */
+    /** Componente do item: nome + hover com o TOOLTIP REAL do cliente (via
+     * ItemStack#asHoverEvent - mesma renderizacao nativa que passar o mouse no
+     * inventario mostra: encantamentos, atributos, durabilidade, tudo - nao so
+     * nome+lore reconstruidos manualmente) + clique copia. */
     private Component itemComponent(ItemStack item) {
         if (item == null || item.getType().isAir()) {
             return Component.empty();
         }
         Component name = item.displayName();
-        Component tooltip = name;
-        List<? extends Component> lore = item.lore();
-        if (lore != null && !lore.isEmpty()) {
-            tooltip = tooltip.appendNewline().append(Component.join(net.kyori.adventure.text.JoinConfiguration.newlines(), lore));
-        }
         return name
-                .hoverEvent(HoverEvent.showText(tooltip))
+                .hoverEvent(item.asHoverEvent())
                 .clickEvent(ClickEvent.copyToClipboard(item.toString()));
     }
 

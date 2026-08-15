@@ -60,6 +60,7 @@ teleport:
     tpa: 5
     rtp: 30
     back: 0
+    playerwarp: 3
   # Warmups em segundos (0 = teleporte instantaneo). Cancela ao andar/levar dano.
   warmups:
     spawn: 0
@@ -67,6 +68,7 @@ teleport:
     home: 0
     tpa: 0
     rtp: 5
+    playerwarp: 3
     back: 0
   # Se o jogador levar dano, cancela o warmup em andamento.
   cancel-warmup-on-damage: true
@@ -144,10 +146,26 @@ deathchest:
 death-message:
   # Mensagem de morte customizada (false = usa a padrao do servidor).
   enabled: true
+  # Raio de broadcast em blocos, centrado na vitima (0 = servidor inteiro).
+  broadcast-radius: 0
+  killstreak:
+    enabled: true
+    # Sequencias de mortes (sem morrer) que disparam anuncio pro servidor inteiro.
+    milestones: [5, 10, 25, 50, 100]
 
 invrestore:
   # Salva um snapshot do inventario a cada morte pro /invrestore.
   enabled: true
+  # Quantos snapshots mais recentes ficam guardados por jogador (os mais antigos sao
+  # apagados automaticamente). /invrestore <jogador> abre uma GUI pra escolher qual.
+  history-size: 5
+
+# Warps criados pelos proprios jogadores (/pwarps) - distinto do /warp de admin acima.
+player-warps:
+  # Limite padrao pra quem nao tem nenhuma permissao alkaessentials.warps.<n> - o maior
+  # numero entre as permissoes que o jogador tiver vence (ex: vip com
+  # alkaessentials.warps.5 pode ter ate 5 warps).
+  default-limit: 1
 
 # -------------------- Scoreboard (AlkaScore) --------------------
 scoreboard:

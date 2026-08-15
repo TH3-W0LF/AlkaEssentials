@@ -12,6 +12,7 @@ import com.alkacode.alkaessentials.command.HomeCommands;
 import com.alkacode.alkaessentials.command.InvRestoreCommand;
 import com.alkacode.alkaessentials.command.ModerationCommands;
 import com.alkacode.alkaessentials.command.MuteChatCommand;
+import com.alkacode.alkaessentials.command.PlayerWarpCommands;
 import com.alkacode.alkaessentials.command.PunishCommands;
 import com.alkacode.alkaessentials.command.QolCommands;
 import com.alkacode.alkaessentials.command.RideCommand;
@@ -29,7 +30,9 @@ import com.alkacode.alkaessentials.config.MessagesConfig;
 import com.alkacode.alkaessentials.config.EventsConfig;
 import com.alkacode.alkaessentials.config.ReasonsConfig;
 import com.alkacode.alkaessentials.database.InvSnapshotRepository;
+import com.alkacode.alkaessentials.database.PlayerWarpRepository;
 import com.alkacode.alkaessentials.database.PunishmentRepository;
+import com.alkacode.alkaessentials.hook.AlkaEconomyHook;
 import com.alkacode.alkaessentials.listener.AfkActivityListener;
 import com.alkacode.alkaessentials.listener.ChatListener;
 import com.alkacode.alkaessentials.listener.CommandSecurityListener;
@@ -60,11 +63,13 @@ import com.alkacode.alkaessentials.manager.HomeLimit;
 import com.alkacode.alkaessentials.manager.HomeManager;
 import com.alkacode.alkaessentials.manager.IgnoreManager;
 import com.alkacode.alkaessentials.manager.InvRestoreManager;
+import com.alkacode.alkaessentials.manager.KillStreakManager;
 import com.alkacode.alkaessentials.manager.LocationStore;
 import com.alkacode.alkaessentials.manager.MaintenanceManager;
 import com.alkacode.alkaessentials.manager.ModerationManager;
 import com.alkacode.alkaessentials.manager.NightVisionManager;
 import com.alkacode.alkaessentials.manager.NickManager;
+import com.alkacode.alkaessentials.manager.PlayerWarpManager;
 import com.alkacode.alkaessentials.manager.PunishmentManager;
 import com.alkacode.alkaessentials.manager.SeatManager;
 import com.alkacode.alkaessentials.manager.TempCommandManager;
@@ -135,10 +140,11 @@ public final class AlkaEssentials extends AlkaPlugin {
         // ----- modulo 3: morte e inventario -----
         InvSnapshotRepository snapshotRepo =
                 new InvSnapshotRepository(getAlkaAPI().getDatabase(), this);
-        InvRestoreManager invRestore = new InvRestoreManager(snapshotRepo);
+        InvRestoreManager invRestore = new InvRestoreManager(snapshotRepo, this);
         DeathChestManager deathChest = new DeathChestManager(this);
+        KillStreakManager killStreaks = new KillStreakManager();
         getServer().getPluginManager().registerEvents(
-                new DeathListener(this, invRestore, deathChest), this);
+                new DeathListener(this, invRestore, deathChest, killStreaks), this);
         getServer().getPluginManager().registerEvents(new DeathChestListener(deathChest), this);
         // remove tumulos expirados a cada segundo
         getServer().getScheduler().runTaskTimer(this, deathChest::tick, 20L, 20L);
@@ -207,6 +213,11 @@ public final class AlkaEssentials extends AlkaPlugin {
         register(new AlkaEssentialsCommand(this, scoreboardManager), "alkaessentials", "alka", "alkae");
         register(new SpawnCommands(this, locations, teleports), "spawn", "setspawn", "delspawn");
         register(new WarpCommands(this, locations, teleports), "warp", "setwarp", "delwarp");
+        PlayerWarpRepository playerWarpRepository = new PlayerWarpRepository(getAlkaAPI().getDatabase(), this);
+        PlayerWarpManager playerWarps = new PlayerWarpManager(this, playerWarpRepository);
+        playerWarps.load();
+        AlkaEconomyHook essentialsEconomyHook = AlkaEconomyHook.resolve();
+        register(new PlayerWarpCommands(this, playerWarps, teleports, essentialsEconomyHook), "pwarps");
         register(new HomeCommands(this, homes, homeLimit, teleports), "home", "sethome", "delhome", "homes");
         register(new TpaCommands(this, tpa, teleports, ignores), "tpa", "tpahere", "tpaccept", "tpdeny", "tptoggle");
         register(new RtpCommand(this, teleports), "rtp");

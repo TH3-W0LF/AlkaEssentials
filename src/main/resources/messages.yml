@@ -114,14 +114,45 @@ qol-anvil-lore: "<gray>Forjado por <white>{player}"
 qol-pearl-cooldown: "<red>Aguarde {time} para usar a perola do fim."
 
 # -------------------- Morte e Inventario --------------------
-death-message: "<red>{player} <gray>morreu."
-death-message-killer: "<red>{player} <gray>foi morto por <red>{killer}<gray>."
+# placeholders disponiveis: {player}, {killer}, {weapon}, {distance}, {streak}
+death-messages:
+  default: "<red>{player} <gray>morreu."
+  # mensagem por causa (nome do enum DamageCause do Bukkit) quando NAO foi PVP - causa
+  # sem entrada aqui cai no "default" acima.
+  causes:
+    FALL: "<red>{player} <gray>bateu com tudo no chao e morreu."
+    FIRE: "<red>{player} <gray>foi reduzido a cinzas."
+    FIRE_TICK: "<red>{player} <gray>queimou ate a morte."
+    LAVA: "<red>{player} <gray>tentou nadar em lava."
+    DROWNING: "<red>{player} <gray>se afogou."
+    VOID: "<red>{player} <gray>caiu no vazio."
+    SUFFOCATION: "<red>{player} <gray>sufocou dentro de um bloco."
+    STARVATION: "<red>{player} <gray>morreu de fome."
+    POISON: "<red>{player} <gray>morreu envenenado."
+    MAGIC: "<red>{player} <gray>morreu por magia."
+    WITHER: "<red>{player} <gray>definhou e morreu."
+    LIGHTNING: "<red>{player} <gray>foi atingido por um raio."
+    FALLING_BLOCK: "<red>{player} <gray>foi esmagado por um bloco."
+    BLOCK_EXPLOSION: "<red>{player} <gray>explodiu."
+    ENTITY_EXPLOSION: "<red>{player} <gray>explodiu."
+    FREEZE: "<red>{player} <gray>congelou ate a morte."
+    HOT_FLOOR: "<red>{player} <gray>pisou em magma."
+  # PVP: melee sem arma "de verdade" (mao vazia), melee com arma, ou a distancia
+  # (projetil - arco/besta/tridente). {weapon} = item na mao do assassino no momento.
+  pvp:
+    default: "<red>{player} <gray>foi morto por <red>{killer}<gray>."
+    with-weapon: "<red>{player} <gray>foi morto por <red>{killer} <gray>usando <yellow>{weapon}<gray>."
+    ranged: "<red>{player} <gray>foi flechado por <red>{killer} <gray>a <yellow>{distance} <gray>blocos de distancia."
+  killstreak:
+    milestone: "<dark_red><bold>⚔ <gray>{killer} <gray>esta numa sequencia de <gold>{streak} <gray>mortes!"
+    ended: "<gray>A sequencia de <gold>{streak} <gray>mortes de <red>{killer} <gray>foi encerrada por <red>{player}<gray>."
 death-chest-title: "<gold>Tumulo de {player}"
 death-chest-time-left: "<gray>Expira em {time}"
 death-chest-expired: "<gray>O tumulo de {player} expirou e os itens foram perdidos."
 invrestore-none: "<red>Nenhum inventario salvo para {player}."
 invrestore-success: "<green>Inventario de {player} restaurado."
 invrestore-offline: "<red>{player} esta offline. Nao e possivel restaurar agora."
+invrestore-restored-on-you: "<yellow>Seu inventario de <gold>{when}<yellow> foi restaurado por um administrador."
 
 # -------------------- Scoreboard --------------------
 scoreboard-on: "<green>Scoreboard ativada."
@@ -260,3 +291,30 @@ zone-defaults:
       name: "<gold>AFK | <yellow>Proxima recompensa em: <gold>%time%"
       color: RED
       style: NOTCHED_20
+
+# ------------------------- Warps de jogador (/pwarps) -------------------------
+pwarp-created: "<green>Warp <gold>{warp}<green> criado na sua posicao atual."
+pwarp-name-taken: "<red>Voce ja tem um warp chamado <gold>{warp}<red>."
+pwarp-name-invalid: "<red>Nome invalido - use 3-24 letras/numeros/underline."
+pwarp-limit-reached: "<red>Voce atingiu o limite de <gold>{limit}<red> warps."
+pwarp-not-found: "<red>Warp <gold>{warp}<red> nao encontrado."
+pwarp-no-access: "<red>Voce nao tem acesso a esse warp."
+pwarp-deleted: "<green>Warp <gold>{warp}<green> apagado."
+pwarp-not-owner: "<red>Esse warp nao e seu."
+pwarp-favorited: "<green>Warp <gold>{warp}<green> adicionado aos favoritos."
+pwarp-unfavorited: "<yellow>Warp <gold>{warp}<yellow> removido dos favoritos."
+pwarp-rated: "<green>Voce avaliou <gold>{warp}<green> com <gold>{stars}<green> estrelas."
+pwarp-rate-invalid: "<red>Avaliacao precisa ser de 1 a 5."
+pwarp-price-charged: "<yellow>Voce pagou <gold>{price}<yellow> para teleportar."
+pwarp-price-insufficient: "<red>Voce precisa de <gold>{price}<red> para teleportar ate aqui."
+pwarp-whitelist-added: "<green>{player}<green> adicionado a whitelist de <gold>{warp}<green>."
+pwarp-whitelist-removed: "<yellow>{player}<yellow> removido da whitelist de <gold>{warp}<yellow>."
+pwarp-visibility-set: "<green>Visibilidade de <gold>{warp}<green> definida como <gold>{visibility}<green>."
+pwarp-category-set: "<green>Categoria de <gold>{warp}<green> definida como <gold>{category}<green>."
+pwarp-description-set: "<green>Descricao de <gold>{warp}<green> atualizada."
+pwarp-price-set: "<green>Preco de <gold>{warp}<green> definido como <gold>{price} {currency}<green>."
+pwarp-usage: "<red>Uso: /pwarps <criar|deletar|tp|favoritar|avaliar|descricao|categoria|visibilidade|preco|whitelist|buscar> [args]"
+pwarp-gui-title: "<gradient:#00AAFF:#55FF55>Warps de Jogadores"
+pwarp-mine-title: "<gradient:#00AAFF:#55FF55>Meus Warps"
+pwarp-favorites-title: "<gradient:#FFD700:#FF8C00>Warps Favoritos"
+pwarp-detail-title: "<gradient:#00AAFF:#55FF55>{warp}"
