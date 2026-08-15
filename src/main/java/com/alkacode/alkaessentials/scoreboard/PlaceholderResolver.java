@@ -58,6 +58,14 @@ public final class PlaceholderResolver {
         // sem essa conversao, QUALQUER placeholder (Alka ou de terceiro, ex: LuckPerms/
         // mcMMO) que devolva legacy quebra a scoreboard inteira. Ver ScoreboardManager -
         // todo texto que passa por resolve() acaba em MiniMessage.deserialize().
+        //
+        // Camada extra: nem todo plugin de terceiro segue a convencao "§" - alguns PAPI
+        // expansions fora do nosso controle devolvem '&' cru (padrao mais antigo/comum no
+        // ecossistema Spigot em geral). translateAlternateColorCodes so converte '&' quando
+        // seguido de um char de codigo valido (0-9a-fk-or ou 'x'+6 pares hex) - texto comum
+        // com '&' solto (ex: "Tom & Jerry") nao e afetado. Depois disso ja e tudo '§' real,
+        // caindo no mesmo pipeline de baixo.
+        out = org.bukkit.ChatColor.translateAlternateColorCodes('&', out);
         return legacyToMiniMessage(out);
     }
 

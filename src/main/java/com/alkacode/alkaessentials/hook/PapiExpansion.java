@@ -9,12 +9,22 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Expansao PlaceholderAPI do AlkaEssentials. Expoe:
- *   %alkaessentials_nick%        -> nick do jogador (codigos legado &, para nChat/TAB)
+ *   %alkaessentials_nick%        -> nick do jogador (codigos legado § reais, para nChat/TAB/placar)
  *   %alkaessentials_nick_plain%  -> nick sem cores
  *   %alkaessentials_realname%    -> nome real
  * Registrada apenas quando o PlaceholderAPI esta instalado.
  */
 public final class PapiExpansion extends PlaceholderExpansion {
+
+    // character(SECTION_CHAR) (nao legacyAmpersand()) + useUnusualXRepeatedCharacterHexFormat():
+    // nosso proprio placar (PlaceholderResolver) so reconhece codigo real "§", nunca texto "&"
+    // cru - texto "&" ja quebrou o placar de verdade uma vez (nome de mina com gradient no
+    // AlkaMines, corrigido v1.0.83) - mesma classe de bug aqui, so que auto-infligida.
+    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.builder()
+            .character(LegacyComponentSerializer.SECTION_CHAR)
+            .hexColors()
+            .useUnusualXRepeatedCharacterHexFormat()
+            .build();
 
     private final JavaPlugin plugin;
     private final NickManager nicks;
@@ -52,9 +62,8 @@ public final class PapiExpansion extends PlaceholderExpansion {
         switch (params.toLowerCase()) {
             case "nick":
             case "nickname":
-                // reset final (&r) para cor/estilo do nick nao vazarem pro suffix
-                return LegacyComponentSerializer.legacyAmpersand()
-                        .serialize(MiniMessage.miniMessage().deserialize(nick)) + "&r";
+                // reset final (§r) para cor/estilo do nick nao vazarem pro suffix
+                return LEGACY.serialize(MiniMessage.miniMessage().deserialize(nick)) + "§r";
             case "nick_plain":
                 return MiniMessage.miniMessage().stripTags(nick);
             case "realname":

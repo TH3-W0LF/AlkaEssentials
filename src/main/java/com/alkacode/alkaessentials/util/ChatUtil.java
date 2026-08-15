@@ -19,7 +19,14 @@ import java.util.Map;
 public final class ChatUtil {
 
     private static final MiniMessage MM = MiniMessage.miniMessage();
-    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.legacyAmpersand();
+    // character(SECTION_CHAR) (nao legacyAmpersand()) + useUnusualXRepeatedCharacterHexFormat():
+    // consumidores (placar/placeholder) so entendem codigo real "§", nunca texto "&" cru -
+    // mesmo bug ja corrigido no AlkaVips (v1.0.14 -> v1.0.15) e no AlkaMines (v1.0.83).
+    private static final LegacyComponentSerializer LEGACY = LegacyComponentSerializer.builder()
+            .character(LegacyComponentSerializer.SECTION_CHAR)
+            .hexColors()
+            .useUnusualXRepeatedCharacterHexFormat()
+            .build();
 
     private ChatUtil() {
     }
