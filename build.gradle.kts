@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.alkacode"
-version = "1.2.6"
+version = "1.2.8"
 
 java {
     toolchain {
@@ -27,7 +27,7 @@ dependencies {
     // (menus), AbstractRepository/DatabaseProvider (dados no banco, pro modulo de
     // punicoes/InvRestore que vem depois). Locais (spawn/warps/homes) ficam em YAML
     // proprio (decisao do projeto), mas a infraestrutura vem toda do Core.
-    compileOnly("com.alkacode:AlkaCore:1.0.0")
+    compileOnly("com.alkacode:AlkaCore:1.0.2")
     // Limite de homes via grupo LuckPerms (ex: VIPs tem mais homes). O AlkaCore ja
     // tem um LuckPermsHook, mas expor a conta aqui via compileOnly e mais direto
     // quando for ler nodes de limite (essentials.homes.<n>).

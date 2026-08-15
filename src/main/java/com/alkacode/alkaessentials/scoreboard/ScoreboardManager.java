@@ -90,10 +90,22 @@ public final class ScoreboardManager {
         return config.getTablists().size();
     }
 
-    /** Roda periodicamente - re-renderiza a scoreboard/tablist de todos os online. */
+    /** Roda periodicamente - re-renderiza a scoreboard/tablist de todos os online. Cada
+     * jogador e isolado num try/catch: uma excecao nao pega aqui (ex: MiniMessage rejeitando
+     * um placeholder mal formatado) sobe pro Bukkit e CANCELA A REPEATING TASK INTEIRA (
+     * comportamento padrao do scheduler pra excecao nao tratada) - sem isolamento, um unico
+     * jogador com uma linha quebrada derruba a scoreboard de TODO MUNDO ate o proximo restart
+     * (reload sozinho nao resolve: ele so recarrega a config, a task ja cancelada continua
+     * cancelada). */
     public void tick() {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            refresh(player);
+            try {
+                refresh(player);
+            } catch (Exception e) {
+                plugin.getLogger().log(java.util.logging.Level.WARNING,
+                        "Falha ao atualizar scoreboard/tablist de " + player.getName()
+                                + " - pulando esse jogador neste tick.", e);
+            }
         }
     }
 
