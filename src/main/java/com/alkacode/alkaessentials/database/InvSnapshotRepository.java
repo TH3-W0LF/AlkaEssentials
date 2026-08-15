@@ -29,6 +29,7 @@ public final class InvSnapshotRepository extends AbstractRepository {
         super(db);
         this.plugin = plugin;
         createTable();
+        migrateLegacySchema();
     }
 
     private void createTable() {
@@ -43,6 +44,62 @@ public final class InvSnapshotRepository extends AbstractRepository {
         } catch (SQLException e) {
             plugin.getLogger().severe("Falha ao criar tabela " + TABLE + ": " + e.getMessage());
         }
+    }
+
+    /** Servidores que ja rodavam a versao antiga (so "uuid" como PRIMARY KEY, 1 snapshot
+     * por jogador) tem a tabela ja criada SEM a coluna "id" - CREATE TABLE IF NOT EXISTS
+     * acima e um no-op nesse caso, entao migra na mao: renomeia, recria no esquema novo,
+     * copia os dados, apaga a tabela antiga. Idempotente - so roda algo se "id" nao existir. */
+    private void migrateLegacySchema() {
+        if (hasIdColumn()) {
+            return;
+        }
+        plugin.getLogger().warning("Migrando " + TABLE + " pro esquema com historico (versao antiga so guardava 1 snapshot por jogador)...");
+        String legacy = TABLE + "_legacy";
+        try {
+            execute("DROP TABLE IF EXISTS " + legacy, ps -> {
+            });
+            execute("ALTER TABLE " + TABLE + " RENAME TO " + legacy, ps -> {
+            });
+            String idColumn = db.isSQLite()
+                    ? "id INTEGER PRIMARY KEY AUTOINCREMENT"
+                    : "id BIGINT AUTO_INCREMENT PRIMARY KEY";
+            execute("CREATE TABLE " + TABLE + " (" + idColumn + ", uuid VARCHAR(36), snapshot_time BIGINT, data TEXT)", ps -> {
+            });
+            execute("INSERT INTO " + TABLE + " (uuid, snapshot_time, data) SELECT uuid, snapshot_time, data FROM " + legacy, ps -> {
+            });
+            execute("DROP TABLE " + legacy, ps -> {
+            });
+            plugin.getLogger().info("Migracao de " + TABLE + " concluida.");
+        } catch (SQLException e) {
+            plugin.getLogger().severe("Falha ao migrar " + TABLE + ": " + e.getMessage());
+        }
+    }
+
+    private boolean hasIdColumn() {
+        try (Connection conn = db.getConnection()) {
+            if (db.isSQLite()) {
+                try (PreparedStatement ps = conn.prepareStatement("PRAGMA table_info(" + TABLE + ")");
+                     ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        if ("id".equalsIgnoreCase(rs.getString("name"))) {
+                            return true;
+                        }
+                    }
+                }
+            } else {
+                try (PreparedStatement ps = conn.prepareStatement(
+                        "SELECT COUNT(*) FROM information_schema.columns WHERE table_name = ? AND column_name = 'id'")) {
+                    ps.setString(1, TABLE);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        return rs.next() && rs.getInt(1) > 0;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().severe("Falha ao checar esquema de " + TABLE + ": " + e.getMessage());
+        }
+        return false;
     }
 
     /** Insere um novo snapshot (nunca sobrescreve os anteriores). */

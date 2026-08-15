@@ -58,9 +58,20 @@ public final class ScoreboardManager {
         afkManager.setExternalTabName(config.isPlayerNameEnabled());
     }
 
+    /** Desregistra o objective de cada jogador rastreado ANTES de esquecer o PlayerBoard -
+     * so limpar o mapa (boards.clear()) deixava o objective "alka_score" vivo no Scoreboard
+     * real do jogador (o cache esquecia, mas o objeto do Bukkit continuava registrado), e o
+     * proximo tick tentava registrar de novo -> IllegalArgumentException (objective ja
+     * existe), sempre apos editar o config e dar /alkaessentials reload. */
     public void reload() {
         config.reload();
         afkManager.setExternalTabName(config.isPlayerNameEnabled());
+        for (UUID uuid : new ArrayList<>(boards.keySet())) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                removeBoard(player);
+            }
+        }
         boards.clear();
         nameOrigins.clear();
     }
