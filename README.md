@@ -27,6 +27,10 @@ scoreboard, chat social — num único plugin leve e sem conflitos entre si.
 
 - 🚀 **Teleporte** — `/spawn`, `/warp`, `/home` (ambos em GUI), `/tpa`,
   `/rtp`, `/back`, cooldowns/warmups e elevadores.
+- 🗺️ **Warps de jogador** — `/pwarps` deixa cada jogador criar seus próprios
+  warps (público, privado ou por whitelist), com favoritos, avaliação,
+  categorias, busca e preço opcional cobrado em qualquer moeda do
+  AlkaEconomy.
 - 🛠️ **Qualidade de vida** — `/craft`, `/lixo`, `/nv`, `/ping`, `/sit`,
   `/ride`, cura por sopa, bigorna infinita, cooldown de ender pearl.
 - ⚰️ **Morte e inventário** — túmulos (deathchest) com holograma, mensagens
@@ -47,7 +51,9 @@ scoreboard, chat social — num único plugin leve e sem conflitos entre si.
 
 Construído sobre o **AlkaCore** (banco compartilhado). Integração com
 **PlaceholderAPI**, **TAB**, **nChat** e **ProtocolLib** (vanish profundo e
-baú silencioso).
+baú silencioso). Suporte opcional a **LuckPerms** (limites por grupo),
+**WorldGuard** (regras de scoreboard por região) e **AlkaEconomy** (cobrança
+opcional de teleporte a warps de jogador).
 
 ## 🔧 Tecnologias Utilizadas
 
