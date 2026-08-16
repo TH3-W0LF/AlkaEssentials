@@ -12,7 +12,8 @@ default:
   priority: 0
   # Mundos onde esta scoreboard vale (vazio = todos).
   worlds: []
-  # Regioes (nomes) onde vale (vazio = qualquer).
+  # Regioes WorldGuard (IDs) onde vale (vazio = qualquer). Precisa do WorldGuard
+  # instalado - sem ele, qualquer scoreboard com "regions" preenchido eh ignorada.
   regions: []
   # Permissao necessaria (vazio = todos).
   permission: ""
@@ -91,5 +92,22 @@ afk:
 #       interval: 0.0
 #       condition: ""
 #     - frames: [ "<green>/plot auto" ]
+#       interval: 0.0
+#       condition: ""
+
+# Exemplo de scoreboard por regiao WorldGuard (em vez de mundo inteiro).
+# pesca:
+#   priority: 1
+#   worlds: []
+#   regions: [ "pesca" ]
+#   permission: ""
+#   title:
+#     frames: [ "<aqua><bold>PESCARIA" ]
+#     interval: 0.0
+#   lines:
+#     - frames: [ "" ]
+#       interval: 0.0
+#       condition: ""
+#     - frames: [ "<gray>Nacar: <light_purple>%alkaeconomy_nacar_formatted%" ]
 #       interval: 0.0
 #       condition: ""

@@ -1,6 +1,7 @@
 package com.alkacode.alkaessentials.scoreboard;
 
 import com.alkacode.alkaessentials.afk.AfkManager;
+import com.alkacode.alkaessentials.hook.WorldGuardHook;
 import io.papermc.paper.scoreboard.numbers.NumberFormat;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -34,6 +35,7 @@ public final class ScoreboardManager {
     private final ScoreboardConfig config;
     private final PlaceholderResolver resolver;
     private final AfkManager afkManager;
+    private final WorldGuardHook worldGuard;
 
     private final Map<UUID, PlayerBoard> boards = new HashMap<>();
     private final Map<UUID, Component> nameOrigins = new HashMap<>();
@@ -55,6 +57,7 @@ public final class ScoreboardManager {
         this.config = config;
         this.resolver = resolver;
         this.afkManager = afkManager;
+        this.worldGuard = WorldGuardHook.resolve();
         afkManager.setExternalTabName(config.isPlayerNameEnabled());
     }
 
@@ -143,6 +146,7 @@ public final class ScoreboardManager {
 
     private AlkaScoreboard pick(Player player) {
         boolean afk = afkManager.isAfk(player.getUniqueId());
+        Set<String> regionIds = null; // consultado ao WorldGuard so na 1a scoreboard que precisar (lazy)
         AlkaScoreboard best = null;
         for (AlkaScoreboard sb : config.getScoreboards().values()) {
             if (sb.getId().equalsIgnoreCase("afk") && !afk) {
@@ -150,6 +154,17 @@ public final class ScoreboardManager {
             }
             if (!sb.getWorlds().isEmpty() && !sb.getWorlds().contains(player.getWorld().getName())) {
                 continue;
+            }
+            if (!sb.getRegions().isEmpty()) {
+                if (!worldGuard.isAvailable()) {
+                    continue;
+                }
+                if (regionIds == null) {
+                    regionIds = worldGuard.getRegionIdsAt(player.getLocation());
+                }
+                if (regionIds.isEmpty() || sb.getRegions().stream().noneMatch(regionIds::contains)) {
+                    continue;
+                }
             }
             if (sb.hasPermission() && !player.hasPermission(sb.getPermission())) {
                 continue;

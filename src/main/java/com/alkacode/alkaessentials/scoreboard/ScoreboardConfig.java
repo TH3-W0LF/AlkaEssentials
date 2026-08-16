@@ -44,7 +44,11 @@ public final class ScoreboardConfig {
             }
             int priority = section.getInt("priority", 0);
             List<String> worlds = section.getStringList("worlds");
-            List<String> regions = section.getStringList("regions");
+            // WorldGuard sempre normaliza IDs de regiao pra minusculo - normaliza aqui tambem
+            // pra "Pesca" no YAML nao deixar de bater com a regiao real "pesca".
+            List<String> regions = section.getStringList("regions").stream()
+                    .map(r -> r.toLowerCase(java.util.Locale.ROOT))
+                    .toList();
             String permission = section.getString("permission", "");
             ScoreboardEntry title = parseEntry(section.getConfigurationSection("title"));
             List<ScoreboardEntry> lines = parseLines(section.getList("lines"));

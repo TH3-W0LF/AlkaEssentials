@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.alkacode"
-version = "1.3.1"
+version = "1.3.3"
 
 java {
     toolchain {
@@ -18,6 +18,7 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://jitpack.io")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://maven.enginehub.org/repo/")
 }
 
 dependencies {
@@ -42,6 +43,10 @@ dependencies {
     compileOnly(files("libs/PlaceholderAPI.jar"))
     // API do ProtocolLib - vanish profundo (ocultar no TAB + baú silencioso).
     compileOnly(files("libs/ProtocolLib.jar"))
+    // WorldGuard - scoreboard.regions no scoreboards.yml (ver WorldGuardHook). WorldEdit
+    // e dependencia transitiva do worldguard-bukkit (BlockVector3/BukkitAdapter).
+    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9")
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.15")
 }
 
 tasks.withType<JavaCompile> {

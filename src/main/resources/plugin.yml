@@ -5,7 +5,7 @@ api-version: '1.21.8'
 author: MestreDEV
 description: Utilitarios da network - movimentacao/teleporte, QoL, morte, staff, ambiente e chat. Sem logica de jogo propria, usa a infra do AlkaCore.
 depend: [AlkaCore]
-softdepend: [LuckPerms, PlaceholderAPI, DecentHolograms, TAB, nChat, AlkaEconomy]
+softdepend: [LuckPerms, PlaceholderAPI, DecentHolograms, TAB, nChat, AlkaEconomy, WorldGuard]
 
 commands:
   alkaessentials:
