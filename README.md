@@ -1,39 +1,91 @@
+<div align="center">
+
 # AlkaEssentials
 
-Utilitários da rede **AlkaStudio** para servidores **Minecraft 1.21+ (Paper, Java 21)**.
-Substitui soluções genéricas (yEssentials, CMI etc.) por um plugin proprietário,
-ultraleve e livre de conflitos, construído sobre a infraestrutura do **AlkaCore**.
+### O canivete suíço da rede Alka*
 
-## Módulos
+Teleporte, QoL, moderação, scoreboard e muito mais — tudo num único plugin
+ultraleve, sem conflitos, construído sobre o **AlkaCore**.
 
-| Módulo | O que faz |
-|--------|-----------|
-| **Teleporte** | `/spawn`, `/warp` (GUI), `/home` (GUI), `/tpa`, `/rtp`, `/back`, cooldowns/warmups, elevadores |
-| **QoL** | `/craft`, `/lixo`, `/nv`, `/ping`, `/sit`, `/ride`, soup heal, bigorna infinita, ender pearl cooldown |
-| **Morte/Inventário** | Túmulos (deathchest) com holograma, mensagens de morte custom, `/invrestore` |
-| **Scoreboard** | AlkaScore: scoreboards/tablist por mundo com título e linhas animadas (`<rainbow>`, `<scroll>`, `<gradient>`) |
-| **Admin/Moderação** | Punições (warn/mute/kick/ban + temporárias + menu `/punish`), `/staff`, `/invsee`, `/freeze`, `/fly`, `/god`, `/vanish` (profundo: TAB + baú silencioso), spies, `/maintenance`, gamemode, `/fix`, `/speed`, `/day`/`/night`/`/sun`/`/rain`, `/top`, `/jump` |
-| **Ambiente** | Regras por mundo via GUI (`/worldrules`): mobs, vilagers, tempo, chuva, gravidade, fogo, fome, etc. |
-| **Chat/Social** | `/nick`, `/color`, `/namecolor` (GUI), `/gradient`, `/whois`, @menções, filtro, `/ignore`, auto-broadcast, `/broadcast`, `/mutechat` |
-| **Utilitários** | `/condense`, `/smelt`, `/skull`, `/showitem` (`/showinv`, `/showender`), cores em placas, mensagens de join/quit |
+![Java](https://img.shields.io/badge/Java-21-orange)
+![Minecraft](https://img.shields.io/badge/Minecraft-1.21.8-green)
+![Version](https://img.shields.io/badge/Version-1.3.2-blue)
+![License](https://img.shields.io/badge/License-Proprietary-red)
 
-## Destaques
+</div>
 
-- **Tudo editável via YAML** (`config.yml`, `messages.yml`, `menus.yml`, `reasons.yml`, `events.yml`, `scoreboards.yml`…) com **MiniMessage** (gradient, rainbow, bold).
-- **Integração** com `AlkaCore` (dependência), `PlaceholderAPI` (`%alkaessentials_nick%`), `TAB`, `nChat` e `ProtocolLib` (vanish profundo + baú silencioso).
-- **Punições e InvRestore** no banco do AlkaCore (tabelas `alka_essentials_punishments` e `alka_essentials_inv_snapshots`).
-- **Regras do mundo ao vivo** pela GUI, sem reiniciar.
-- **Menus padronizados**: títulos com gradiente, botão "Voltar" (flecha) em submenus e vidro vermelho nos estados vazios — tudo configurável em `menus.yml` (dá pra usar itens do ItemAdder).
-- **Comandos em pt-br** (termos de jogo como "top/rank" ficam em inglês, padrão da rede).
+---
 
-## Build
+## 📋 Sobre o Projeto
 
-```bash
-./gradlew build
-```
+O **AlkaEssentials** substitui soluções genéricas (yEssentials, CMI e afins)
+por um plugin proprietário, feito sob medida pra rede `Alka*`. Reúne tudo que
+um servidor precisa no dia a dia — teleporte, qualidade de vida, moderação,
+scoreboard, chat social — num único plugin leve e sem conflitos entre si.
 
-O jar fica em `build/libs/AlkaEssentials-<versão>.jar`. Exige o **AlkaCore** instalado.
+## ✨ Funcionalidades Principais
 
-## Guia do administrador
+- 🚀 **Teleporte** — `/spawn`, `/warp`, `/home` (ambos em GUI), `/tpa`,
+  `/rtp`, `/back`, cooldowns/warmups e elevadores.
+- 🛠️ **Qualidade de vida** — `/craft`, `/lixo`, `/nv`, `/ping`, `/sit`,
+  `/ride`, cura por sopa, bigorna infinita, cooldown de ender pearl.
+- ⚰️ **Morte e inventário** — túmulos (deathchest) com holograma, mensagens
+  de morte customizadas e restauração de inventário (`/invrestore`).
+- 📊 **Scoreboard e tablist** — títulos e linhas animadas por mundo
+  (gradiente, arco-íris, scroll).
+- 🛡️ **Administração e moderação** — punições completas (warn/mute/kick/ban,
+  inclusive temporárias) via menu, modo staff, `/invsee`, `/freeze`, `/fly`,
+  `/god`, vanish profundo, modo manutenção e mais.
+- 🌍 **Regras por mundo** — controle ao vivo via GUI (mobs, clima, gravidade,
+  fome, etc.), sem precisar reiniciar o servidor.
+- 💬 **Chat e social** — apelidos, cores customizadas, menções, filtro de
+  chat, ignorar jogadores, broadcasts automáticos.
+- 🧰 **Utilitários** — `/condense`, `/smelt`, `/skull`, visualização de itens
+  no chat (`/showitem`, `/showinv`, `/showender`).
 
-Veja [`ADMIN-GUIDE.md`](ADMIN-GUIDE.md) para configurar nick, nChat, TAB e permissões.
+## 🔗 Integrações
+
+Construído sobre o **AlkaCore** (banco compartilhado). Integração com
+**PlaceholderAPI**, **TAB**, **nChat** e **ProtocolLib** (vanish profundo e
+baú silencioso).
+
+## 🔧 Tecnologias Utilizadas
+
+- **Java 21** · **Paper API 1.21.8**
+- **AlkaCore** (banco de dados compartilhado)
+- **MiniMessage** (gradientes, rainbow, negrito em toda configuração)
+
+## ⚙️ Instalação
+
+1. Instale o **AlkaCore** antes (dependência obrigatória).
+2. Coloque `AlkaEssentials.jar` na pasta `plugins/` do servidor.
+3. Reinicie o servidor.
+4. Tudo é editável via YAML (`config.yml`, `messages.yml`, `menus.yml`,
+   `reasons.yml`, `events.yml`, `scoreboards.yml`).
+
+## 🔐 Permissões
+
+Consulte o guia do administrador para a lista completa de permissões por
+módulo.
+
+## 📝 Licença
+
+> ⚠️ **Projeto proprietário da AlkaStudio.**
+>
+> Código fonte destinado exclusivamente ao uso interno da rede `Alka*`.
+> Reprodução, distribuição ou uso não autorizado não são permitidos.
+
+## 🎯 Créditos
+
+- **Desenvolvido por**: MestreDEV — AlkaStudio
+- **Parte do ecossistema**: `Alka*`
+
+---
+
+<div align="center">
+
+**Desenvolvido com ❤️ pela AlkaStudio**
+
+[![AlkaStudio](https://img.shields.io/badge/AlkaStudio-JLob0-blue)](https://github.com/JLob0)
+
+</div>
