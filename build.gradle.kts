@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.alkacode"
-version = "1.3.3"
+version = "1.3.4"
 
 java {
     toolchain {
@@ -68,5 +68,12 @@ tasks.processResources {
     // sem isso, o Gradle nao percebe que so `version` mudou e reusa o plugin.yml
     // antigo do cache (processResources fica UP-TO-DATE incorretamente).
     inputs.property("version", project.version)
-    expand("version" to project.version)
+    // expand() SO no plugin.yml - e o unico arquivo que usa ${version}. Aplicar em
+    // todos os resources (como estava antes) processa backslashes como template
+    // Groovy e colapsa escapes reais (`\\d` -> `\d`) em qualquer outro YAML com
+    // regex, ex: config.yml's blocked-patterns - bug real, corrompia o jar mesmo
+    // com o config.yml fonte 100% correto.
+    filesMatching("plugin.yml") {
+        expand("version" to project.version)
+    }
 }
