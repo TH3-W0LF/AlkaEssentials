@@ -112,16 +112,21 @@ worldrules:
     mob-grief:
       name: "<dark_aqua>Mob-Grief"
       icon: CRACKED_STONE_BRICKS
+    phantoms:
+      name: "<light_purple>Phantoms"
+      icon: PHANTOM_MEMBRANE
   time:
     material: CLOCK
     normal:
       name: "<green>Tempo: Normal"
     day:
-      name: "<yellow>Tempo: Sempre Dia"
+      name: "<yellow>Tempo: Dia"
+    day_locked:
+      name: "<gold>Tempo: Travado ☀"
     night:
-      name: "<dark_blue>Tempo: Sempre Noite"
-    stop:
-      name: "<red>Tempo: Parado"
+      name: "<dark_blue>Tempo: Noite"
+    night_locked:
+      name: "<blue>Tempo: Travado 🌙"
     lore:
       - "<gray>Clique para alternar"
 

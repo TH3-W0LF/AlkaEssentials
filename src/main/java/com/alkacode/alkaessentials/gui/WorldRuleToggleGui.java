@@ -22,7 +22,7 @@ public final class WorldRuleToggleGui extends BaseGui {
 
     public WorldRuleToggleGui(JavaPlugin plugin, Player player, WorldRulesManager rules, World world) {
         super(plugin, player, MenuConfig.getInstance().title("worldrules.toggle-title",
-                Map.of("world", world.getName())), 4, "alkaessentials_worldrules_toggle");
+                Map.of("world", world.getName())), 5, "alkaessentials_worldrules_toggle");
         this.rules = rules;
         this.world = world;
     }
@@ -61,10 +61,11 @@ public final class WorldRuleToggleGui extends BaseGui {
             });
             slot++;
             if (slot % 9 == 8) slot += 2;
-            if (slot >= 27) break;
+            if (slot >= 36) break;
         }
 
-        // botao de tempo (cicla: normal -> dia -> noite -> parado)
+        // botao de tempo (cicla: normal -> dia -> travado(dia) -> noite -> travado(noite) -> normal)
+        // fica isolado na borda de baixo pra nunca colidir com a grade de regras acima.
         String timeMode = rules.getTimeMode(world);
         String timeName = MenuConfig.getInstance().getYaml().getString("worldrules.time." + timeMode + ".name",
                 "Tempo");
@@ -75,7 +76,7 @@ public final class WorldRuleToggleGui extends BaseGui {
                 .name(timeName)
                 .lore(String.join("\n", timeLore))
                 .build();
-        setItem(22, timeItem, event -> {
+        setItem(40, timeItem, event -> {
             rules.nextTimeMode(world);
             refresh();
         });

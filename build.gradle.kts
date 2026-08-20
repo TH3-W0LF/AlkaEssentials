@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.alkacode"
-version = "1.3.4"
+version = "1.3.7"
 
 java {
     toolchain {
@@ -28,7 +28,7 @@ dependencies {
     // (menus), AbstractRepository/DatabaseProvider (dados no banco, pro modulo de
     // punicoes/InvRestore que vem depois). Locais (spawn/warps/homes) ficam em YAML
     // proprio (decisao do projeto), mas a infraestrutura vem toda do Core.
-    compileOnly("com.alkacode:AlkaCore:1.0.3")
+    compileOnly("com.alkacode:AlkaCore:1.0.8")
     // Limite de homes via grupo LuckPerms (ex: VIPs tem mais homes). O AlkaCore ja
     // tem um LuckPermsHook, mas expor a conta aqui via compileOnly e mais direto
     // quando for ler nodes de limite (essentials.homes.<n>).
@@ -36,7 +36,7 @@ dependencies {
     // Cobranca opcional pra teleportar num warp de jogador (mesmo padrao de import
     // direto + compileOnly + getPlugin()!=null do AlkaEconomyHook do AlkaVips - AlkaEconomy
     // continua softdepend em runtime, so classe carregada de verdade se instalada).
-    compileOnly("com.alkacode:AlkaEconomy:1.0.6")
+    compileOnly("com.alkacode:AlkaEconomy:1.0.8")
     // API do TAB (NEZNAMY) - para aplicar o nick no tab list / registrar placeholder.
     compileOnly(files("libs/TAB.jar"))
     // API do PlaceholderAPI - para registrar %alkaessentials_nick% e integrar com nChat/TAB.

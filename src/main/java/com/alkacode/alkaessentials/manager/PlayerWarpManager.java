@@ -85,7 +85,7 @@ public final class PlayerWarpManager {
         PlayerWarp warp = new PlayerWarp(-1, owner.getUniqueId(), name, loc.getWorld().getName(),
                 loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch(),
                 description == null ? "" : description, category == null ? "geral" : category,
-                PlayerWarp.Visibility.PUBLIC, 0.0, "coins", "GRASS_BLOCK", System.currentTimeMillis());
+                PlayerWarp.Visibility.PUBLIC, 0.0, "gold", "GRASS_BLOCK", System.currentTimeMillis());
         long id = repository.insert(warp);
         if (id < 0) {
             return null;

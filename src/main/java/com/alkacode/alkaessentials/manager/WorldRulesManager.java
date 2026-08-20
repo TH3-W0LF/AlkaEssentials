@@ -26,15 +26,17 @@ public final class WorldRulesManager {
 
     public static final List<String> RULES = List.of(
             "mobs", "animals", "zombie-villagers", "villagers", "structures",
-            "rain", "gravity", "fire", "leaves", "hunger", "creeper", "tnt", "mob-grief");
+            "rain", "gravity", "fire", "leaves", "hunger", "creeper", "tnt", "mob-grief", "phantoms");
 
-    public static final List<String> TIME_MODES = List.of("normal", "day", "night", "stop");
+    public static final List<String> TIME_MODES = List.of("normal", "day", "day_locked", "night", "night_locked");
 
-    /** Tipos de mobs hostis (cobrem slimes, magma, ghast, phantom etc., que nao implementam Monster). */
+    /** Tipos de mobs hostis (cobrem slimes, magma, ghast etc., que nao implementam Monster).
+     * Phantom fica de fora de proposito - tem regra propria ("phantoms"), independente do
+     * toggle geral, porque tem mundo que so quer desligar phantom e manter o resto dos hostis. */
     public static final Set<EntityType> HOSTILE = EnumSet.of(
             EntityType.CREEPER, EntityType.ZOMBIE, EntityType.SKELETON, EntityType.SPIDER,
             EntityType.CAVE_SPIDER, EntityType.ENDERMAN, EntityType.WITCH, EntityType.SLIME,
-            EntityType.MAGMA_CUBE, EntityType.GHAST, EntityType.BLAZE, EntityType.PHANTOM,
+            EntityType.MAGMA_CUBE, EntityType.GHAST, EntityType.BLAZE,
             EntityType.HUSK, EntityType.DROWNED, EntityType.STRAY, EntityType.WITHER_SKELETON,
             EntityType.PIGLIN, EntityType.ZOMBIFIED_PIGLIN, EntityType.HOGLIN, EntityType.PIGLIN_BRUTE,
             EntityType.GUARDIAN, EntityType.ELDER_GUARDIAN, EntityType.SHULKER, EntityType.VINDICATOR,
@@ -72,6 +74,7 @@ public final class WorldRulesManager {
         config.set("default.creeper", true);
         config.set("default.tnt", true);
         config.set("default.mob-grief", true);
+        config.set("default.phantoms", true);
     }
 
     private void save() {
@@ -114,6 +117,9 @@ public final class WorldRulesManager {
                     break;
                 case "structures":
                     removeStructures(world);
+                    break;
+                case "phantoms":
+                    removePhantoms(world);
                     break;
                 default:
                     break;
@@ -169,9 +175,18 @@ public final class WorldRulesManager {
         }
     }
 
+    /** Remove phantoms existentes (o toggle "mobs" tambem cobre phantoms, este e um botao dedicado). */
+    public void removePhantoms(World world) {
+        for (Entity entity : world.getEntities()) {
+            if (entity.getType() == EntityType.PHANTOM && !entity.isDead()) {
+                entity.remove();
+            }
+        }
+    }
+
     // ------------------------- modo de tempo -------------------------
 
-    /** Modo de tempo do mundo: normal, day, night ou stop. */
+    /** Modo de tempo do mundo: normal, day, day_locked, night ou night_locked. */
     public String getTimeMode(World world) {
         String mode = config.getString("worlds." + world.getName() + ".time");
         if (mode == null) {
@@ -198,19 +213,24 @@ public final class WorldRulesManager {
         return next;
     }
 
-    /** Aplica o modo de tempo imediatamente. */
+    /** Aplica o modo de tempo imediatamente (pulo de horario incluido - usar no clique do botao). */
     public void applyTime(World world, String mode) {
         switch (mode) {
             case "day":
+                world.setGameRule(org.bukkit.GameRule.DO_DAYLIGHT_CYCLE, true);
+                world.setTime(6000L);
+                break;
+            case "day_locked":
                 world.setGameRule(org.bukkit.GameRule.DO_DAYLIGHT_CYCLE, false);
                 world.setTime(6000L);
                 break;
             case "night":
-                world.setGameRule(org.bukkit.GameRule.DO_DAYLIGHT_CYCLE, false);
+                world.setGameRule(org.bukkit.GameRule.DO_DAYLIGHT_CYCLE, true);
                 world.setTime(18000L);
                 break;
-            case "stop":
+            case "night_locked":
                 world.setGameRule(org.bukkit.GameRule.DO_DAYLIGHT_CYCLE, false);
+                world.setTime(18000L);
                 break;
             default:
                 world.setGameRule(org.bukkit.GameRule.DO_DAYLIGHT_CYCLE, true);
@@ -218,10 +238,18 @@ public final class WorldRulesManager {
         }
     }
 
-    /** Aplica o modo de tempo de todos os mundos (chamado periodicamente). */
+    /** Reforca o modo de tempo de todos os mundos (chamado a cada segundo). So reaplica o
+     * pulo de horario nos modos travados (day_locked/night_locked) - "day"/"night"/"normal"
+     * so ajustam a gamerule pra nao ficar puxando o relogio de volta toda hora e impedir
+     * o ciclo vanilla de rodar de verdade depois do pulo inicial. */
     public void applyAllTime() {
         for (World world : getWorlds().values()) {
-            applyTime(world, getTimeMode(world));
+            String mode = getTimeMode(world);
+            if (mode.equals("day_locked") || mode.equals("night_locked")) {
+                applyTime(world, mode);
+            } else {
+                world.setGameRule(org.bukkit.GameRule.DO_DAYLIGHT_CYCLE, true);
+            }
         }
     }
 

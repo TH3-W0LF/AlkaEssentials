@@ -4,6 +4,7 @@ import com.alkacode.alkaessentials.manager.WorldRulesManager;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Creeper;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
@@ -55,6 +56,10 @@ public final class WorldRulesListener implements Listener {
         World world = event.getLocation().getWorld();
         if (world == null) return;
         if (event.getEntity() instanceof Player) return;
+        if (event.getEntityType() == EntityType.PHANTOM && !rules.getRule(world, "phantoms")) {
+            event.setCancelled(true);
+            return;
+        }
         if (!rules.getRule(world, "mobs") && WorldRulesManager.HOSTILE.contains(event.getEntityType())) {
             event.setCancelled(true);
             return;

@@ -95,8 +95,8 @@ Tudo em `plugins/AlkaEssentials/`:
 | `nicks.yml`, `homes.yml`, `locations.yml` | Dados salvos |
 
 - **Regras do mundo**: `/worldrules` (GUI) — mobs, animais, chuva, gravidade, fogo,
-  folhas, fome, creeper, tnt, mob-grief, e tempo (dia/noite/parado). Ao vivo, sem
-  reiniciar.
+  folhas, fome, creeper, tnt, mob-grief, phantoms, e tempo (dia/noite/parado). Ao vivo,
+  sem reiniciar.
 - **Scoreboard**: `/scoreboard toggle|reload`; títulos/linhas com `frames`+`interval`
   e tags `<rainbow:N>`, `<scroll:left>`, `<gradient>`, `<centralize>`.
 

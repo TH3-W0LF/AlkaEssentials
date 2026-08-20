@@ -46,6 +46,8 @@ public final class ScoreboardManager {
         Objective objective;
         long startedAt = System.currentTimeMillis();
         final List<String> entries = new ArrayList<>();
+        String lastTitle = "";
+        final List<String> lastLines = new ArrayList<>();
         PlayerBoard(org.bukkit.scoreboard.Scoreboard board) {
             this.board = board;
         }
@@ -190,16 +192,14 @@ public final class ScoreboardManager {
             obj = pb.board.registerNewObjective(OBJECTIVE, Criteria.DUMMY, Component.empty());
             obj.setDisplaySlot(DisplaySlot.SIDEBAR);
             pb.objective = obj;
+            player.setScoreboard(pb.board);
         }
-
-        // limpa entradas antigas
-        for (String entry : pb.entries) {
-            obj.getScore(entry).resetScore();
-        }
-        pb.entries.clear();
 
         String titleFrame = resolveFrame(player, sb.getTitle());
-        obj.displayName(MiniMessage.miniMessage().deserialize(titleFrame));
+        if (!titleFrame.equals(pb.lastTitle)) {
+            obj.displayName(MiniMessage.miniMessage().deserialize(titleFrame));
+            pb.lastTitle = titleFrame;
+        }
 
         List<ScoreboardEntry> visibleLines = new ArrayList<>();
         for (ScoreboardEntry line : sb.getLines()) {
@@ -210,18 +210,41 @@ public final class ScoreboardManager {
         }
 
         int size = visibleLines.size();
-        for (int i = 0; i < size; i++) {
-            ScoreboardEntry line = visibleLines.get(i);
-            String frame = resolveFrame(player, line);
-            String entryName = "\u00A7r\u00A7" + i;
+        boolean layoutChanged = false;
+
+        // cria linhas que faltam (somente quando o numero de linhas cresce)
+        while (pb.entries.size() < size) {
+            String entryName = "\u00A7r\u00A7" + pb.entries.size();
             Score score = obj.getScore(entryName);
-            score.customName(MiniMessage.miniMessage().deserialize(frame));
             score.numberFormat(NumberFormat.blank());
-            score.setScore(size - i);
+            score.setScore(size - pb.entries.size());
             pb.entries.add(entryName);
+            pb.lastLines.add(null);
+            layoutChanged = true;
+        }
+        // remove linhas excedentes (somente quando o numero de linhas cai)
+        while (pb.entries.size() > size) {
+            String entry = pb.entries.remove(pb.entries.size() - 1);
+            obj.getScore(entry).resetScore();
+            pb.lastLines.remove(pb.lastLines.size() - 1);
+            layoutChanged = true;
         }
 
-        player.setScoreboard(pb.board);
+        // atualiza o texto SO da linha que mudou (sem remover/recriar -> sem flicker)
+        for (int i = 0; i < size; i++) {
+            String frame = resolveFrame(player, visibleLines.get(i));
+            boolean textChanged = !frame.equals(pb.lastLines.get(i));
+            if (!textChanged && !layoutChanged) {
+                continue;
+            }
+            Score score = obj.getScore(pb.entries.get(i));
+            if (textChanged) {
+                score.customName(MiniMessage.miniMessage().deserialize(frame));
+                score.numberFormat(NumberFormat.blank());
+            }
+            score.setScore(size - i);
+            pb.lastLines.set(i, frame);
+        }
     }
 
     /** Resolve placeholders e expande tags de animacao (rainbow/scroll/centralize) num frame. */
