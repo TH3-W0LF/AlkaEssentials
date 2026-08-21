@@ -21,15 +21,34 @@ import java.util.UUID;
 /** Comandos de chat/social: /nick, /realname, /ignore, /clearchat, /broadcast, /discord, /site, /loja, /regras. */
 public final class ChatCommands extends BaseCommand {
 
-    // MiniMessage.miniMessage() (o parser normal, usado pra deserializar de verdade)
-    // e PERMISSIVO: tag com argumento invalido (ex: <gradient:NomeDeJogador:white>,
-    // cor que nao existe) NAO lanca excecao - so devolve o texto cru da tag como
-    // Component literal. Isso deixava /nick, /color e /gradient salvarem lixo tipo
-    // "<gradient:MestreBR:white>MestreBR" que vazava pro TAB/nChat inteiros (bug
-    // 21/08, prints do usuario). strict(true) faz validar de verdade e lancar
-    // excecao em tag malformada - usado SO pra validar antes de salvar, nao pra
-    // deserializar de verdade (isso continua com o parser normal).
-    private static final MiniMessage STRICT = MiniMessage.builder().strict(true).build();
+    // ATENCAO - testado de verdade com 2 baterias de programa Java isolado antes de
+    // escrever isso (nao confiar de olho na API):
+    // 1a tentativa (strict(true) como pre-check) foi ERRADA e chegou a ser commitada -
+    //    strict EXIGE toda tag fechada, mas nick/prefix sempre usa tag ABERTA ate o fim
+    //    (padrao usado em TODO o ecossistema: "<red>Nome", "<dark_red>[Dono] ", etc,
+    //    NENHUM tem </cor> fechando) - strict rejeitava ate os casos validos normais.
+    // 2o problema, o que causa o bug de verdade: quando o ARGUMENTO da tag e invalido
+    //    (ex: <gradient:NomeDeJogador:white>, "NomeDeJogador" nao e cor), o parser
+    //    NUNCA chega a abrir a tag - trata a coisa toda como texto literal desde o
+    //    inicio - entao nem lenient nem strict lancam excecao, e o texto cru
+    //    "<gradient:MestreBR:white>MestreBR" vazava pro TAB/nChat pra sempre (bug
+    //    21/08, prints do usuario).
+    // Deteccao real (SEM strict): deserializa com o parser normal (lenient, que aceita
+    // tag aberta) e extrai o texto plano - se sobrar algo com cara de tag
+    // ("<palavra:...>" ou "<palavra>"), a tag nao foi consumida de verdade, rejeita.
+    private static final java.util.regex.Pattern LEAKED_TAG =
+            java.util.regex.Pattern.compile("<[a-zA-Z_][a-zA-Z0-9_]*(:[^<>]*)?>");
+
+    private static boolean isValidMiniMessage(String input) {
+        Component parsed;
+        try {
+            parsed = MiniMessage.miniMessage().deserialize(input);
+        } catch (Exception e) {
+            return false;
+        }
+        String plain = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(parsed);
+        return !LEAKED_TAG.matcher(plain).find();
+    }
 
     private final NickManager nicks;
     private final IgnoreManager ignores;
@@ -101,9 +120,7 @@ public final class ChatCommands extends BaseCommand {
         }
         if (allowColors) {
             // garante que o nick e um MiniMessage valido antes de salvar
-            try {
-                STRICT.deserialize(nick);
-            } catch (Exception e) {
+            if (!isValidMiniMessage(nick)) {
                 ChatUtil.sendKey(player, "nick-invalid", Map.of("max", String.valueOf(maxLength)));
                 return true;
             }
@@ -152,9 +169,7 @@ public final class ChatCommands extends BaseCommand {
             ChatUtil.sendKey(player, "color-not-your-nick", Map.of("nick", plain));
             return true;
         }
-        try {
-            STRICT.deserialize(mini);
-        } catch (Exception e) {
+        if (!isValidMiniMessage(mini)) {
             ChatUtil.sendKey(player, "nick-invalid", Map.of("max", String.valueOf(plugin.getConfig().getInt("chat.nick.max-length", 16))));
             return true;
         }
@@ -190,9 +205,7 @@ public final class ChatCommands extends BaseCommand {
         String c1 = args[0];
         String c2 = args.length > 1 ? args[1] : "white";
         String prefix = "<gradient:" + c1 + ":" + c2 + ">";
-        try {
-            STRICT.deserialize(prefix + "teste");
-        } catch (Exception e) {
+        if (!isValidMiniMessage(prefix + "teste</gradient>")) {
             ChatUtil.sendKey(player, "gradient-invalid", Map.of("cor1", c1, "cor2", c2));
             return true;
         }

@@ -29,11 +29,25 @@ public final class PapiExpansion extends PlaceholderExpansion {
             .useUnusualXRepeatedCharacterHexFormat()
             .build();
 
-    // strict(true) SO pra validar - MiniMessage.miniMessage() normal e permissivo (tag
-    // com argumento invalido nao lanca excecao), entao um nick ja salvo malformado (ver
-    // ChatCommands#gradient, agora validado no save) continuava vazando o texto cru
-    // pro nChat/placar pra sempre - bug 21/08, print do usuario. Autocorrige aqui.
-    private static final MiniMessage STRICT = MiniMessage.builder().strict(true).build();
+    // ATENCAO - testado com programa Java isolado (nao confiar de olho na API):
+    // strict(true) NAO serve aqui, rejeitaria nick com tag aberta ate o fim tipo
+    // "<red>Nome" (padrao normal/valido). O bug de verdade e tag com argumento invalido
+    // (ex: <gradient:NomeDeJogador:white>) virando texto literal sem lancar excecao
+    // nenhuma. Deteccao real: deserializa (lenient) e confere se sobrou cara de tag no
+    // texto plano - autocorrige nick ja corrompido antes desse fix (bug 21/08).
+    private static final java.util.regex.Pattern LEAKED_TAG =
+            java.util.regex.Pattern.compile("<[a-zA-Z_][a-zA-Z0-9_]*(:[^<>]*)?>");
+
+    private static boolean isValidMiniMessage(String input) {
+        net.kyori.adventure.text.Component parsed;
+        try {
+            parsed = MiniMessage.miniMessage().deserialize(input);
+        } catch (Exception e) {
+            return false;
+        }
+        String plain = net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText().serialize(parsed);
+        return !LEAKED_TAG.matcher(plain).find();
+    }
 
     private final JavaPlugin plugin;
     private final NickManager nicks;
@@ -81,12 +95,10 @@ public final class PapiExpansion extends PlaceholderExpansion {
             case "nick":
             case "nickname":
                 // reset final (§r) para cor/estilo do nick nao vazarem pro suffix
-                try {
-                    STRICT.deserialize(nick);
-                    return LEGACY.serialize(MiniMessage.miniMessage().deserialize(nick)) + "§r";
-                } catch (Exception e) {
+                if (!isValidMiniMessage(nick)) {
                     return player.getName();
                 }
+                return LEGACY.serialize(MiniMessage.miniMessage().deserialize(nick)) + "§r";
             case "nick_plain":
                 return MiniMessage.miniMessage().stripTags(nick);
             case "realname":
