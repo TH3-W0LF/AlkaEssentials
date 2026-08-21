@@ -1,0 +1,142 @@
+# AlkaEssentials - Layouts de GUI (posicoes configuraveis)
+# Regras:
+#   # = borda (preenche automatico via fillBorder, com o material de menus.yml.<chave>.glass)
+#   _ = vazio (nunca preenchido, nem por borda)
+#   Letras = slots controlados pelo Java (conteudo/acao fixa) - texto/icone de cada
+#            letra fica em menus.yml (chave descritiva, nao a letra em si)
+#   0/1 = slots de lista dinamica (posicao pega via findSlots, conteudo montado em Java)
+
+alkaessentials_homes:
+  rows: 4
+  layout:
+    - "#########"
+    - "#0000000#"
+    - "#0000000#"
+    - "#########"
+  # 0=home (dinamico, usa o slot central quando vazio pra mensagem "sem homes")
+
+alkaessentials_warps:
+  rows: 4
+  layout:
+    - "#########"
+    - "#0000000#"
+    - "#0000000#"
+    - "#########"
+  # 0=warp (dinamico, usa o slot central quando vazio pra mensagem "sem warps")
+
+alkaessentials_invrestore:
+  rows: 4
+  layout:
+    - "#########"
+    - "#0000000#"
+    - "#0000000#"
+    - "#########"
+  # 0=snapshot do historico (dinamico, mais recente primeiro)
+
+alkaessentials_invrestore_preview:
+  rows: 6
+  layout:
+    - "#########"
+    - "_________"
+    - "_________"
+    - "_________"
+    - "C###K####"
+    - "#########"
+  # O conteudo do inventario (slots 0-35 + armadura/offhand) e um espelho fiel do
+  # snapshot real - nao e um "layout" de design, e a propria posicao de inventario do
+  # Minecraft, entao fica hardcoded no Java (nao faz sentido mover pro YML).
+  # C=cancelar, K=confirmar
+
+alkaessentials_worldrules:
+  rows: 4
+  layout:
+    - "#########"
+    - "#0000000#"
+    - "#0000000#"
+    - "#########"
+  # 0=mundo (dinamico)
+
+alkaessentials_worldrules_toggle:
+  rows: 5
+  layout:
+    - "V#######X"
+    - "#0000000#"
+    - "#0000000#"
+    - "#0000000#"
+    - "####T####"
+  # V=voltar, X=resetar mundo, 0=regra (dinamico), T=botao de tempo (isolado na borda
+  # de baixo pra nunca colidir com a grade de regras acima)
+
+alkaessentials_punish-types:
+  rows: 3
+  layout:
+    - "#########"
+    - "#0000000#"
+    - "#0000000#"
+  # 0=tipo de punicao (dinamico) - primeiro passo, sem botao voltar
+
+alkaessentials_punish-reasons:
+  rows: 3
+  layout:
+    - "V########"
+    - "#0000000#"
+    - "#0000000#"
+  # V=voltar (pro passo de tipo), 0=motivo (dinamico)
+
+alkaessentials_punish-durations:
+  rows: 3
+  layout:
+    - "V###X####"
+    - "#0000000#"
+    - "#000P000#"
+  # V=voltar (pro passo de motivo), X=cancelar, 0=duracao (dinamico), P=permanente
+  # (sobrescreve o slot 22 do grid depois do preenchimento dinamico, igual o original)
+
+alkaessentials_punish-confirm:
+  rows: 3
+  layout:
+    - "#########"
+    - "##C#I#X##"
+    - "#########"
+  # C=confirmar, I=info da punicao (nao clicavel), X=cancelar
+
+alkaessentials_staff:
+  rows: 3
+  layout:
+    - "#########"
+    - "#_CPFTM_#"
+    - "#########"
+  # C=limpar inventario, P=ver ping, F=congelar, T=teleportar ate o alvo, M=mute 30m
+
+alkaessentials_namecolor:
+  rows: 5
+  layout:
+    - "####V##RL"
+    - "#0000000#"
+    - "#0000000#"
+    - "#0011111#"
+    - "#########"
+  # V=preview do nick, 0=cor (dinamico, 16 cores), 1=estilo (dinamico, 5 estilos),
+  # R=resetar estilo, L=limpar cor
+
+alkaessentials_pwarp_detail:
+  rows: 4
+  layout:
+    - "#########"
+    - "#_T_F_D_#"
+    - "#_00000_#"
+    - "####V####"
+  # T=teleportar, F=favoritar, D=deletar (so aparece pro dono/admin), 0=avaliar com
+  # estrelas (dinamico, 1-5), V=voltar
+
+alkaessentials_pwarps:
+  rows: 6
+  layout:
+    - "#########"
+    - "#0000000#"
+    - "#0000000#"
+    - "#0000000#"
+    - "#_______#"
+    - "A##BMF##N"
+  # 0=warp (dinamico, usa o slot central quando vazio), A=pagina anterior, N=proxima
+  # pagina, B=aba navegar, M=aba meus, F=aba favoritos

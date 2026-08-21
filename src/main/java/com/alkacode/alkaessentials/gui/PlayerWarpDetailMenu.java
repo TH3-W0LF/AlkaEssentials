@@ -1,6 +1,7 @@
 package com.alkacode.alkaessentials.gui;
 
 import com.alkacode.alkaessentials.config.MenuConfig;
+import com.alkacode.alkaessentials.gui.layout.GuiLayoutLoader;
 import com.alkacode.alkaessentials.hook.AlkaEconomyHook;
 import com.alkacode.alkaessentials.manager.PlayerWarpManager;
 import com.alkacode.alkaessentials.model.PlayerWarp;
@@ -12,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
 import java.util.Map;
 
 /** Detalhe de um warp: teleportar (cobrando preco se houver), favoritar, avaliar
@@ -39,7 +41,9 @@ public final class PlayerWarpDetailMenu extends BaseGui {
     public void render() {
         fillBorder(MenuConfig.getInstance().item("pwarps.glass", null));
 
-        setItem(11, MenuConfig.getInstance().item("pwarps.detail.teleport",
+        GuiLayoutLoader.GuiLayout layout = GuiLayoutLoader.getInstance().getLayout("alkaessentials_pwarp_detail");
+
+        setItem(layout.firstSlot('T'), MenuConfig.getInstance().item("pwarps.detail.teleport",
                         Map.of("price", warp.price() > 0
                                 ? warp.price() + " " + warp.currency() : "Gratis")),
                 event -> teleport());
@@ -49,7 +53,7 @@ public final class PlayerWarpDetailMenu extends BaseGui {
         if (favorite) {
             favoriteItem = glow(favoriteItem);
         }
-        setItem(13, favoriteItem, event -> {
+        setItem(layout.firstSlot('F'), favoriteItem, event -> {
             warps.toggleFavorite(player.getUniqueId(), warp.id());
             ChatUtil.sendKey(player, warps.isFavorite(player.getUniqueId(), warp.id())
                     ? "pwarp-favorited" : "pwarp-unfavorited", Map.of("warp", warp.name()));
@@ -57,22 +61,22 @@ public final class PlayerWarpDetailMenu extends BaseGui {
         });
 
         Integer ownRating = warps.ownRating(warp.id(), player.getUniqueId());
-        for (int stars = 1; stars <= 5; stars++) {
-            int slot = 19 + stars;
+        List<Integer> starSlots = layout.findSlots('0');
+        for (int stars = 1; stars <= starSlots.size(); stars++) {
             ItemStack star = MenuConfig.getInstance().item("pwarps.detail.star",
                     Map.of("n", String.valueOf(stars)));
             if (ownRating != null && ownRating >= stars) {
                 star = glow(star);
             }
             int finalStars = stars;
-            setItem(slot, star, event -> {
+            setItem(starSlots.get(stars - 1), star, event -> {
                 warps.rate(warp.id(), player.getUniqueId(), finalStars);
                 ChatUtil.sendKey(player, "pwarp-rated", Map.of("warp", warp.name(), "stars", String.valueOf(finalStars)));
                 refresh();
             });
         }
 
-        setItem(31, MenuConfig.getInstance().item("pwarps.back", null),
+        setItem(layout.firstSlot('V'), MenuConfig.getInstance().item("pwarps.back", null),
                 event -> {
                     if (previous != null) {
                         previous.open();
@@ -82,7 +86,7 @@ public final class PlayerWarpDetailMenu extends BaseGui {
                 });
 
         if (warp.owner().equals(player.getUniqueId()) || player.hasPermission("alkaessentials.warps.admin")) {
-            setItem(15, MenuConfig.getInstance().item("pwarps.delete", null), event -> {
+            setItem(layout.firstSlot('D'), MenuConfig.getInstance().item("pwarps.delete", null), event -> {
                 warps.delete(warp.id());
                 ChatUtil.sendKey(player, "pwarp-deleted", Map.of("warp", warp.name()));
                 if (previous != null) {

@@ -95,6 +95,7 @@ public final class AlkaEssentials extends AlkaPlugin {
     protected void onPluginEnable() {
         MessagesConfig.init(this);
         MenuConfig.init(this);
+        com.alkacode.alkaessentials.gui.layout.GuiLayoutLoader.init(this);
         ReasonsConfig.init(this);
         EventsConfig.init(this);
 

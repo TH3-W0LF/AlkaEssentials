@@ -1,6 +1,7 @@
 package com.alkacode.alkaessentials.gui;
 
 import com.alkacode.alkaessentials.config.MenuConfig;
+import com.alkacode.alkaessentials.gui.layout.GuiLayoutLoader;
 import com.alkacode.alkaessentials.hook.AlkaEconomyHook;
 import com.alkacode.alkaessentials.manager.PlayerWarpManager;
 import com.alkacode.alkaessentials.model.PlayerWarp;
@@ -22,9 +23,6 @@ import java.util.Map;
 public final class PlayerWarpsMenu extends BaseGui {
 
     public enum Mode { BROWSE, MINE, FAVORITES }
-
-    private static final int[] SLOTS = {10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25, 28, 29, 30, 31, 32, 33, 34};
-    private static final int PAGE_SIZE = SLOTS.length;
 
     private final PlayerWarpManager warps;
     private final TeleportService teleports;
@@ -61,6 +59,10 @@ public final class PlayerWarpsMenu extends BaseGui {
     public void render() {
         fillBorder(MenuConfig.getInstance().item("pwarps.glass", null));
 
+        GuiLayoutLoader.GuiLayout layout = GuiLayoutLoader.getInstance().getLayout("alkaessentials_pwarps");
+        List<Integer> slots = layout.findSlots('0');
+        int pageSize = slots.size();
+
         List<PlayerWarp> list = switch (mode) {
             case BROWSE -> query != null && !query.isBlank()
                     ? warps.search(player, query) : warps.listVisibleTo(player);
@@ -69,30 +71,30 @@ public final class PlayerWarpsMenu extends BaseGui {
         };
 
         if (list.isEmpty()) {
-            setItem(22, MenuConfig.getInstance().item("pwarps.empty", null));
+            setItem(slots.get(slots.size() / 2), MenuConfig.getInstance().item("pwarps.empty", null));
         }
 
-        int from = page * PAGE_SIZE;
-        for (int i = 0; i < SLOTS.length && (from + i) < list.size(); i++) {
+        int from = page * pageSize;
+        for (int i = 0; i < slots.size() && (from + i) < list.size(); i++) {
             PlayerWarp warp = list.get(from + i);
-            setItem(SLOTS[i], buildIcon(warp), event ->
+            setItem(slots.get(i), buildIcon(warp), event ->
                     new PlayerWarpDetailMenu(plugin, player, warps, warp, this, teleports, economy).open());
         }
 
         if (page > 0) {
-            setItem(45, MenuConfig.getInstance().item("pwarps.prev-page", null),
+            setItem(layout.firstSlot('A'), MenuConfig.getInstance().item("pwarps.prev-page", null),
                     event -> new PlayerWarpsMenu(plugin, player, warps, teleports, economy, mode, query, page - 1).open());
         }
-        if (from + PAGE_SIZE < list.size()) {
-            setItem(53, MenuConfig.getInstance().item("pwarps.next-page", null),
+        if (from + pageSize < list.size()) {
+            setItem(layout.firstSlot('N'), MenuConfig.getInstance().item("pwarps.next-page", null),
                     event -> new PlayerWarpsMenu(plugin, player, warps, teleports, economy, mode, query, page + 1).open());
         }
 
-        setItem(48, MenuConfig.getInstance().item("pwarps.tab-browse", null),
+        setItem(layout.firstSlot('B'), MenuConfig.getInstance().item("pwarps.tab-browse", null),
                 event -> new PlayerWarpsMenu(plugin, player, warps, teleports, economy, Mode.BROWSE).open());
-        setItem(49, MenuConfig.getInstance().item("pwarps.tab-mine", null),
+        setItem(layout.firstSlot('M'), MenuConfig.getInstance().item("pwarps.tab-mine", null),
                 event -> new PlayerWarpsMenu(plugin, player, warps, teleports, economy, Mode.MINE).open());
-        setItem(50, MenuConfig.getInstance().item("pwarps.tab-favorites", null),
+        setItem(layout.firstSlot('F'), MenuConfig.getInstance().item("pwarps.tab-favorites", null),
                 event -> new PlayerWarpsMenu(plugin, player, warps, teleports, economy, Mode.FAVORITES).open());
     }
 

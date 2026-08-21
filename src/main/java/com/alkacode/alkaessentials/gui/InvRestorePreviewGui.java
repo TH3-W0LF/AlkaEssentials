@@ -2,6 +2,7 @@ package com.alkacode.alkaessentials.gui;
 
 import com.alkacode.alkaessentials.config.MenuConfig;
 import com.alkacode.alkaessentials.database.InvSnapshotRepository;
+import com.alkacode.alkaessentials.gui.layout.GuiLayoutLoader;
 import com.alkacode.alkaessentials.manager.InvRestoreManager;
 import com.alkacode.alkaessentials.util.ChatUtil;
 import com.alkacode.core.gui.BaseGui;
@@ -53,9 +54,10 @@ public final class InvRestorePreviewGui extends BaseGui {
             }
         }
 
-        setItem(45, MenuConfig.getInstance().item("invrestore.cancel", null),
+        GuiLayoutLoader.GuiLayout layout = GuiLayoutLoader.getInstance().getLayout("alkaessentials_invrestore_preview");
+        setItem(layout.firstSlot('C'), MenuConfig.getInstance().item("invrestore.cancel", null),
                 event -> new InvRestoreGui(plugin, player, invRestore, target).open());
-        setItem(49, MenuConfig.getInstance().item("invrestore.confirm",
+        setItem(layout.firstSlot('K'), MenuConfig.getInstance().item("invrestore.confirm",
                         Map.of("player", target.getName() == null ? "?" : target.getName())),
                 event -> confirm());
     }

@@ -2,6 +2,7 @@ package com.alkacode.alkaessentials.gui;
 
 import com.alkacode.alkaessentials.config.MenuConfig;
 import com.alkacode.alkaessentials.database.InvSnapshotRepository;
+import com.alkacode.alkaessentials.gui.layout.GuiLayoutLoader;
 import com.alkacode.alkaessentials.manager.InvRestoreManager;
 import com.alkacode.core.gui.BaseGui;
 import com.alkacode.core.util.TimeUtil;
@@ -17,8 +18,6 @@ import java.util.Map;
  * abre {@link InvRestorePreviewGui} pra ver o conteudo antes de restaurar de verdade. */
 public final class InvRestoreGui extends BaseGui {
 
-    private static final int[] SLOTS = {10, 11, 12, 13, 14, 15, 16, 19, 20, 21, 22, 23, 24, 25};
-
     private final InvRestoreManager invRestore;
     private final OfflinePlayer target;
 
@@ -33,19 +32,22 @@ public final class InvRestoreGui extends BaseGui {
     public void render() {
         fillBorder(MenuConfig.getInstance().item("invrestore.glass", null));
 
+        GuiLayoutLoader.GuiLayout layout = GuiLayoutLoader.getInstance().getLayout("alkaessentials_invrestore");
+        List<Integer> slots = layout.findSlots('0');
+
         List<InvSnapshotRepository.Snapshot> history = invRestore.history(target.getUniqueId());
         if (history.isEmpty()) {
-            setItem(13, MenuConfig.getInstance().item("invrestore.empty",
+            setItem(slots.get(slots.size() / 2), MenuConfig.getInstance().item("invrestore.empty",
                     Map.of("player", target.getName())));
             return;
         }
 
         long now = System.currentTimeMillis();
-        for (int i = 0; i < SLOTS.length && i < history.size(); i++) {
+        for (int i = 0; i < slots.size() && i < history.size(); i++) {
             InvSnapshotRepository.Snapshot snapshot = history.get(i);
             String when = TimeUtil.formatSeconds((now - snapshot.time()) / 1000) + " atras";
             ItemStack icon = MenuConfig.getInstance().item("invrestore.snapshot", Map.of("when", when));
-            setItem(SLOTS[i], icon, event ->
+            setItem(slots.get(i), icon, event ->
                     new InvRestorePreviewGui(plugin, player, invRestore, target, snapshot, when).open());
         }
     }

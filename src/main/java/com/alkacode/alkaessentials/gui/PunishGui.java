@@ -2,12 +2,11 @@ package com.alkacode.alkaessentials.gui;
 
 import com.alkacode.alkaessentials.config.MenuConfig;
 import com.alkacode.alkaessentials.config.ReasonsConfig;
+import com.alkacode.alkaessentials.gui.layout.GuiLayoutLoader;
 import com.alkacode.alkaessentials.manager.PunishmentManager;
 import com.alkacode.alkaessentials.model.Punishment;
 import com.alkacode.alkaessentials.util.ChatUtil;
 import com.alkacode.core.gui.BaseGui;
-import com.alkacode.core.util.ItemBuilder;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -40,8 +39,7 @@ public final class PunishGui extends BaseGui {
 
     @Override
     public void render() {
-        ItemBuilder glass = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name(" ");
-        fillBorder(glass.build());
+        fillBorder(MenuConfig.getInstance().item("punish.glass", null));
 
         switch (step) {
             case TYPE -> renderTypes();
@@ -52,82 +50,79 @@ public final class PunishGui extends BaseGui {
     }
 
     private void renderTypes() {
+        GuiLayoutLoader.GuiLayout layout = GuiLayoutLoader.getInstance().getLayout("alkaessentials_punish-types");
+        List<Integer> slots = layout.findSlots('0');
         List<String> types = ReasonsConfig.getInstance().getTypes();
-        int slot = 10;
-        for (String type : types) {
+        for (int i = 0; i < slots.size() && i < types.size(); i++) {
+            String type = types.get(i);
             String name = ReasonsConfig.getInstance().getTypeName(type);
-            setItem(slot, new ItemBuilder(Material.WRITABLE_BOOK).name(name).build(), event -> {
+            setItem(slots.get(i), MenuConfig.getInstance().item("punish.type-icon", Map.of("type", name)), event -> {
                 selectedType = type;
                 step = Step.REASON;
                 refresh();
             });
-            slot++;
-            if (slot % 9 == 8) slot += 2;
-            if (slot >= 27) break;
         }
     }
 
     private void renderReasons() {
+        GuiLayoutLoader.GuiLayout layout = GuiLayoutLoader.getInstance().getLayout("alkaessentials_punish-reasons");
+        List<Integer> slots = layout.findSlots('0');
         List<String> reasons = ReasonsConfig.getInstance().getReasons(selectedType);
-        setItem(0, MenuConfig.getInstance().item("punish.back", null), event -> {
+        setItem(layout.firstSlot('V'), MenuConfig.getInstance().item("punish.back", null), event -> {
             step = Step.TYPE;
             refresh();
         });
-        int slot = 10;
-        for (String reason : reasons) {
-            setItem(slot, new ItemBuilder(Material.PAPER).name("<white>" + reason).build(), event -> {
+        for (int i = 0; i < slots.size() && i < reasons.size(); i++) {
+            String reason = reasons.get(i);
+            setItem(slots.get(i), MenuConfig.getInstance().item("punish.reason-icon", Map.of("reason", reason)), event -> {
                 selectedReason = reason;
                 step = selectedType.toLowerCase().contains("temp") ? Step.DURATION : Step.CONFIRM;
                 refresh();
             });
-            slot++;
-            if (slot % 9 == 8) slot += 2;
-            if (slot >= 27) break;
         }
     }
 
     private void renderDurations() {
-        setItem(0, MenuConfig.getInstance().item("punish.back", null), event -> {
+        GuiLayoutLoader.GuiLayout layout = GuiLayoutLoader.getInstance().getLayout("alkaessentials_punish-durations");
+        List<Integer> slots = layout.findSlots('0');
+        setItem(layout.firstSlot('V'), MenuConfig.getInstance().item("punish.back", null), event -> {
             step = Step.REASON;
             refresh();
         });
         List<String> durations = ReasonsConfig.getInstance().getDurations();
-        int slot = 10;
-        for (String duration : durations) {
-            setItem(slot, new ItemBuilder(Material.CLOCK).name("<gold>" + duration).build(), event -> {
+        for (int i = 0; i < slots.size() && i < durations.size(); i++) {
+            String duration = durations.get(i);
+            setItem(slots.get(i), MenuConfig.getInstance().item("punish.duration-icon", Map.of("duration", duration)), event -> {
                 selectedDuration = duration;
                 step = Step.CONFIRM;
                 refresh();
             });
-            slot++;
-            if (slot % 9 == 8) slot += 2;
-            if (slot >= 27) break;
         }
-        // Permanente + cancelar
-        setItem(22, new ItemBuilder(Material.NETHER_STAR).name("<white>Permanente").build(), event -> {
+        // Permanente + cancelar (sobrescrevem slots do grid, igual o comportamento original)
+        setItem(layout.firstSlot('P'), MenuConfig.getInstance().item("punish.permanent", null), event -> {
             selectedDuration = null;
             step = Step.CONFIRM;
             refresh();
         });
-        setItem(4, new ItemBuilder(Material.BARRIER).name("<red>Cancelar").build(),
+        setItem(layout.firstSlot('X'), MenuConfig.getInstance().item("punish.cancel", null),
                 event -> player.closeInventory());
     }
 
     private void renderConfirm() {
-        ItemStack info = new ItemBuilder(Material.PAPER)
-                .name("<gold>Confirmar punicao")
-                .lore("<gray>Alvo: <white>" + target.getName())
-                .lore("<red>Tipo: <white>" + selectedType)
-                .lore("<white>Motivo: " + selectedReason)
-                .lore(selectedDuration != null ? "<gold>Duracao: " + selectedDuration : "<white>Duracao: Permanente")
-                .build();
-        setItem(13, info);
+        GuiLayoutLoader.GuiLayout layout = GuiLayoutLoader.getInstance().getLayout("alkaessentials_punish-confirm");
+        ItemStack info = MenuConfig.getInstance().item("punish.info", Map.of(
+                "player", target.getName(),
+                "type", selectedType,
+                "reason", selectedReason,
+                "duration", selectedDuration != null ? "<gold>Duracao: " + selectedDuration : "<white>Duracao: Permanente"
+        ));
+        setItem(layout.firstSlot('I'), info);
 
-        setItem(11, new ItemBuilder(Material.GREEN_DYE).name("<green>Confirmar").build(), event -> {
+        setItem(layout.firstSlot('C'), MenuConfig.getInstance().item("punish.confirm", null), event -> {
             apply();
             player.closeInventory();
         });
-        setItem(15, new ItemBuilder(Material.BARRIER).name("<red>Cancelar").build(),
+        setItem(layout.firstSlot('X'), MenuConfig.getInstance().item("punish.cancel", null),
                 event -> player.closeInventory());
     }
 

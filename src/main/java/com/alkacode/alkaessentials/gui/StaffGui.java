@@ -1,12 +1,11 @@
 package com.alkacode.alkaessentials.gui;
 
 import com.alkacode.alkaessentials.config.MenuConfig;
+import com.alkacode.alkaessentials.gui.layout.GuiLayoutLoader;
 import com.alkacode.alkaessentials.manager.ModerationManager;
 import com.alkacode.alkaessentials.manager.PunishmentManager;
 import com.alkacode.alkaessentials.util.ChatUtil;
 import com.alkacode.core.gui.BaseGui;
-import com.alkacode.core.util.ItemBuilder;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -30,31 +29,21 @@ public final class StaffGui extends BaseGui {
 
     @Override
     public void render() {
-        ItemBuilder glass = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name(" ");
-        fillBorder(glass.build());
+        fillBorder(MenuConfig.getInstance().item("staff.glass", null));
 
-        // slot 11: limpar inventario
-        setItem(11, new ItemBuilder(Material.BARREL)
-                .name("<gold>Limpar Inventario")
-                .lore("<gray>Remove todos os itens de " + target.getName())
-                .build(), event -> {
+        GuiLayoutLoader.GuiLayout layout = GuiLayoutLoader.getInstance().getLayout("alkaessentials_staff");
+        Map<String, String> ph = Map.of("player", target.getName());
+
+        setItem(layout.firstSlot('C'), MenuConfig.getInstance().item("staff.clear", ph), event -> {
             target.getInventory().clear();
             ChatUtil.sendKey(player, "staff-action-cleared", Map.of("player", target.getName()));
         });
 
-        // slot 12: ver ping
-        setItem(12, new ItemBuilder(Material.CLOCK)
-                .name("<gold>Ver Ping")
-                .lore("<gray>Latencia de " + target.getName())
-                .build(), event ->
+        setItem(layout.firstSlot('P'), MenuConfig.getInstance().item("staff.ping", ph), event ->
                 ChatUtil.sendKey(player, "staff-action-ping",
                         Map.of("player", target.getName(), "ping", String.valueOf(target.getPing()))));
 
-        // slot 13: congelar
-        setItem(13, new ItemBuilder(Material.ICE)
-                .name("<aqua>Congelar")
-                .lore("<gray>Congela/descongela " + target.getName())
-                .build(), event -> {
+        setItem(layout.firstSlot('F'), MenuConfig.getInstance().item("staff.freeze", ph), event -> {
             boolean frozen = moderation.toggleFrozen(target.getUniqueId());
             ChatUtil.sendKey(player, frozen ? "freeze-on" : "freeze-off", Map.of("player", target.getName()));
             if (frozen) {
@@ -62,17 +51,10 @@ public final class StaffGui extends BaseGui {
             }
         });
 
-        // slot 14: teleportar ate ele
-        setItem(14, new ItemBuilder(Material.ENDER_PEARL)
-                .name("<gold>Teleportar")
-                .lore("<gray>Vai ate " + target.getName())
-                .build(), event -> player.teleport(target.getLocation()));
+        setItem(layout.firstSlot('T'), MenuConfig.getInstance().item("staff.teleport", ph),
+                event -> player.teleport(target.getLocation()));
 
-        // slot 15: mute 30m
-        setItem(15, new ItemBuilder(Material.REDSTONE_TORCH)
-                .name("<red>Mutar (30m)")
-                .lore("<gray>Silencia " + target.getName() + " por 30 minutos")
-                .build(), event -> {
+        setItem(layout.firstSlot('M'), MenuConfig.getInstance().item("staff.mute", ph), event -> {
             punishments.apply(target.getUniqueId(), target.getName(), "TEMPMUTE", "Punido pela staff",
                     "", player.getName(), "30m");
             ChatUtil.sendKey(player, "punish-applied", Map.of("player", target.getName()));

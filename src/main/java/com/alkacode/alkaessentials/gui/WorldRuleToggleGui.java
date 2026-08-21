@@ -1,6 +1,7 @@
 package com.alkacode.alkaessentials.gui;
 
 import com.alkacode.alkaessentials.config.MenuConfig;
+import com.alkacode.alkaessentials.gui.layout.GuiLayoutLoader;
 import com.alkacode.alkaessentials.manager.WorldRulesManager;
 import com.alkacode.core.gui.BaseGui;
 import com.alkacode.core.util.ItemBuilder;
@@ -29,19 +30,22 @@ public final class WorldRuleToggleGui extends BaseGui {
 
     @Override
     public void render() {
-        ItemBuilder glass = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name(" ");
-        fillBorder(glass.build());
+        fillBorder(MenuConfig.getInstance().item("worldrules.glass", null));
 
-        setItem(0, MenuConfig.getInstance().item("worldrules.back", null), event ->
+        GuiLayoutLoader.GuiLayout layout = GuiLayoutLoader.getInstance().getLayout("alkaessentials_worldrules_toggle");
+
+        setItem(layout.firstSlot('V'), MenuConfig.getInstance().item("worldrules.back", null), event ->
                 new WorldRulesGui(plugin, player, rules).open());
-        setItem(8, MenuConfig.getInstance().item("worldrules.reset", null), event -> {
+        setItem(layout.firstSlot('X'), MenuConfig.getInstance().item("worldrules.reset", null), event -> {
             rules.resetWorld(world);
             refresh();
         });
 
         ConfigurationSection section = MenuConfig.getInstance().getYaml().getConfigurationSection("worldrules.rules");
-        int slot = 10;
+        List<Integer> ruleSlots = layout.findSlots('0');
+        int index = 0;
         for (String rule : WorldRulesManager.RULES) {
+            if (index >= ruleSlots.size()) break;
             boolean enabled = rules.getRule(world, rule);
             ConfigurationSection ruleSection = section != null ? section.getConfigurationSection(rule) : null;
             String name = ruleSection != null ? ruleSection.getString("name", rule) : rule;
@@ -55,13 +59,11 @@ public final class WorldRuleToggleGui extends BaseGui {
                     .name(name)
                     .lore(String.join("\n", lore))
                     .build();
-            setItem(slot, item, event -> {
+            setItem(ruleSlots.get(index), item, event -> {
                 rules.setRule(world, rule, !enabled);
                 refresh();
             });
-            slot++;
-            if (slot % 9 == 8) slot += 2;
-            if (slot >= 36) break;
+            index++;
         }
 
         // botao de tempo (cicla: normal -> dia -> travado(dia) -> noite -> travado(noite) -> normal)
@@ -76,7 +78,7 @@ public final class WorldRuleToggleGui extends BaseGui {
                 .name(timeName)
                 .lore(String.join("\n", timeLore))
                 .build();
-        setItem(40, timeItem, event -> {
+        setItem(layout.firstSlot('T'), timeItem, event -> {
             rules.nextTimeMode(world);
             refresh();
         });

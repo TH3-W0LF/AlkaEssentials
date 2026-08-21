@@ -45,13 +45,67 @@ staff:
   glass:
     material: GRAY_STAINED_GLASS_PANE
     name: " "
+  clear:
+    material: BARREL
+    name: "<gold>Limpar Inventario"
+    lore:
+      - "<gray>Remove todos os itens de {player}"
+  ping:
+    material: CLOCK
+    name: "<gold>Ver Ping"
+    lore:
+      - "<gray>Latencia de {player}"
+  freeze:
+    material: ICE
+    name: "<aqua>Congelar"
+    lore:
+      - "<gray>Congela/descongela {player}"
+  teleport:
+    material: ENDER_PEARL
+    name: "<gold>Teleportar"
+    lore:
+      - "<gray>Vai ate {player}"
+  mute:
+    material: REDSTONE_TORCH
+    name: "<red>Mutar (30m)"
+    lore:
+      - "<gray>Silencia {player} por 30 minutos"
 
 # ------------------------- GUI de Punição -------------------------
 punish:
   title: "<gradient:#FFD700:#FF8C00>Punir {player}"
+  glass:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
   back:
     material: ARROW
     name: "<gray>Voltar"
+  type-icon:
+    material: WRITABLE_BOOK
+    name: "{type}"
+  reason-icon:
+    material: PAPER
+    name: "<white>{reason}"
+  duration-icon:
+    material: CLOCK
+    name: "<gold>{duration}"
+  permanent:
+    material: NETHER_STAR
+    name: "<white>Permanente"
+  cancel:
+    material: BARRIER
+    name: "<red>Cancelar"
+  info:
+    material: PAPER
+    name: "<gold>Confirmar punicao"
+    lore:
+      - "<gray>Alvo: <white>{player}"
+      - "<red>Tipo: <white>{type}"
+      - "<white>Motivo: {reason}"
+      - "{duration}"
+  confirm:
+    material: GREEN_DYE
+    name: "<green>Confirmar"
 
 # ------------------------- GUI de Regras do Mundo -------------------------
 worldrules:
@@ -115,6 +169,11 @@ worldrules:
     phantoms:
       name: "<light_purple>Phantoms"
       icon: PHANTOM_MEMBRANE
+  world:
+    material: MAP
+    name: "<gold>{world}"
+    lore:
+      - "<gray>Clique para editar as regras"
   time:
     material: CLOCK
     normal:
@@ -129,6 +188,86 @@ worldrules:
       name: "<blue>Tempo: Travado 🌙"
     lore:
       - "<gray>Clique para alternar"
+
+# ------------------------- GUI de Cor do Nick (/namecolor) -------------------------
+namecolor:
+  title: "<gradient:#FFD700:#FF8C00>Cor do Nick"
+  glass:
+    material: GRAY_STAINED_GLASS_PANE
+    name: " "
+  preview:
+    material: NAME_TAG
+  reset-style:
+    material: WHITE_DYE
+    name: "<white>Resetar Estilo"
+    lore:
+      - "<gray>Remove bold/italic/underline/etc. do seu nick"
+  clear-color:
+    material: BARRIER
+    name: "<red>Limpar cor"
+    lore:
+      - "<gray>Remove a cor e o estilo do seu nick"
+  style-material: BOOK
+  colors:
+    - id: red
+      tag: "<red>"
+      material: RED_DYE
+    - id: dark_red
+      tag: "<dark_red>"
+      material: BROWN_DYE
+    - id: gold
+      tag: "<gold>"
+      material: ORANGE_DYE
+    - id: yellow
+      tag: "<yellow>"
+      material: YELLOW_DYE
+    - id: green
+      tag: "<green>"
+      material: LIME_DYE
+    - id: dark_green
+      tag: "<dark_green>"
+      material: GREEN_DYE
+    - id: aqua
+      tag: "<aqua>"
+      material: LIGHT_BLUE_DYE
+    - id: dark_aqua
+      tag: "<dark_aqua>"
+      material: CYAN_DYE
+    - id: blue
+      tag: "<blue>"
+      material: BLUE_DYE
+    - id: dark_blue
+      tag: "<dark_blue>"
+      material: BLUE_DYE
+    - id: light_purple
+      tag: "<light_purple>"
+      material: MAGENTA_DYE
+    - id: dark_purple
+      tag: "<dark_purple>"
+      material: PURPLE_DYE
+    - id: gray
+      tag: "<gray>"
+      material: LIGHT_GRAY_DYE
+    - id: dark_gray
+      tag: "<dark_gray>"
+      material: GRAY_DYE
+    - id: white
+      tag: "<white>"
+      material: WHITE_DYE
+    - id: black
+      tag: "<black>"
+      material: BLACK_DYE
+  styles:
+    - id: bold
+      tag: "<bold>"
+    - id: italic
+      tag: "<italic>"
+    - id: underline
+      tag: "<underline>"
+    - id: strikethrough
+      tag: "<strikethrough>"
+    - id: obfuscated
+      tag: "<obfuscated>"
 
 # ------------------------- GUI de InvRestore -------------------------
 invrestore:

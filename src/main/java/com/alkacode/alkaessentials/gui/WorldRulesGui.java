@@ -1,13 +1,15 @@
 package com.alkacode.alkaessentials.gui;
 
 import com.alkacode.alkaessentials.config.MenuConfig;
+import com.alkacode.alkaessentials.gui.layout.GuiLayoutLoader;
 import com.alkacode.alkaessentials.manager.WorldRulesManager;
 import com.alkacode.core.gui.BaseGui;
-import com.alkacode.core.util.ItemBuilder;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.List;
+import java.util.Map;
 
 /** Selecao do mundo pra editar as regras. */
 public final class WorldRulesGui extends BaseGui {
@@ -22,17 +24,16 @@ public final class WorldRulesGui extends BaseGui {
 
     @Override
     public void render() {
-        ItemBuilder glass = new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE).name(" ");
-        fillBorder(glass.build());
+        fillBorder(MenuConfig.getInstance().item("worldrules.glass", null));
 
-        int slot = 10;
-        for (World world : rules.getWorlds().values()) {
-            setItem(slot, new ItemBuilder(Material.MAP).name("<gold>" + world.getName())
-                    .lore("<gray>Clique para editar as regras").build(), event ->
-                    new WorldRuleToggleGui(plugin, player, rules, world).open());
-            slot++;
-            if (slot % 9 == 8) slot += 2;
-            if (slot >= 27) break;
+        GuiLayoutLoader.GuiLayout layout = GuiLayoutLoader.getInstance().getLayout("alkaessentials_worldrules");
+        List<Integer> slots = layout.findSlots('0');
+
+        List<World> worlds = List.copyOf(rules.getWorlds().values());
+        for (int i = 0; i < slots.size() && i < worlds.size(); i++) {
+            World world = worlds.get(i);
+            setItem(slots.get(i), MenuConfig.getInstance().item("worldrules.world", Map.of("world", world.getName())),
+                    event -> new WorldRuleToggleGui(plugin, player, rules, world).open());
         }
     }
 }

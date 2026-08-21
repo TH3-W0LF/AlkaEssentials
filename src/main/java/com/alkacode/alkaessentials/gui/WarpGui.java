@@ -1,6 +1,7 @@
 package com.alkacode.alkaessentials.gui;
 
 import com.alkacode.alkaessentials.config.MenuConfig;
+import com.alkacode.alkaessentials.gui.layout.GuiLayoutLoader;
 import com.alkacode.alkaessentials.manager.LocationStore;
 import com.alkacode.alkaessentials.model.Warp;
 import com.alkacode.alkaessentials.service.TeleportService;
@@ -29,31 +30,27 @@ public final class WarpGui extends BaseGui {
         ItemStack glass = MenuConfig.getInstance().item("warps.glass", null);
         fillBorder(glass);
 
+        GuiLayoutLoader.GuiLayout layout = GuiLayoutLoader.getInstance().getLayout("alkaessentials_warps");
+        List<Integer> slots = layout.findSlots('0');
+
         List<Warp> accessible = locations.getWarps().values().stream()
                 .filter(w -> !w.hasPermission() || player.hasPermission(w.getPermission()))
                 .toList();
 
         if (accessible.isEmpty()) {
-            setItem(13, MenuConfig.getInstance().item("warps.empty", null));
+            setItem(slots.get(slots.size() / 2), MenuConfig.getInstance().item("warps.empty", null));
             return;
         }
 
-        int slot = 10;
-        for (Warp warp : accessible) {
+        for (int i = 0; i < slots.size() && i < accessible.size(); i++) {
+            Warp warp = accessible.get(i);
             ItemStack item = MenuConfig.getInstance().item("warps.warp", Map.of("warp", warp.getName()));
-            setItem(slot, item, event -> {
+            setItem(slots.get(i), item, event -> {
                 if (warp.getLocation() != null) {
                     teleports.teleport(player, warp.getLocation(), "warp", true,
                             "warp-teleported", Map.of("warp", warp.getName()));
                 }
             });
-            slot++;
-            if (slot % 9 == 8) {
-                slot += 2;
-            }
-            if (slot >= 27) {
-                break;
-            }
         }
     }
 }
