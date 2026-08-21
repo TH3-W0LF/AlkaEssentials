@@ -113,6 +113,7 @@ public final class NameColorGui extends BaseGui {
             apply();
             refresh();
         });
+        setItem(layout.firstSlot('G'), MenuConfig.getInstance().item("namecolor.gradient-info", null));
         setItem(layout.firstSlot('L'), MenuConfig.getInstance().item("namecolor.clear-color", null), event -> {
             selectedColor = "";
             activeStyles.clear();

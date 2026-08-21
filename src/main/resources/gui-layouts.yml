@@ -111,13 +111,14 @@ alkaessentials_staff:
 alkaessentials_namecolor:
   rows: 5
   layout:
-    - "####V##RL"
+    - "####V#GRL"
     - "#0000000#"
     - "#0000000#"
     - "#0011111#"
     - "#########"
   # V=preview do nick, 0=cor (dinamico, 16 cores), 1=estilo (dinamico, 5 estilos),
-  # R=resetar estilo, L=limpar cor
+  # R=resetar estilo, L=limpar cor, G=aviso do /gradient (so lore, sem cor no menu
+  # ainda - ver [[project-alkaflair]]/pedido do usuario 21/08)
 
 alkaessentials_pwarp_detail:
   rows: 4

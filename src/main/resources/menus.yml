@@ -207,6 +207,16 @@ namecolor:
     name: "<red>Limpar cor"
     lore:
       - "<gray>Remove a cor e o estilo do seu nick"
+  gradient-info:
+    material: END_CRYSTAL
+    name: "<gradient:#FF7200:#FA0000>Quer um gradiente?"
+    lore:
+      - "<gray>Digite no chat:"
+      - "<white>/gradient <cor1> [cor2]"
+      - ""
+      - "<gray>Exemplo:"
+      - "<gradient:#FF7200:#FA0000>MestreBR</gradient>"
+      - "<white>/gradient #FF7200 #FA0000"
   style-material: BOOK
   colors:
     - id: red
