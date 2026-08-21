@@ -237,7 +237,7 @@ public final class AlkaEssentials extends AlkaPlugin {
         register(new ModerationCommands(this, moderation, maintenance, punishments, vanishHandler),
                 "vanish", "socialspy", "commandspy", "maintenance", "staff");
         register(new ChatCommands(this, nicks, ignores, genders, tabHook),
-                "nick", "color", "namecolor", "gradient", "genero", "realname", "whois",
+                "nick", "color", "namecolor", "gradient", "converter", "genero", "realname", "whois",
                 "ignore", "clearchat", "broadcast", "discord", "site", "loja", "regras");
         register(new WorldRulesCommand(this, worldRules), "worldrules");
         register(new AdminCommands(this),

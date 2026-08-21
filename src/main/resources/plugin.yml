@@ -191,6 +191,9 @@ commands:
   gradient:
     description: Aplica um gradiente ao seu nick (2 ou mais cores).
     usage: /<command> <cor1> <cor2> [cor3] [cor4]...
+  converter:
+    description: Converte uma tag <gradient:...>texto</gradient> colada (de gerador externo) no comando /gradient equivalente.
+    usage: /<command> <gradient:...>texto</gradient>
   genero:
     description: Define seu genero (M/F), exibido no TAB.
     usage: /<command> <M|F>

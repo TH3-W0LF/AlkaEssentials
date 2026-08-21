@@ -71,6 +71,7 @@ public final class ChatCommands extends BaseCommand {
             case "color": return color(sender, args);
             case "namecolor": return nameColor(sender, args);
             case "gradient": return gradient(sender, args);
+            case "converter": return converter(sender, args);
             case "genero": return genero(sender, args);
             case "realname":
             case "whois": return realname(sender, args);
@@ -213,6 +214,53 @@ public final class ChatCommands extends BaseCommand {
         nicks.applyColorToNick(player, prefix);
         tabHook.apply(player);
         ChatUtil.sendKey(player, "gradient-applied");
+        return true;
+    }
+
+    // Pega uma tag <gradient:c1:c2:...>texto</gradient> COLADA (de gerador externo tipo
+    // webminecraft.com/gradient) e devolve as cores + o comando /gradient equivalente -
+    // resolve a confusao de "colei a tag inteira no /gradient e deu invalido" (pedido do
+    // usuario 21/08, ver bug do "/gradient <gradient:...>" digitado direto). [^>]+ pro
+    // bloco de cores (hex OU nome, mais permissivo que so hex) - '>' nunca aparece dentro
+    // da lista de cores, entao e seguro parar ali.
+    private static final java.util.regex.Pattern GRADIENT_TAG =
+            java.util.regex.Pattern.compile("<gradient:([^>]+)>(.*?)</gradient>", java.util.regex.Pattern.CASE_INSENSITIVE);
+
+    /** /converter <tag colada> - so traduz, nao aplica nada sozinho (o jogador roda o
+     * /gradient que aparecer na resposta). */
+    private boolean converter(CommandSender sender, String[] args) {
+        Player player = asPlayer(sender);
+        if (player == null) return true;
+        if (args.length < 1) return false;
+        String input = String.join(" ", args);
+
+        java.util.regex.Matcher matcher = GRADIENT_TAG.matcher(input);
+        if (!matcher.find()) {
+            ChatUtil.sendKey(player, "converter-not-found");
+            return true;
+        }
+
+        List<String> cores = new java.util.ArrayList<>();
+        for (String cor : matcher.group(1).split(":")) {
+            if (!cor.isBlank()) {
+                cores.add(cor.trim());
+            }
+        }
+        if (cores.size() < 2) {
+            ChatUtil.sendKey(player, "converter-not-found");
+            return true;
+        }
+
+        // confirma que as cores extraidas realmente formam um gradiente valido antes de
+        // sugerir o comando - mesma checagem de isValidMiniMessage() usada no /gradient.
+        String rebuilt = "<gradient:" + String.join(":", cores) + ">teste</gradient>";
+        if (!isValidMiniMessage(rebuilt)) {
+            ChatUtil.sendKey(player, "converter-not-found");
+            return true;
+        }
+
+        String comando = "/gradient " + String.join(" ", cores);
+        ChatUtil.sendKey(player, "converter-result", Map.of("player", player.getName(), "comando", comando));
         return true;
     }
 
