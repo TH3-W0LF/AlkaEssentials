@@ -31,7 +31,7 @@ public final class PunishGui extends BaseGui {
     private String selectedDuration;
 
     public PunishGui(JavaPlugin plugin, Player staff, Player target, PunishmentManager punishments) {
-        super(plugin, staff, MenuConfig.getInstance().title("punish", Map.of("player", target.getName())),
+        super(plugin, staff, MenuConfig.getInstance().title("punish.title", Map.of("player", target.getName())),
                 3, "alkaessentials_punish");
         this.target = target;
         this.punishments = punishments;

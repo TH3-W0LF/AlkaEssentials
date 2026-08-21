@@ -21,7 +21,7 @@ public final class HomeGui extends BaseGui {
     private final TeleportService teleports;
 
     public HomeGui(JavaPlugin plugin, Player player, HomeManager homes, TeleportService teleports) {
-        super(plugin, player, MenuConfig.getInstance().title("homes", null), 4, "alkaessentials_homes");
+        super(plugin, player, MenuConfig.getInstance().title("homes.title", null), 4, "alkaessentials_homes");
         this.homes = homes;
         this.teleports = teleports;
     }

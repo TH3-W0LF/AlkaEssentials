@@ -20,7 +20,7 @@ public final class WarpGui extends BaseGui {
     private final TeleportService teleports;
 
     public WarpGui(JavaPlugin plugin, Player player, LocationStore locations, TeleportService teleports) {
-        super(plugin, player, MenuConfig.getInstance().title("warps", null), 4, "alkaessentials_warps");
+        super(plugin, player, MenuConfig.getInstance().title("warps.title", null), 4, "alkaessentials_warps");
         this.locations = locations;
         this.teleports = teleports;
     }

@@ -20,7 +20,7 @@ public final class StaffGui extends BaseGui {
 
     public StaffGui(JavaPlugin plugin, Player staff, Player target,
                     ModerationManager moderation, PunishmentManager punishments) {
-        super(plugin, staff, MenuConfig.getInstance().title("staff", Map.of("player", target.getName())),
+        super(plugin, staff, MenuConfig.getInstance().title("staff.title", Map.of("player", target.getName())),
                 3, "alkaessentials_staff");
         this.target = target;
         this.moderation = moderation;
