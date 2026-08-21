@@ -320,3 +320,21 @@ chat:
     enabled: true
     sound: "BLOCK_NOTE_BLOCK_PLING"
     highlight: "<gold><bold>"
+
+# ------------------------- Visual do TAB (21/08) -------------------------
+# Cores dos placeholders %alkaessentials_genero%/%alkaessentials_mcmmo_colored%
+# (ver PapiExpansion) - qualquer tag MiniMessage vale aqui: cor solida (<blue>), hex
+# (<#5555FF>) ou gradiente (<gradient:#5555FF:#AA00FF>), tudo converte pra codigo
+# legado real (§) igual o resto do ecossistema.
+tablist-visual:
+  genero:
+    m: "<blue>"
+    f: "<light_purple>"
+  # mcmmo-tiers: nivel MINIMO -> cor. O maior nivel-minimo <= power level do jogador
+  # e o que vale (ex: nivel 25 usa a cor de "20", nao a de "30"). Precisa do mcMMO
+  # instalado - sem ele, %alkaessentials_mcmmo_colored% fica vazio.
+  mcmmo-tiers:
+    "0": "<gray>"
+    "10": "<green>"
+    "20": "<aqua>"
+    "30": "<gradient:#5555FF:#AA00FF>"

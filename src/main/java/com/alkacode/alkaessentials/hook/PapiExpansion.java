@@ -13,7 +13,8 @@ import org.bukkit.plugin.java.JavaPlugin;
  *   %alkaessentials_nick%        -> nick do jogador (codigos legado § reais, para nChat/TAB/placar)
  *   %alkaessentials_nick_plain%  -> nick sem cores
  *   %alkaessentials_realname%    -> nome real
- *   %alkaessentials_genero%      -> "M"/"F" colorido (§9M/§dF), vazio se nunca setado (/genero)
+ *   %alkaessentials_genero%        -> "M"/"F" colorido (config tablist-visual.genero), vazio se nunca setado (/genero)
+ *   %alkaessentials_mcmmo_colored% -> power level do mcMMO colorido por faixa (config tablist-visual.mcmmo-tiers), vazio sem mcMMO
  * Registrada apenas quando o PlaceholderAPI esta instalado.
  */
 public final class PapiExpansion extends PlaceholderExpansion {
@@ -61,6 +62,9 @@ public final class PapiExpansion extends PlaceholderExpansion {
         if ("genero".equalsIgnoreCase(params)) {
             return generoSymbol(genders.get(player.getUniqueId()));
         }
+        if ("mcmmo_colored".equalsIgnoreCase(params)) {
+            return mcmmoColored(player);
+        }
 
         String nick = nicks.getNick(player.getUniqueId());
         if (nick == null) {
@@ -81,15 +85,52 @@ public final class PapiExpansion extends PlaceholderExpansion {
         }
     }
 
-    /** Simbolo colorido pro TAB/chat - M azul, F rosa (recomendado 21/08, aprovado pelo
-     * usuario). Vazio se o jogador nunca setou (/genero ainda nao tem GUI, so comando). */
+    /** Simbolo colorido pro TAB/chat - cor vem de tablist-visual.genero.<m|f> no
+     * config.yml (qualquer tag MiniMessage: solida, hex ou gradiente). Vazio se o
+     * jogador nunca setou (/genero ainda nao tem GUI, so comando). */
     private String generoSymbol(GenderManager.Gender gender) {
         if (gender == null) {
             return "";
         }
-        return switch (gender) {
-            case M -> "§9M§r";
-            case F -> "§dF§r";
-        };
+        String path = "tablist-visual.genero." + gender.name().toLowerCase();
+        String defaultColor = gender == GenderManager.Gender.M ? "<blue>" : "<light_purple>";
+        String color = plugin.getConfig().getString(path, defaultColor);
+        return colorize(color + gender.name());
+    }
+
+    /** %mcmmo_power_level% (placeholder oficial da expansion do proprio mcMMO) colorido
+     * por faixa - tablist-visual.mcmmo-tiers no config.yml, chave = nivel MINIMO da
+     * faixa, valor = tag MiniMessage. Usa o maior nivel-minimo <= power level do
+     * jogador. Vazio se o mcMMO/sua expansion de PAPI nao estiver instalado (o
+     * PlaceholderAPI devolve o texto do placeholder sem resolver nesse caso). */
+    private String mcmmoColored(Player player) {
+        String raw = me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(player, "%mcmmo_power_level%");
+        int level;
+        try {
+            level = Integer.parseInt(raw.trim());
+        } catch (NumberFormatException e) {
+            return "";
+        }
+        org.bukkit.configuration.ConfigurationSection tiers =
+                plugin.getConfig().getConfigurationSection("tablist-visual.mcmmo-tiers");
+        String color = "<white>";
+        if (tiers != null) {
+            int bestThreshold = Integer.MIN_VALUE;
+            for (String key : tiers.getKeys(false)) {
+                try {
+                    int threshold = Integer.parseInt(key);
+                    if (threshold <= level && threshold > bestThreshold) {
+                        bestThreshold = threshold;
+                        color = tiers.getString(key, color);
+                    }
+                } catch (NumberFormatException ignored) {
+                }
+            }
+        }
+        return colorize(color + level);
+    }
+
+    private String colorize(String miniMessage) {
+        return LEGACY.serialize(MiniMessage.miniMessage().deserialize("<!i>" + miniMessage)) + "§r";
     }
 }
