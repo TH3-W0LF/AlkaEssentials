@@ -17,6 +17,13 @@ import org.bukkit.entity.Player;
  */
 public final class TabHook {
 
+    // strict(true) SO pra validar - o MiniMessage.miniMessage() normal e permissivo
+    // (tag com argumento invalido nao lanca excecao, so devolve o texto cru), entao o
+    // catch abaixo nunca disparava de verdade pra nicks ja salvos malformados (ver
+    // ChatCommands#gradient, agora validado no save) - autocorrige no proximo render
+    // em vez de continuar vazando o texto cru pro TAB (bug 21/08, print do usuario).
+    private static final MiniMessage STRICT = MiniMessage.builder().strict(true).build();
+
     private final NickManager nicks;
     private final boolean present;
     private PlayerPlaceholder nickPlaceholder;
@@ -77,6 +84,7 @@ public final class TabHook {
             return player.getName();
         }
         try {
+            STRICT.deserialize(nick);
             return LegacyComponentSerializer.legacySection().serialize(MiniMessage.miniMessage().deserialize(nick)) + "§r";
         } catch (Exception e) {
             return player.getName();

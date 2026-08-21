@@ -21,6 +21,16 @@ import java.util.UUID;
 /** Comandos de chat/social: /nick, /realname, /ignore, /clearchat, /broadcast, /discord, /site, /loja, /regras. */
 public final class ChatCommands extends BaseCommand {
 
+    // MiniMessage.miniMessage() (o parser normal, usado pra deserializar de verdade)
+    // e PERMISSIVO: tag com argumento invalido (ex: <gradient:NomeDeJogador:white>,
+    // cor que nao existe) NAO lanca excecao - so devolve o texto cru da tag como
+    // Component literal. Isso deixava /nick, /color e /gradient salvarem lixo tipo
+    // "<gradient:MestreBR:white>MestreBR" que vazava pro TAB/nChat inteiros (bug
+    // 21/08, prints do usuario). strict(true) faz validar de verdade e lancar
+    // excecao em tag malformada - usado SO pra validar antes de salvar, nao pra
+    // deserializar de verdade (isso continua com o parser normal).
+    private static final MiniMessage STRICT = MiniMessage.builder().strict(true).build();
+
     private final NickManager nicks;
     private final IgnoreManager ignores;
     private final GenderManager genders;
@@ -92,7 +102,7 @@ public final class ChatCommands extends BaseCommand {
         if (allowColors) {
             // garante que o nick e um MiniMessage valido antes de salvar
             try {
-                MiniMessage.miniMessage().deserialize(nick);
+                STRICT.deserialize(nick);
             } catch (Exception e) {
                 ChatUtil.sendKey(player, "nick-invalid", Map.of("max", String.valueOf(maxLength)));
                 return true;
@@ -143,7 +153,7 @@ public final class ChatCommands extends BaseCommand {
             return true;
         }
         try {
-            MiniMessage.miniMessage().deserialize(mini);
+            STRICT.deserialize(mini);
         } catch (Exception e) {
             ChatUtil.sendKey(player, "nick-invalid", Map.of("max", String.valueOf(plugin.getConfig().getInt("chat.nick.max-length", 16))));
             return true;
@@ -166,7 +176,11 @@ public final class ChatCommands extends BaseCommand {
         return true;
     }
 
-    /** /gradient <cor1> [cor2] - aplica gradiente ao proprio nick. */
+    /** /gradient <cor1> [cor2] - aplica gradiente ao proprio nick. Valida que as cores
+     * existem de verdade antes de salvar - c1/c2 vem direto do jogador (nome de cor
+     * errado, ex "/gradient MestreBR white", nao lancava excecao no parser normal e
+     * salvava o texto cru "<gradient:MestreBR:white>" como nick, vazando pro
+     * TAB/nChat inteiros - bug 21/08, prints do usuario). */
     private boolean gradient(CommandSender sender, String[] args) {
         Player player = asPlayer(sender);
         if (player == null) return true;
@@ -176,6 +190,12 @@ public final class ChatCommands extends BaseCommand {
         String c1 = args[0];
         String c2 = args.length > 1 ? args[1] : "white";
         String prefix = "<gradient:" + c1 + ":" + c2 + ">";
+        try {
+            STRICT.deserialize(prefix + "teste");
+        } catch (Exception e) {
+            ChatUtil.sendKey(player, "gradient-invalid", Map.of("cor1", c1, "cor2", c2));
+            return true;
+        }
         nicks.applyColorToNick(player, prefix);
         tabHook.apply(player);
         ChatUtil.sendKey(player, "gradient-applied");

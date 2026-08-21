@@ -29,6 +29,12 @@ public final class PapiExpansion extends PlaceholderExpansion {
             .useUnusualXRepeatedCharacterHexFormat()
             .build();
 
+    // strict(true) SO pra validar - MiniMessage.miniMessage() normal e permissivo (tag
+    // com argumento invalido nao lanca excecao), entao um nick ja salvo malformado (ver
+    // ChatCommands#gradient, agora validado no save) continuava vazando o texto cru
+    // pro nChat/placar pra sempre - bug 21/08, print do usuario. Autocorrige aqui.
+    private static final MiniMessage STRICT = MiniMessage.builder().strict(true).build();
+
     private final JavaPlugin plugin;
     private final NickManager nicks;
     private final GenderManager genders;
@@ -75,7 +81,12 @@ public final class PapiExpansion extends PlaceholderExpansion {
             case "nick":
             case "nickname":
                 // reset final (§r) para cor/estilo do nick nao vazarem pro suffix
-                return LEGACY.serialize(MiniMessage.miniMessage().deserialize(nick)) + "§r";
+                try {
+                    STRICT.deserialize(nick);
+                    return LEGACY.serialize(MiniMessage.miniMessage().deserialize(nick)) + "§r";
+                } catch (Exception e) {
+                    return player.getName();
+                }
             case "nick_plain":
                 return MiniMessage.miniMessage().stripTags(nick);
             case "realname":
