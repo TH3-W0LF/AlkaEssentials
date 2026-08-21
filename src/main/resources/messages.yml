@@ -243,7 +243,7 @@ color-not-your-nick: "<red>Esse nao e o seu nick. Digite o seu proprio nick para
 color-disabled: "<red>O /color esta desativado neste servidor."
 namecolor-applied: "<green>Cor aplicada ao seu nick."
 gradient-applied: "<green>Gradiente aplicado ao seu nick."
-gradient-invalid: "<red>Cor invalida ({cor1} / {cor2}). Use nomes de cor (red, aqua, gold...) ou hex (#RRGGBB)."
+gradient-invalid: "<red>Cor invalida ({cores}). Use nomes de cor (red, aqua, gold...) ou hex (#RRGGBB), um por argumento separado por espaco - nao digite a tag <gradient:...> inteira."
 realname-result: "<gold>{nick} <gray>e <gold>{player}<gray>."
 realname-none: "<gray>Nenhum jogador com esse nick."
 ignore-on: "<green>Voce agora ignora <gold>{player}<green>."

@@ -192,21 +192,22 @@ public final class ChatCommands extends BaseCommand {
     }
 
     /** /gradient <cor1> [cor2] - aplica gradiente ao proprio nick. Valida que as cores
-     * existem de verdade antes de salvar - c1/c2 vem direto do jogador (nome de cor
+     * existem de verdade antes de salvar - as cores vem direto do jogador (nome de cor
      * errado, ex "/gradient MestreBR white", nao lancava excecao no parser normal e
      * salvava o texto cru "<gradient:MestreBR:white>" como nick, vazando pro
-     * TAB/nChat inteiros - bug 21/08, prints do usuario). */
+     * TAB/nChat inteiros - bug 21/08, prints do usuario). Aceita 2+ cores (uma por
+     * argumento, separadas por espaco - NAO digitar a tag <gradient:...> inteira como
+     * um unico argumento, isso vira lixo aninhado e e rejeitado de proposito). */
     private boolean gradient(CommandSender sender, String[] args) {
         Player player = asPlayer(sender);
         if (player == null) return true;
         String permission = plugin.getConfig().getString("chat.color.permission", "alkassentials.chat.color");
         if (!requirePerm(player, permission)) return true;
-        if (args.length < 1) return false;
-        String c1 = args[0];
-        String c2 = args.length > 1 ? args[1] : "white";
-        String prefix = "<gradient:" + c1 + ":" + c2 + ">";
+        if (args.length < 2) return false;
+        String cores = String.join(":", args);
+        String prefix = "<gradient:" + cores + ">";
         if (!isValidMiniMessage(prefix + "teste</gradient>")) {
-            ChatUtil.sendKey(player, "gradient-invalid", Map.of("cor1", c1, "cor2", c2));
+            ChatUtil.sendKey(player, "gradient-invalid", Map.of("cores", String.join(", ", args)));
             return true;
         }
         nicks.applyColorToNick(player, prefix);
