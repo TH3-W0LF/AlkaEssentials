@@ -233,6 +233,8 @@ showitem-invalid-slot: "<red>Slot invalido. Use 0-40 (36-39 armadura, 40 offhand
 showitem-inv-title: "<gold>Inventario de {player}:"
 showitem-ender-title: "<gold>Enderchest de {player}:"
 nick-set: "<green>Seu nick agora e <gold>{nick}<green>."
+genero-definido: "<green>Genero definido como <white>{genero}<green>."
+genero-invalido: "<red>Genero invalido - use M ou F."
 nick-cleared: "<green>Seu nick foi removido."
 nick-blocked: "<red>Este nick nao e permitido."
 nick-invalid: "<red>Nick invalido (maximo {max} caracteres)."

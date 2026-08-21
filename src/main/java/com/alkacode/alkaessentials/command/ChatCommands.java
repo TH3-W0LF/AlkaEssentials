@@ -1,5 +1,6 @@
 package com.alkacode.alkaessentials.command;
 
+import com.alkacode.alkaessentials.manager.GenderManager;
 import com.alkacode.alkaessentials.manager.IgnoreManager;
 import com.alkacode.alkaessentials.manager.NickManager;
 import com.alkacode.alkaessentials.util.ChatUtil;
@@ -22,13 +23,15 @@ public final class ChatCommands extends BaseCommand {
 
     private final NickManager nicks;
     private final IgnoreManager ignores;
+    private final GenderManager genders;
     private final com.alkacode.alkaessentials.hook.TabHook tabHook;
 
     public ChatCommands(JavaPlugin plugin, NickManager nicks, IgnoreManager ignores,
-                        com.alkacode.alkaessentials.hook.TabHook tabHook) {
+                        GenderManager genders, com.alkacode.alkaessentials.hook.TabHook tabHook) {
         super(plugin);
         this.nicks = nicks;
         this.ignores = ignores;
+        this.genders = genders;
         this.tabHook = tabHook;
     }
 
@@ -39,6 +42,7 @@ public final class ChatCommands extends BaseCommand {
             case "color": return color(sender, args);
             case "namecolor": return nameColor(sender, args);
             case "gradient": return gradient(sender, args);
+            case "genero": return genero(sender, args);
             case "realname":
             case "whois": return realname(sender, args);
             case "ignore": return ignore(sender, args);
@@ -175,6 +179,25 @@ public final class ChatCommands extends BaseCommand {
         nicks.applyColorToNick(player, prefix);
         tabHook.apply(player);
         ChatUtil.sendKey(player, "gradient-applied");
+        return true;
+    }
+
+    /** /genero <M|F> - so o comando por enquanto (sem GUI, ver [[project-alkaflair]] pedido
+     * do usuario 21/08 - GUI fica pra depois). Aplica na hora no TAB via tabHook.apply(). */
+    private boolean genero(CommandSender sender, String[] args) {
+        Player player = asPlayer(sender);
+        if (player == null) return true;
+        if (args.length < 1) return false;
+        GenderManager.Gender gender;
+        try {
+            gender = GenderManager.Gender.valueOf(args[0].toUpperCase());
+        } catch (IllegalArgumentException e) {
+            ChatUtil.sendKey(player, "genero-invalido");
+            return true;
+        }
+        genders.set(player.getUniqueId(), gender);
+        tabHook.apply(player);
+        ChatUtil.sendKey(player, "genero-definido", Map.of("genero", gender.name()));
         return true;
     }
 

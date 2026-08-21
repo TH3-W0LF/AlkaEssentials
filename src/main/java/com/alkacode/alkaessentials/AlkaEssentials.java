@@ -198,9 +198,10 @@ public final class AlkaEssentials extends AlkaPlugin {
 
         // ----- modulo 6: chat e social -----
         IgnoreManager ignores = new IgnoreManager(this);
+        com.alkacode.alkaessentials.manager.GenderManager genders = new com.alkacode.alkaessentials.manager.GenderManager(this);
         com.alkacode.alkaessentials.hook.TabHook tabHook = new com.alkacode.alkaessentials.hook.TabHook(nicks);
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new com.alkacode.alkaessentials.hook.PapiExpansion(this, nicks).register();
+            new com.alkacode.alkaessentials.hook.PapiExpansion(this, nicks, genders).register();
         }
         getServer().getPluginManager().registerEvents(
                 new ChatListener(this, nicks, ignores, punishments, tabHook), this);
@@ -235,8 +236,8 @@ public final class AlkaEssentials extends AlkaPlugin {
                 "clear", "heal", "feed", "fly", "god", "freeze", "invsee", "ptime", "pweather");
         register(new ModerationCommands(this, moderation, maintenance, punishments, vanishHandler),
                 "vanish", "socialspy", "commandspy", "maintenance", "staff");
-        register(new ChatCommands(this, nicks, ignores, tabHook),
-                "nick", "color", "namecolor", "gradient", "realname", "whois",
+        register(new ChatCommands(this, nicks, ignores, genders, tabHook),
+                "nick", "color", "namecolor", "gradient", "genero", "realname", "whois",
                 "ignore", "clearchat", "broadcast", "discord", "site", "loja", "regras");
         register(new WorldRulesCommand(this, worldRules), "worldrules");
         register(new AdminCommands(this),

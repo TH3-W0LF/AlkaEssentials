@@ -191,6 +191,9 @@ commands:
   gradient:
     description: Aplica um gradiente ao seu nick.
     usage: /<command> <cor1> [cor2]
+  genero:
+    description: Define seu genero (M/F), exibido no TAB.
+    usage: /<command> <M|F>
   whois:
     description: Descobre o nome real de um jogador com nick.
     aliases: [realname]

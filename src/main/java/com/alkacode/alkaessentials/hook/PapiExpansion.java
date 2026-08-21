@@ -1,5 +1,6 @@
 package com.alkacode.alkaessentials.hook;
 
+import com.alkacode.alkaessentials.manager.GenderManager;
 import com.alkacode.alkaessentials.manager.NickManager;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -12,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  *   %alkaessentials_nick%        -> nick do jogador (codigos legado § reais, para nChat/TAB/placar)
  *   %alkaessentials_nick_plain%  -> nick sem cores
  *   %alkaessentials_realname%    -> nome real
+ *   %alkaessentials_genero%      -> "M"/"F" colorido (§9M/§dF), vazio se nunca setado (/genero)
  * Registrada apenas quando o PlaceholderAPI esta instalado.
  */
 public final class PapiExpansion extends PlaceholderExpansion {
@@ -28,10 +30,12 @@ public final class PapiExpansion extends PlaceholderExpansion {
 
     private final JavaPlugin plugin;
     private final NickManager nicks;
+    private final GenderManager genders;
 
-    public PapiExpansion(JavaPlugin plugin, NickManager nicks) {
+    public PapiExpansion(JavaPlugin plugin, NickManager nicks, GenderManager genders) {
         this.plugin = plugin;
         this.nicks = nicks;
+        this.genders = genders;
     }
 
     @Override
@@ -54,6 +58,10 @@ public final class PapiExpansion extends PlaceholderExpansion {
         if (player == null) {
             return "";
         }
+        if ("genero".equalsIgnoreCase(params)) {
+            return generoSymbol(genders.get(player.getUniqueId()));
+        }
+
         String nick = nicks.getNick(player.getUniqueId());
         if (nick == null) {
             return "nick".equalsIgnoreCase(params) || "nick_plain".equalsIgnoreCase(params)
@@ -71,5 +79,17 @@ public final class PapiExpansion extends PlaceholderExpansion {
             default:
                 return null;
         }
+    }
+
+    /** Simbolo colorido pro TAB/chat - M azul, F rosa (recomendado 21/08, aprovado pelo
+     * usuario). Vazio se o jogador nunca setou (/genero ainda nao tem GUI, so comando). */
+    private String generoSymbol(GenderManager.Gender gender) {
+        if (gender == null) {
+            return "";
+        }
+        return switch (gender) {
+            case M -> "§9M§r";
+            case F -> "§dF§r";
+        };
     }
 }
